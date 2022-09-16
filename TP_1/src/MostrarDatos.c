@@ -70,7 +70,7 @@ void InterfazResultados(float *porcentajeUEFA, float *porcentajeCONMEBOL,
 			"\nPorcentaje CAF %.2f", *porcentajeUEFA, *porcentajeCONMEBOL,
 			*porcentajeCONCACAF, *porcentajeAFC, *porcentajeOFC,
 			*porcentajeCAF);
-	if (valorIncrementado != 0) {
+	if (*valorIncrementado != 0) {
 		printf(
 				"\n El costo de mantenimiento era de %.2f y recibio un aumento de $%.2f, su nuevo valor es de: $%.2f",
 				*costoTotalMantenimiento, *valorAIncrementar,
