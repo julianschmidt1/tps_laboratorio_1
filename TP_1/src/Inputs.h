@@ -32,4 +32,9 @@ int getFloat(char mensaje[], char mensajeError[], float *pValor, float max,
 /// \return Retorna 0 si algo salio mal, y 1 si guardo el valor correctamente
 int getInt(char mensaje[], char mensajeError[], int *pValor, int max, int min);
 
+int getIntReintentos(char mensaje[], int reintentos, int minimo, int maximo,
+		char mensajeError[], int *pNumeroIngresado);
+
+char getChar(char *mensaje);
+
 #endif /* INPUTS_H_ */
