@@ -14,7 +14,6 @@
 #include "MostrarDatos.h"
 #include "Menu.h"
 #include "Operaciones.h"
-#define MAX_CANTIDAD_JUGADORES
 
 int main(void) {
 	setbuf(stdout, NULL);
@@ -100,12 +99,7 @@ int main(void) {
 
 				costoTotalMantenimiento = Sumar(costoComida,
 						Sumar(costoHospedaje, costoTransporte));
-				/*int contadorAFC = 0;
-				 int contadorCAF = 0;
-				 int contadorCONCACAF = 0;
-				 int contadorCONMEBOL = 0;
-				 int contadorUEFA = 0;
-				 int contadorOFC = 0;*/
+
 				if (contadorUEFA > contadorAFC && contadorUEFA > contadorCAF
 						&& contadorUEFA > contadorCONCACAF
 						&& contadorUEFA > contadorCONMEBOL
