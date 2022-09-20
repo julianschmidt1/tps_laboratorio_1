@@ -17,9 +17,9 @@
 
 int main(void) {
 	setbuf(stdout, NULL);
-	float costoHospedaje = 500000;
-	float costoComida = 250000;
-	float costoTransporte = 400000;
+	float costoHospedaje = 0;
+	float costoComida = 0;
+	float costoTransporte = 0;
 	float costoTotalMantenimiento = 0;
 	float valorAIncrementar = 0;
 	float valorIncrementado = 0;
@@ -29,12 +29,12 @@ int main(void) {
 	int contadorMediocampistas = 0;
 	int contadorDelanteros = 0;
 
-	int contadorAFC = 1;
-	int contadorCAF = 2;
-	int contadorCONCACAF = 4;
-	int contadorCONMEBOL = 4;
-	int contadorOFC = 6;
-	int contadorUEFA = 5;
+	int contadorAFC = 0;
+	int contadorCAF = 0;
+	int contadorCONCACAF = 0;
+	int contadorCONMEBOL = 0;
+	int contadorOFC = 0;
+	int contadorUEFA = 0;
 
 	float porcentajeAFC = 0;
 	float porcentajeCAF = 0;
