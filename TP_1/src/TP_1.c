@@ -24,17 +24,17 @@ int main(void) {
 	float valorAIncrementar = 0;
 	float valorIncrementado = 0;
 
-	int contadorArqueros = 0;
+	int contadorArqueros = 1;
 	int contadorDefensores = 0;
 	int contadorMediocampistas = 0;
 	int contadorDelanteros = 0;
 
-	int contadorAFC = 0;
-	int contadorCAF = 0;
-	int contadorCONCACAF = 0;
-	int contadorCONMEBOL = 0;
-	int contadorOFC = 0;
-	int contadorUEFA = 0;
+	int contadorAFC = 2;
+	int contadorCAF = 2;
+	int contadorCONCACAF = 2;
+	int contadorCONMEBOL = 2;
+	int contadorOFC = 2;
+	int contadorUEFA = 12;
 
 	float porcentajeAFC = 0;
 	float porcentajeCAF = 0;
@@ -100,10 +100,7 @@ int main(void) {
 				costoTotalMantenimiento = Sumar(costoComida,
 						Sumar(costoHospedaje, costoTransporte));
 
-				if (contadorUEFA > contadorAFC && contadorUEFA > contadorCAF
-						&& contadorUEFA > contadorCONCACAF
-						&& contadorUEFA > contadorCONMEBOL
-						&& contadorUEFA > contadorOFC) {
+				if (porcentajeUEFA > 50) {
 					valorAIncrementar = AplicarPorcentaje(
 							costoTotalMantenimiento, 35);
 					valorIncrementado = Sumar(costoTotalMantenimiento,
