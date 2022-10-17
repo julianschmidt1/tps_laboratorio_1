@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Inputs.h"
+#include "eConfederacion.h"
 
 #define MAX_CHARS 50
 #define LIBRE 0
@@ -37,13 +38,16 @@ int abm_obtenerIndiceLibreJugador(eJugador *lista, int tam);
 int abm_encontrarJugadorPorId(eJugador *lista, int tam, int id);
 
 int abm_altaJugador(eJugador *lista, int tam, int id, eJugador jugador);
-int abm_cargaJugador(eJugador *jugador);
 
-void abm_mostrarUnJugador(eJugador Jugador);
-int abm_mostrarTodosJugador(eJugador *lista, int tam);
-int abm_listadoBajaJugador(eJugador *lista, int tam);
+void abm_mostrarUnJugador(eJugador Jugador, eConfederacion *confederaciones,
+		int tamConfederaciones);
+int abm_mostrarTodosJugador(eJugador *lista, int tam,
+		eConfederacion *confederaciones, int tamConfederaciones);
+int abm_listadoBajaJugador(eJugador *lista, int tam,
+		eConfederacion *confederaciones, int tamConfederaciones);
 int abm_bajaJugador(eJugador *lista, int tam, int id);
 eJugador abm_modificacionJugador(eJugador Jugador);
-int abm_listadoModificacionJugador(eJugador lista[], int tam);
+int abm_listadoModificacionJugador(eJugador lista[], int tam,
+		eConfederacion *confederaciones, int tamConfederaciones);
 
 #endif /* EJUGADOR_H_ */

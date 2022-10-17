@@ -58,25 +58,48 @@ int abm_encontrarJugadorPorId(eJugador *lista, int tam, int id) {
 	return rtn;
 }
 
-void abm_mostrarUnJugador(eJugador Jugador) {
+void abm_mostrarUnJugador(eJugador Jugador, eConfederacion *confederaciones,
+		int tamConfederaciones) {
 	// Modificar esto para que muestre data generica siempre
-	printf("\n\t> %d       %s       %s       %hi", Jugador.id, Jugador.nombre,
-			Jugador.posicion, Jugador.numeroCamiseta);
+	char auxNombreConfederacion[20];
+
+	for (int i = 0; i < tamConfederaciones; i++) {
+		if (confederaciones[i].id == Jugador.idConfederacion) {
+			strcpy(auxNombreConfederacion, confederaciones[i].nombre);
+			break;
+		}
+
+	}
+
+	printf(
+			"\n|  %d  |  %-20s | %-17s |       %hi       | %-14.2f  | %-12s  |        %-5hi      |",
+			Jugador.id, Jugador.nombre, Jugador.posicion,
+			Jugador.numeroCamiseta, Jugador.salario, auxNombreConfederacion,
+			Jugador.aniosContrato);
 }
 
-int abm_mostrarTodosJugador(eJugador *lista, int tam) {
+int abm_mostrarTodosJugador(eJugador *lista, int tam,
+		eConfederacion *confederaciones, int tamConfederaciones) {
 	int i;
 	int rtn = 0;
 	int cantidad = 0;
 
 	if (lista != NULL && tam > 0) {
-		printf("\n\t> ID       NOMBRE       APELLIDO");
+		puts(
+				"\n========================================================================================================================");
+		puts(
+				"| ID  |     NOMBRE            | POSICION          |  N° CAMISETA  | SUELDO          | CONFEDERACION | ANIOS de CONTRATO |");
+		puts(
+				"-------------------------------------------------------------------------------------------------------------------------");
 		for (i = 0; i < tam; i++) {
 			if (lista[i].isEmpty == OCUPADO) {
-				abm_mostrarUnJugador(lista[i]);
+				abm_mostrarUnJugador(lista[i], confederaciones,
+						tamConfederaciones);
 				cantidad++;
 			}
 		}
+		puts(
+				"\n========================================================================================================================");
 	}
 
 	if (cantidad > 0) {
@@ -86,31 +109,12 @@ int abm_mostrarTodosJugador(eJugador *lista, int tam) {
 	return rtn;
 }
 
-int abm_cargaJugador(eJugador *jugador) {
-	int rtn = 0;
-
-	utn_getString("\nIngrese el nombre del jugador: ",
-			"\nError. Nombre invalido. Ingrese el nombre del jugador", 9999,
-			MAX_CHARS, jugador->nombre);
-
-	utn_getString("\nIngrese la posicion del jugador: ",
-			"\nError. Posicion invalida. Ingrese el nombre del jugador", 9999,
-			MAX_CHARS, jugador->posicion);
-
-	utn_getNumeroShort(&jugador->numeroCamiseta,
-			"\nIngrese el numero de camiseta: ",
-			"Error. Ingrese el numero de camiseta: ", 1, 11, 9999);
-	fflush(stdin);
-
-	return rtn;
-}
-
 int abm_altaJugador(eJugador *lista, int tam, int id, eJugador jugador) {
 	int rtn = 0;
 
 	int index = abm_obtenerIndiceLibreJugador(lista, tam);
-	//SI INDEX == -1 ARRAY LLENO
-	//SI INDEX != -1 TENGO EN INDEX POSICION DE ARRAY LIBRE
+//SI INDEX == -1 ARRAY LLENO
+//SI INDEX != -1 TENGO EN INDEX POSICION DE ARRAY LIBRE
 	if (index != -1 && lista != NULL) {
 
 		jugador.id = id;
@@ -122,13 +126,15 @@ int abm_altaJugador(eJugador *lista, int tam, int id, eJugador jugador) {
 	return rtn;
 }
 
-int abm_listadoBajaJugador(eJugador *lista, int tam) {
+int abm_listadoBajaJugador(eJugador *lista, int tam,
+		eConfederacion *confederaciones, int tamConfederacion) {
 	int rtn = -1;
 	int idJugador;
 	int flag = 0;
 	int confirmar = 0;
 
-	if (abm_mostrarTodosJugador(lista, tam)) {
+	if (abm_mostrarTodosJugador(lista, tam, confederaciones,
+			tamConfederacion)) {
 		flag = 1;
 	}
 
@@ -145,7 +151,8 @@ int abm_listadoBajaJugador(eJugador *lista, int tam) {
 
 		printf("\nUsuario a dar de baja: ");
 		abm_mostrarUnJugador(
-				lista[abm_encontrarJugadorPorId(lista, tam, idJugador)]);
+				lista[abm_encontrarJugadorPorId(lista, tam, idJugador)],
+				confederaciones, tamConfederacion);
 		utn_getNumero(&confirmar,
 				"\nEsta seguro que desea dar de baja? (1. SI - 0. NO)",
 				"Opcion incorrecta", 0, 1, 9999);
@@ -183,7 +190,8 @@ eJugador abm_modificacionJugador(eJugador Jugador) {
 	return auxiliar;
 }
 
-int abm_listadoModificacionJugador(eJugador *lista, int tam) {
+int abm_listadoModificacionJugador(eJugador *lista, int tam,
+		eConfederacion *confederaciones, int tamConfederaciones) {
 	int rtn = 0;
 	int idJugador;
 	int index;
@@ -191,7 +199,8 @@ int abm_listadoModificacionJugador(eJugador *lista, int tam) {
 	eJugador auxiliar;
 	int confirmar = 0;
 
-	if (abm_mostrarTodosJugador(lista, tam)) {
+	if (abm_mostrarTodosJugador(lista, tam, confederaciones,
+			tamConfederaciones)) {
 		flag = 1;
 	}
 
@@ -210,7 +219,7 @@ int abm_listadoModificacionJugador(eJugador *lista, int tam) {
 		auxiliar = abm_modificacionJugador(lista[index]);
 
 		printf("\nUsuario a modificar: ");
-		abm_mostrarUnJugador(lista[index]);
+		abm_mostrarUnJugador(lista[index], confederaciones, tamConfederaciones);
 
 		utn_getNumero(&confirmar,
 				"\nEsta seguro que modificar el usuario? (1. SI - 0. NO)",
