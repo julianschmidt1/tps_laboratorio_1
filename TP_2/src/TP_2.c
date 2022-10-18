@@ -27,6 +27,7 @@ int main(void) {
 	int idJugador;
 	int auxIdConfederacion;
 	eJugador nuevoJugador;
+	int confirmarSalida;
 
 	if (!abm_inicializarJugador(jugadores, MAX_JUGADORES)) {
 		puts(
@@ -68,8 +69,8 @@ int main(void) {
 				puts("\nEl id ingresado no existe.");
 				utn_getNumero(&auxIdConfederacion,
 						"\nIngrese el id de la confederacion: ",
-						"\nError. El id seleccionado excede el limite.", 100,
-						9999, 9999);
+						"\nError. El id seleccionado no es valido.", 100, 9999,
+						9999);
 			}
 			nuevoJugador.idConfederacion = auxIdConfederacion;
 
@@ -90,16 +91,28 @@ int main(void) {
 			MAX_CONFEDERACIONES);
 			break;
 		case 3:
+			abm_listadoModificacionJugador(jugadores, MAX_JUGADORES,
+					confederaciones,
+					MAX_CONFEDERACIONES);
 			break;
 		case 4:
 			abm_mostrarTodosJugador(jugadores, MAX_JUGADORES, confederaciones,
 			MAX_CONFEDERACIONES);
 			break;
 		case 5:
+			puts("\nEsta seguro que desea salir del programa?");
+			utn_getNumero(&confirmarSalida, "\nIngrese la opcion: ",
+					"\nError. Opcion ingresada invalida. Intentelo nuevamente",
+					0, 1, 9999);
+			if (confirmarSalida) {
+				puts("\n GRACIAS POR USAR EL SISTEMA.");
+			} else {
+				puts("\n Volviendo al menu principal ...");
+			}
 			break;
 		}
 
-	} while (opcionSeleccionada != 5);
+	} while (opcionSeleccionada != 5 || !confirmarSalida);
 
 	return EXIT_SUCCESS;
 }

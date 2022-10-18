@@ -72,7 +72,7 @@ void abm_mostrarUnJugador(eJugador Jugador, eConfederacion *confederaciones,
 	}
 
 	printf(
-			"\n|  %d  |  %-20s | %-17s |       %hi       | %-14.2f  | %-12s  |        %-5hi      |",
+			"\n|  %d  |  %-20s | %-17s |   %8hi     | %-14.2f  | %-12s  |        %-5hi      |",
 			Jugador.id, Jugador.nombre, Jugador.posicion,
 			Jugador.numeroCamiseta, Jugador.salario, auxNombreConfederacion,
 			Jugador.aniosContrato);
@@ -179,15 +179,76 @@ int abm_bajaJugador(eJugador *lista, int tam, int id) {
 	return rtn;
 }
 
-eJugador abm_modificacionJugador(eJugador Jugador) {
-	eJugador auxiliar = Jugador;
-	/*
-	 utn_getString("Nuevo nombre: ", "Error, de nuevo", 9999, MAX_CHARS,
-	 auxiliar.name);
-	 utn_getString("Nuevo apellido: ", "Error, de nuevo", 9999, MAX_CHARS,
-	 auxiliar.lastName);
-	 */
-	return auxiliar;
+eJugador abm_modificacionJugador(eJugador Jugador,
+		eConfederacion *confederaciones, int tamConfederaciones) {
+	eJugador auxiliarJugador = Jugador;
+	int opcionSeleccionada = 1;
+	int auxIdConfederacion;
+
+	do {
+		opcionSeleccionada = menu_opciones(
+				"\n ------- MODIFICACION DE JUGADOR -----------",
+				"\n 1. MODIFICAR NOMBRE"
+						"\n 2. MODIFICAR POSICION"
+						"\n 3. MODIFICAR N° DE CAMISETA"
+						"\n 4. MODIFICAR CONFEDERACION"
+						"\n 5. MODIFICAR SALARIO"
+						"\n 6. MODIFICAR ANIOS DE CONTRATO"
+						"\n 7. FINALIZAR MODIFICACIONES",
+				"Error, la opcion seleccionada no es valida", 1, 7);
+
+		switch (opcionSeleccionada) {
+		case 1:
+			utn_getString("\nIngrese el nombre del jugador: ",
+					"\nError. Nombre invalido. Ingrese el nombre del jugador",
+					9999,
+					MAX_CHARS, auxiliarJugador.nombre);
+			break;
+		case 2:
+			utn_getString("\nIngrese la posicion del jugador: ",
+					"\nError. Posicion invalida. Ingrese el nombre del jugador",
+					9999,
+					MAX_CHARS, auxiliarJugador.posicion);
+			break;
+		case 3:
+			utn_getNumeroShort(&auxiliarJugador.numeroCamiseta,
+					"\nIngrese el numero de camiseta: ",
+					"Error. Ingrese el numero de camiseta: ", 1, 11, 9999);
+			break;
+		case 4:
+			abm_mostrarTodosConfederacion(confederaciones, tamConfederaciones);
+			utn_getNumero(&auxIdConfederacion,
+					"\nIngrese el id de la confederacion: ",
+					"\nError. El id seleccionado excede el limite.", 100, 9999,
+					9999);
+			while (abm_encontrarConfederacionPorId(confederaciones,
+			MAX_CONFEDERACIONES, auxIdConfederacion) == -1) {
+				puts("\nEl id ingresado no existe.");
+				utn_getNumero(&auxIdConfederacion,
+						"\nIngrese el id de la confederacion: ",
+						"\nError. El id seleccionado no es valido.", 100, 9999,
+						9999);
+			}
+			auxiliarJugador.idConfederacion = auxIdConfederacion;
+			break;
+		case 5:
+			utn_getNumeroDecimal(&auxiliarJugador.salario,
+					"\nIngrese el salario del jugador: ",
+					"\nError. Salario invalido, ingrese el salario del jugador: ",
+					1, 99999999, 9999);
+			break;
+		case 6:
+			utn_getNumeroShort(&auxiliarJugador.aniosContrato,
+					"\nIngrese los anios de contrato: ",
+					"Error. Ingrese los anios de contrato", 1, 99, 9999);
+			break;
+		case 7:
+			puts("Volviendo al menu principal");
+			break;
+		}
+	} while (opcionSeleccionada != 7);
+
+	return auxiliarJugador;
 }
 
 int abm_listadoModificacionJugador(eJugador *lista, int tam,
@@ -216,14 +277,14 @@ int abm_listadoModificacionJugador(eJugador *lista, int tam,
 		}
 
 		index = abm_encontrarJugadorPorId(lista, tam, idJugador);
-		auxiliar = abm_modificacionJugador(lista[index]);
-
-		printf("\nUsuario a modificar: ");
 		abm_mostrarUnJugador(lista[index], confederaciones, tamConfederaciones);
+		auxiliar = abm_modificacionJugador(lista[index], confederaciones,
+				tamConfederaciones);
+		printf("\nUsuario a modificar: ");
 
 		utn_getNumero(&confirmar,
-				"\nEsta seguro que modificar el usuario? (1. SI - 0. NO)",
-				"Opcion incorrecta", 0, 1, 9999);
+				"\nEsta seguro que modificar el usuario? (1. SI - 0. NO): ",
+				"\nOpcion incorrecta", 0, 1, 9999);
 		if (confirmar) {
 			lista[index] = auxiliar;
 			rtn = 1;

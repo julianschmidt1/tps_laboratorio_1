@@ -13,6 +13,7 @@
 #include <string.h>
 #include "Inputs.h"
 #include "eConfederacion.h"
+#include "Menu.h"
 
 #define MAX_CHARS 50
 #define LIBRE 0
@@ -46,7 +47,8 @@ int abm_mostrarTodosJugador(eJugador *lista, int tam,
 int abm_listadoBajaJugador(eJugador *lista, int tam,
 		eConfederacion *confederaciones, int tamConfederaciones);
 int abm_bajaJugador(eJugador *lista, int tam, int id);
-eJugador abm_modificacionJugador(eJugador Jugador);
+eJugador abm_modificacionJugador(eJugador Jugador,
+		eConfederacion *confederaciones, int tamConfederaciones);
 int abm_listadoModificacionJugador(eJugador lista[], int tam,
 		eConfederacion *confederaciones, int tamConfederaciones);
 
