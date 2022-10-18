@@ -128,7 +128,7 @@ int abm_altaJugador(eJugador *lista, int tam, int id, eJugador jugador) {
 
 int abm_listadoBajaJugador(eJugador *lista, int tam,
 		eConfederacion *confederaciones, int tamConfederacion) {
-	int rtn = -1;
+	int rtn = 0;
 	int idJugador;
 	int flag = 0;
 	int confirmar = 0;
@@ -139,7 +139,7 @@ int abm_listadoBajaJugador(eJugador *lista, int tam,
 	}
 
 	if (flag) {
-		utn_getNumero(&idJugador, "\nIngrese ID a dar de baja",
+		utn_getNumero(&idJugador, "\nIngrese ID a dar de baja: ",
 				"Valor incorrecto", 0, tam, 9999);
 
 		while (abm_encontrarJugadorPorId(lista, tam, idJugador) == -1) {
@@ -158,6 +158,7 @@ int abm_listadoBajaJugador(eJugador *lista, int tam,
 				"Opcion incorrecta", 0, 1, 9999);
 		if (confirmar) {
 			abm_bajaJugador(lista, tam, idJugador);
+			rtn = 1;
 		}
 	}
 
@@ -182,7 +183,7 @@ int abm_bajaJugador(eJugador *lista, int tam, int id) {
 eJugador abm_modificacionJugador(eJugador Jugador,
 		eConfederacion *confederaciones, int tamConfederaciones) {
 	eJugador auxiliarJugador = Jugador;
-	int opcionSeleccionada = 1;
+	int opcionSeleccionada;
 	int auxIdConfederacion;
 
 	do {

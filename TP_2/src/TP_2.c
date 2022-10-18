@@ -28,6 +28,8 @@ int main(void) {
 	int auxIdConfederacion;
 	eJugador nuevoJugador;
 	int confirmarSalida;
+	int contadorAltas = 0;
+	int contadorBajas = 0;
 
 	if (!abm_inicializarJugador(jugadores, MAX_JUGADORES)) {
 		puts(
@@ -84,24 +86,50 @@ int main(void) {
 					"Error. Ingrese los anios de contrato", 1, 99, 9999);
 
 			idJugador = abm_obtenerIdJugador();
-			abm_altaJugador(jugadores, MAX_CHARS, idJugador, nuevoJugador);
+			if (abm_altaJugador(jugadores, MAX_JUGADORES, idJugador,
+					nuevoJugador)) {
+				puts("\n\n ---- JUGADOR DADO DE ALTA EXITOSAMENTE ------");
+				contadorAltas++;
+			} else {
+				puts(
+						"\n\n ---- OCURRIO UN ERROR EN EL ALTA DEL JUGADOR  ---- ");
+			}
+
 			break;
 		case 2:
-			abm_listadoBajaJugador(jugadores, MAX_JUGADORES, confederaciones,
-			MAX_CONFEDERACIONES);
+			if (validarIngreso(contadorAltas, contadorBajas)) {
+				abm_listadoBajaJugador(jugadores, MAX_JUGADORES,
+						confederaciones,
+						MAX_CONFEDERACIONES);
+				contadorBajas++;
+			} else {
+				puts(
+						"\n---NO ES POSIBLE LISTAR USUARIOS SI NO FUERON PREVIAMENTE CARGADOS -----");
+			}
 			break;
 		case 3:
-			abm_listadoModificacionJugador(jugadores, MAX_JUGADORES,
-					confederaciones,
-					MAX_CONFEDERACIONES);
+			if (validarIngreso(contadorAltas, contadorBajas)) {
+				abm_listadoModificacionJugador(jugadores, MAX_JUGADORES,
+						confederaciones,
+						MAX_CONFEDERACIONES);
+			} else {
+				puts(
+						"\n---NO ES POSIBLE LISTAR USUARIOS SI NO FUERON PREVIAMENTE CARGADOS -----");
+			}
 			break;
 		case 4:
-			abm_mostrarTodosJugador(jugadores, MAX_JUGADORES, confederaciones,
-			MAX_CONFEDERACIONES);
+			if (validarIngreso(contadorAltas, contadorBajas)) {
+				abm_mostrarTodosJugador(jugadores, MAX_JUGADORES,
+						confederaciones,
+						MAX_CONFEDERACIONES);
+			} else {
+				puts(
+						"\n---NO ES POSIBLE LISTAR USUARIOS SI NO FUERON PREVIAMENTE CARGADOS -----");
+			}
 			break;
 		case 5:
-			puts("\nEsta seguro que desea salir del programa?");
-			utn_getNumero(&confirmarSalida, "\nIngrese la opcion: ",
+			utn_getNumero(&confirmarSalida,
+					"\nEsta seguro que desea salir del programa? (1. SI | 0. NO) \nIngrese la opcion: ",
 					"\nError. Opcion ingresada invalida. Intentelo nuevamente",
 					0, 1, 9999);
 			if (confirmarSalida) {

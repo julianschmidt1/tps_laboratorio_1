@@ -217,3 +217,13 @@ int abm_listadoModificacionConfederacion(eConfederacion *lista, int tam) {
 	return rtn;
 }
 
+int validarIngresoOpciones(int contadorAltas, int contadorBajas) {
+	int rtn = 0;
+
+	if (contadorAltas != contadorBajas) {
+		rtn = 1;
+	}
+
+	return rtn;
+}
+
