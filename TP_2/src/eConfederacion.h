@@ -42,6 +42,6 @@ int abm_listadoBajaConfederacion(eConfederacion *lista, int tam);
 int abm_bajaConfederacion(eConfederacion *lista, int tam, int id);
 eConfederacion abm_modificacionConfederacion(eConfederacion Confederacion);
 int abm_listadoModificacionConfederacion(eConfederacion lista[], int tam);
-int abm_validarIngresoOpciones(int contadorAltas, int contadorBajas);
+int validarIngresoOpciones(int contadorAltas, int contadorBajas);
 
 #endif /* ECONFEDERACION_H_ */

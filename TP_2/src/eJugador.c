@@ -133,6 +133,7 @@ int abm_listadoBajaJugador(eJugador *lista, int tam,
 	int flag = 0;
 	int confirmar = 0;
 
+	ordenarJugadoresId(lista, tam);
 	if (abm_mostrarTodosJugador(lista, tam, confederaciones,
 			tamConfederacion)) {
 		flag = 1;
@@ -261,6 +262,7 @@ int abm_listadoModificacionJugador(eJugador *lista, int tam,
 	eJugador auxiliar;
 	int confirmar = 0;
 
+	ordenarJugadoresId(lista, tam);
 	if (abm_mostrarTodosJugador(lista, tam, confederaciones,
 			tamConfederaciones)) {
 		flag = 1;
@@ -292,5 +294,25 @@ int abm_listadoModificacionJugador(eJugador *lista, int tam,
 		}
 	}
 
+	return rtn;
+}
+
+int ordenarJugadoresId(eJugador *jugadores, int tam) {
+	int rtn = 0;
+	eJugador auxJugador;
+
+	if (jugadores != NULL && tam > 0) {
+		for (int i = 0; i < tam - 1; i++) {
+			for (int j = i + 1; j < tam; j++) {
+				if (jugadores[i].id > jugadores[j].id) {
+					auxJugador = jugadores[i];
+					jugadores[i] = jugadores[j];
+					jugadores[j] = auxJugador;
+				}
+
+			}
+		}
+		rtn = 1;
+	}
 	return rtn;
 }

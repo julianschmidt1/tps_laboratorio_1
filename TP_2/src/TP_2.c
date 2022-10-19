@@ -14,6 +14,7 @@
 #include "eJugador.h"
 #include "Menu.h"
 #include "eConfederacion.h"
+#include "rInformes.h"
 
 int main(void) {
 	setbuf(stdout, NULL);
@@ -30,6 +31,7 @@ int main(void) {
 	int confirmarSalida;
 	int contadorAltas = 0;
 	int contadorBajas = 0;
+	int opcionInformes;
 
 	if (!abm_inicializarJugador(jugadores, MAX_JUGADORES)) {
 		puts(
@@ -97,7 +99,7 @@ int main(void) {
 
 			break;
 		case 2:
-			if (validarIngreso(contadorAltas, contadorBajas)) {
+			if (validarIngresoOpciones(contadorAltas, contadorBajas)) {
 				abm_listadoBajaJugador(jugadores, MAX_JUGADORES,
 						confederaciones,
 						MAX_CONFEDERACIONES);
@@ -108,7 +110,7 @@ int main(void) {
 			}
 			break;
 		case 3:
-			if (validarIngreso(contadorAltas, contadorBajas)) {
+			if (validarIngresoOpciones(contadorAltas, contadorBajas)) {
 				abm_listadoModificacionJugador(jugadores, MAX_JUGADORES,
 						confederaciones,
 						MAX_CONFEDERACIONES);
@@ -118,10 +120,35 @@ int main(void) {
 			}
 			break;
 		case 4:
-			if (validarIngreso(contadorAltas, contadorBajas)) {
-				abm_mostrarTodosJugador(jugadores, MAX_JUGADORES,
-						confederaciones,
+			if (validarIngresoOpciones(contadorAltas, contadorBajas)) {
+				do {
+
+					opcionInformes =
+							menu_opciones(
+									"\n ---------- INFORMES ----------- \n",
+									"\n1. Listado de jugadores ordenados alfabeticamente por nombre de confederacion y nombre de jugador."
+											"\n2. Listado de confederaciones con sus jugadores."
+											"\n3. Total y promedio de todos los salarios y cuantos jugadores cobran mas del salario promedio."
+											"\n4. Informar la confederacion con mayor cantidad de años de contratos total."
+											"\n5. Informar porcentaje de jugadores por cada confederacion."
+											"\n6. Informar cual es la region con mas jugadores y el listado de los mismos"
+											"\n7. Volver al menu principal",
+									"\nError. Ingrese la opcion: ", 1, 7);
+
+					switch (opcionInformes) {
+					case 1:
+						informe_ordenarNombreConfederacionJugador(jugadores,
+						MAX_JUGADORES, confederaciones,
 						MAX_CONFEDERACIONES);
+						abm_mostrarTodosJugador(jugadores, MAX_JUGADORES,
+								confederaciones, MAX_CONFEDERACIONES);
+						break;
+					case 7:
+						puts("\nVolviendo al menu principal");
+						break;
+					}
+				} while (opcionInformes != 7);
+
 			} else {
 				puts(
 						"\n---NO ES POSIBLE LISTAR USUARIOS SI NO FUERON PREVIAMENTE CARGADOS -----");

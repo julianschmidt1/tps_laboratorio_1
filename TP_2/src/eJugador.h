@@ -19,7 +19,7 @@
 #define LIBRE 0
 #define BAJA 1
 #define OCUPADO -1
-#define MAX_JUGADORES 5
+#define MAX_JUGADORES 4
 
 typedef struct {
 	char nombre[MAX_CHARS];
@@ -51,5 +51,6 @@ eJugador abm_modificacionJugador(eJugador Jugador,
 		eConfederacion *confederaciones, int tamConfederaciones);
 int abm_listadoModificacionJugador(eJugador lista[], int tam,
 		eConfederacion *confederaciones, int tamConfederaciones);
+int ordenarJugadoresId(eJugador *jugadores, int tam);
 
 #endif /* EJUGADOR_H_ */
