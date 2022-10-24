@@ -17,4 +17,13 @@ int informe_ordenarNombreConfederacionJugador(eJugador *jugadores,
 		int tamJugadores, eConfederacion *confederaciones,
 		int tamConfederaciones);
 
+int informe_mostrarJugadoresDeConfederacion(eConfederacion *confederaciones,
+		int tamConfederaciones, eJugador *jugadores, int tamJugadores);
+
+int informe_mostrarTotalPromedioJugadores(eJugador *jugadores, int tamJugadores);
+
+int informe_mostrarConfederacionMasAniosContrato(
+		eConfederacion *confederaciones, int tamConfederaciones,
+		eJugador *jugadores, int tamJugadores);
+
 #endif /* RINFORMES_H_ */

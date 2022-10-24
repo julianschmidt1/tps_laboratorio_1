@@ -283,7 +283,7 @@ int abm_listadoModificacionJugador(eJugador *lista, int tam,
 		abm_mostrarUnJugador(lista[index], confederaciones, tamConfederaciones);
 		auxiliar = abm_modificacionJugador(lista[index], confederaciones,
 				tamConfederaciones);
-		printf("\nUsuario a modificar: ");
+		puts("\nUsuario a modificar: ");
 
 		utn_getNumero(&confirmar,
 				"\nEsta seguro que modificar el usuario? (1. SI - 0. NO): ",

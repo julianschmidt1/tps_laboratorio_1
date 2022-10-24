@@ -19,7 +19,7 @@
 #define LIBRE 0
 #define BAJA 1
 #define OCUPADO -1
-#define MAX_JUGADORES 4
+#define MAX_JUGADORES 6
 
 typedef struct {
 	char nombre[MAX_CHARS];

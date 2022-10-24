@@ -38,6 +38,13 @@ int main(void) {
 				" ----------- OCURRIO UN ERROR AL INICIALIZAR JUGADORES ------------");
 	}
 
+	for (int i = 0; i < MAX_JUGADORES; i++) {
+		eJugador hardcodeado = { "Test user", "Delantero", 1, 100 + i, 9999 + i,
+				1 + i, i, -1 };
+		abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, hardcodeado);
+		contadorAltas++;
+	}
+
 	do {
 		opcionSeleccionada = menu_opciones(
 				"\n\n ----------- TRABAJO PRACTICO 2 --------------",
@@ -142,6 +149,24 @@ int main(void) {
 						MAX_CONFEDERACIONES);
 						abm_mostrarTodosJugador(jugadores, MAX_JUGADORES,
 								confederaciones, MAX_CONFEDERACIONES);
+						break;
+					case 2:
+						informe_mostrarJugadoresDeConfederacion(confederaciones,
+						MAX_CONFEDERACIONES, jugadores,
+						MAX_JUGADORES);
+						break;
+					case 3:
+						informe_mostrarTotalPromedioJugadores(jugadores,
+						MAX_JUGADORES);
+						break;
+					case 4:
+						informe_mostrarConfederacionMasAniosContrato(
+								confederaciones, MAX_CONFEDERACIONES, jugadores,
+								MAX_JUGADORES);
+						break;
+					case 5:
+						break;
+					case 6:
 						break;
 					case 7:
 						puts("\nVolviendo al menu principal");
