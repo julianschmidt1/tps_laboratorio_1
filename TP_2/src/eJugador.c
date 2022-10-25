@@ -113,10 +113,7 @@ int abm_altaJugador(eJugador *lista, int tam, int id, eJugador jugador) {
 	int rtn = 0;
 
 	int index = abm_obtenerIndiceLibreJugador(lista, tam);
-//SI INDEX == -1 ARRAY LLENO
-//SI INDEX != -1 TENGO EN INDEX POSICION DE ARRAY LIBRE
 	if (index != -1 && lista != NULL) {
-
 		jugador.id = id;
 		jugador.isEmpty = OCUPADO;
 		lista[index] = jugador;

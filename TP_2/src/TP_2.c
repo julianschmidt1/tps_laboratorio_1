@@ -41,8 +41,15 @@ int main(void) {
 	for (int i = 0; i < MAX_JUGADORES; i++) {
 		eJugador hardcodeado = { "Test user", "Delantero", 1, 100 + i, 9999 + i,
 				1 + i, i, -1 };
-		abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, hardcodeado);
 		contadorAltas++;
+		if (i < 5) {
+
+			abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, hardcodeado);
+		} else {
+			eJugador test = { "Test user", "Delantero", 1, 100, 9999 + i, 1 + i,
+					i, -1 };
+			abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, test);
+		}
 	}
 
 	do {
@@ -165,8 +172,13 @@ int main(void) {
 								MAX_JUGADORES);
 						break;
 					case 5:
+						informe_mostrarPorcentajeJugadoresConfederacion(
+								confederaciones, MAX_CONFEDERACIONES, jugadores,
+								MAX_JUGADORES);
 						break;
 					case 6:
+						informe_mostrarRegionConMasJugadores(confederaciones,
+						MAX_CONFEDERACIONES, jugadores, MAX_JUGADORES);
 						break;
 					case 7:
 						puts("\nVolviendo al menu principal");

@@ -7,6 +7,7 @@
 
 #include "rInformes.h"
 #include "eConfederacion.h"
+#include "Operaciones.h"
 
 int informe_ordenarNombreConfederacionJugador(eJugador *jugadores,
 		int tamJugadores, eConfederacion *confederaciones,
@@ -67,6 +68,102 @@ int informe_mostrarJugadoresDeConfederacion(eConfederacion *confederaciones,
 	return rtn;
 }
 
+int inicializarIntArray(int *array, int tam, int valor) {
+	int rtn = 0;
+	if (array != NULL && tam > 0) {
+		for (int i = 0; i < tam; i++) {
+			array[i] = valor;
+		}
+		rtn = 1;
+	}
+	return rtn;
+}
+
+int informe_mostrarRegionConMasJugadores(eConfederacion *confederaciones,
+		int tamConfederaciones, eJugador *jugadores, int tamJugadores) {
+	int rtn = 0;
+	int indiceConfederacionMasJugadores = -1;
+	int indiceConfederacion;
+	int contadoresJugadoresDeConfederaciones[tamConfederaciones];
+
+	inicializarIntArray(contadoresJugadoresDeConfederaciones,
+			tamConfederaciones, 0);
+	if (confederaciones != NULL && jugadores != NULL && tamConfederaciones > 0
+			&& tamJugadores > 0) {
+		for (int i = 0; i < tamJugadores; i++) {
+			if (jugadores[i].isEmpty == OCUPADO) {
+				indiceConfederacion = abm_encontrarConfederacionPorId(
+						confederaciones, tamConfederaciones,
+						jugadores[i].idConfederacion);
+				contadoresJugadoresDeConfederaciones[indiceConfederacion]++;
+				printf("\n VALOR: %d",
+						contadoresJugadoresDeConfederaciones[indiceConfederacion]);
+			}
+		}
+
+		for (int i = 0; i < tamConfederaciones; i++) {
+			// Uso el indice como flag, si es el primer indice guardo el valor. Se espera que este ordenado
+			if (i == 0
+					|| contadoresJugadoresDeConfederaciones[i]
+							> contadoresJugadoresDeConfederaciones[indiceConfederacionMasJugadores]) {
+				indiceConfederacionMasJugadores = i;
+			} else {
+				puts("\n -----NOENTRO");
+			}
+		}
+		printf("\nRegion con mas jugadores: %s: ",
+				confederaciones[indiceConfederacionMasJugadores].region);
+		for (int i = 0; i < tamJugadores; i++) {
+			if (jugadores[i].isEmpty == OCUPADO
+					&& jugadores[i].idConfederacion
+							== confederaciones[indiceConfederacionMasJugadores].id) {
+				abm_mostrarUnJugador(jugadores[i], confederaciones,
+						tamConfederaciones);
+			}
+		}
+		rtn = 1;
+	}
+
+	return rtn;
+}
+
+int informe_mostrarPorcentajeJugadoresConfederacion(
+		eConfederacion *confederaciones, int tamConfederaciones,
+		eJugador *jugadores, int tamJugadores) {
+	int rtn = 0;
+	int totalJugadores = 0;
+	int contadoresJugadoresDeConfederaciones[tamConfederaciones];
+	int indiceConfederacion;
+
+	inicializarIntArray(contadoresJugadoresDeConfederaciones,
+			tamConfederaciones, 0);
+	if (confederaciones != NULL && jugadores != NULL && tamConfederaciones > 0
+			&& tamJugadores > 0) {
+
+		for (int i = 0; i < tamJugadores; i++) {
+			if (jugadores[i].isEmpty == OCUPADO) {
+				totalJugadores++;
+				indiceConfederacion = abm_encontrarConfederacionPorId(
+						confederaciones, tamConfederaciones,
+						jugadores[i].idConfederacion);
+				contadoresJugadoresDeConfederaciones[indiceConfederacion]++;
+			}
+		}
+
+		for (int i = 0; i < tamConfederaciones; i++) {
+			printf("\nConfederacion: %s tiene un: %2.f%% de los jugadores.",
+					confederaciones[i].nombre,
+					op_calcularPorcentaje(
+							(float) contadoresJugadoresDeConfederaciones[i],
+							(float) totalJugadores));
+		}
+
+		rtn = 1;
+	}
+
+	return rtn;
+}
+
 int informe_mostrarConfederacionMasAniosContrato(
 		eConfederacion *confederaciones, int tamConfederaciones,
 		eJugador *jugadores, int tamJugadores) {
@@ -76,19 +173,18 @@ int informe_mostrarConfederacionMasAniosContrato(
 	int indiceConfederacion;
 
 	// Inicializo array de acumuladores en 0, utilizo la ultima posicion del array para almacenar el maximo temporal;
-	for (int i = 0; i < sizeAcumulador; i++) {
-		acumuladoresAniosContrato[i] = 0;
-	}
-
+	inicializarIntArray(acumuladoresAniosContrato, sizeAcumulador, 0);
 	if (confederaciones != NULL && jugadores != NULL && tamConfederaciones > 0
 			&& tamJugadores > 0) {
 		for (int i = 0; i < tamJugadores; i++) {
-			indiceConfederacion = abm_encontrarConfederacionPorId(
-					confederaciones, tamConfederaciones,
-					jugadores[i].idConfederacion);
-			// Los indices entre array de confederaciones y el array de acumuladores deben matchear
-			acumuladoresAniosContrato[indiceConfederacion] +=
-					jugadores[i].aniosContrato;
+			if (jugadores[i].isEmpty == OCUPADO) {
+				indiceConfederacion = abm_encontrarConfederacionPorId(
+						confederaciones, tamConfederaciones,
+						jugadores[i].idConfederacion);
+				// Los indices entre array de confederaciones y el array de acumuladores deben matchear
+				acumuladoresAniosContrato[indiceConfederacion] +=
+						jugadores[i].aniosContrato;
+			}
 		}
 
 		for (int i = 0; i < tamConfederaciones; i++) {

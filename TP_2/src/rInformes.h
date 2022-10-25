@@ -26,4 +26,13 @@ int informe_mostrarConfederacionMasAniosContrato(
 		eConfederacion *confederaciones, int tamConfederaciones,
 		eJugador *jugadores, int tamJugadores);
 
+int inicializarIntArray(int *array, int tam, int valor);
+
+int informe_mostrarPorcentajeJugadoresConfederacion(
+		eConfederacion *confederaciones, int tamConfederaciones,
+		eJugador *jugadores, int tamJugadores);
+
+int informe_mostrarRegionConMasJugadores(eConfederacion *confederaciones,
+		int tamConfederaciones, eJugador *jugadores, int tamJugadores);
+
 #endif /* RINFORMES_H_ */
