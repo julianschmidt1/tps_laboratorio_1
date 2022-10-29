@@ -96,8 +96,6 @@ int informe_mostrarRegionConMasJugadores(eConfederacion *confederaciones,
 						confederaciones, tamConfederaciones,
 						jugadores[i].idConfederacion);
 				contadoresJugadoresDeConfederaciones[indiceConfederacion]++;
-				printf("\n VALOR: %d",
-						contadoresJugadoresDeConfederaciones[indiceConfederacion]);
 			}
 		}
 
@@ -107,8 +105,6 @@ int informe_mostrarRegionConMasJugadores(eConfederacion *confederaciones,
 					|| contadoresJugadoresDeConfederaciones[i]
 							> contadoresJugadoresDeConfederaciones[indiceConfederacionMasJugadores]) {
 				indiceConfederacionMasJugadores = i;
-			} else {
-				puts("\n -----NOENTRO");
 			}
 		}
 		printf("\nRegion con mas jugadores: %s: ",
