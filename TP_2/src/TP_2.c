@@ -38,19 +38,19 @@ int main(void) {
 				" ----------- OCURRIO UN ERROR AL INICIALIZAR JUGADORES ------------");
 	}
 
-	for (int i = 0; i < MAX_JUGADORES; i++) {
-		eJugador hardcodeado = { "Test user", "Delantero", 1, 100 + i, 9999 + i,
-				1 + i, i, -1 };
-		contadorAltas++;
-		if (i < 5) {
+	/*for (int i = 0; i < MAX_JUGADORES; i++) {
+	 eJugador hardcodeado = { "Test user", "Delantero", 1, 100 + i, 9999 + i,
+	 1 + i, i, -1 };
+	 contadorAltas++;
+	 if (i < 5) {
 
-			abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, hardcodeado);
-		} else {
-			eJugador test = { "Test user", "Delantero", 1, 100, 9999 + i, 1 + i,
-					i, -1 };
-			abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, test);
-		}
-	}
+	 abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, hardcodeado);
+	 } else {
+	 eJugador test = { "Test user", "Delantero", 1, 100, 9999 + i, 1 + i,
+	 i, -1 };
+	 abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, test);
+	 }
+	 }*/
 
 	do {
 		opcionSeleccionada = menu_opciones(
