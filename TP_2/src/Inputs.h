@@ -61,6 +61,15 @@ int utn_getString(char *mensaje, char *mensajeError, int reintentos,
 int utn_getNumeroDecimal(float *pResultado, char *mensaje, char *mensajeError,
 		float minimo, float maximo, int reintentos);
 
+/**
+ * \brief Solicita un numero (tipo de dato short) al usuario, luego de verificarlo devuelve el resultado
+ * \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+ * \param mensaje Es el mensaje a ser mostrado
+ * \param mensajeError Es el mensaje de Error a ser mostrado
+ * \param minimo Es el numero maximo a ser aceptado
+ * \param maximo Es el minimo minimo a ser aceptado
+ * \return Retorna 1 si se obtuvo el numero y 0 si no
+ */
 int utn_getNumeroShort(short *pResultado, char *mensaje, char *mensajeError,
 		int minimo, int maximo, int reintentos);
 
