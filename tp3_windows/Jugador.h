@@ -25,6 +25,8 @@ Jugador* jug_new();
 Jugador* jug_newParametros(char *idStr, char *nombreCompletoStr, char *edadStr,
 		char *posicionStr, char *nacionalidadStr, char *idSelccionStr);
 
+int jug_mostrarUno(Jugador *this);
+
 void jug_delete();
 
 int jug_setId(Jugador *this, int id);

@@ -37,6 +37,7 @@ int main() {
 		case 4:
 			break;
 		case 5:
+			controller_listarJugadores(listaJugadores);
 			break;
 		case 6:
 			break;
@@ -51,7 +52,7 @@ int main() {
 		case 11:
 			break;
 		}
-	} while (opcion != 10);
+	} while (opcion != 11);
 
 	return 0;
 }

@@ -93,8 +93,41 @@ int controller_removerJugador(LinkedList *pArrayListJugador) {
  *
  */
 int controller_listarJugadores(LinkedList *pArrayListJugador) {
+	int rtn = 0;
+	int arrayTam;
+	Jugador *pJugador;
+	Jugador auxJugador;
 
-	return 1;
+	if (pArrayListJugador != NULL) {
+		arrayTam = ll_len(pArrayListJugador);
+
+		if (arrayTam != -1) {
+
+			for (int i = 0; i < arrayTam; i++) {
+				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
+				if (pJugador != NULL) {
+
+					jug_getId(pJugador, &auxJugador.id);
+					jug_getNombreCompleto(pJugador, auxJugador.nombreCompleto);
+					jug_getPosicion(pJugador, auxJugador.posicion);
+					jug_getEdad(pJugador, &auxJugador.edad);
+					jug_getNacionalidad(pJugador, auxJugador.nacionalidad);
+					jug_getSIdSeleccion(pJugador, &auxJugador.idSeleccion);
+					jug_getIsEmpty(pJugador, &auxJugador.isEmpty);
+
+					printf("\n A ver que onda: %d %s %s %d %s %d %d",
+							auxJugador.id, auxJugador.nombreCompleto,
+							auxJugador.nacionalidad, auxJugador.edad,
+							auxJugador.posicion, auxJugador.idSeleccion,
+							auxJugador.isEmpty);
+
+					rtn = 1;
+				}
+			}
+		}
+	}
+
+	return rtn;
 }
 
 /** \brief Ordenar jugadores

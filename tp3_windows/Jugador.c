@@ -40,7 +40,7 @@ int jug_setNombreCompleto(Jugador *this, char *nombreCompleto) {
 	if (this != NULL && nombreCompleto != NULL
 			&& strlen(nombreCompleto) <= NOMBRE_CHARS) {
 		strcpy(auxCadena, nombreCompleto);
-		strlwr(auxCadena);
+		//strlwr(auxCadena);
 		auxCadena[0] = toupper(auxCadena[0]);
 		strcpy(this->nombreCompleto, auxCadena);
 		rtn = 1;
@@ -137,3 +137,65 @@ int jug_setIsEmpty(Jugador *this, int isEmpty) {
 
 //  --------- GETTERS ---------
 
+int jug_getId(Jugador *this, int *id) {
+	int rtn = 0;
+	if (this != NULL && id != NULL) {
+		*id = this->id;
+		rtn = 1;
+	}
+	return rtn;
+}
+
+int jug_getNombreCompleto(Jugador *this, char *nombreCompleto) {
+	int rtn = 0;
+	if (this != NULL && nombreCompleto != NULL) {
+		strcpy(nombreCompleto, this->nombreCompleto);
+		rtn = 1;
+	}
+	return rtn;
+}
+
+int jug_getPosicion(Jugador *this, char *posicion) {
+	int rtn = 0;
+	if (this != NULL && posicion != NULL) {
+		strcpy(posicion, this->posicion);
+		rtn = 1;
+	}
+	return rtn;
+}
+
+int jug_getNacionalidad(Jugador *this, char *nacionalidad) {
+	int rtn = 0;
+	if (this != NULL && nacionalidad != NULL) {
+		strcpy(nacionalidad, this->nacionalidad);
+		rtn = 1;
+	}
+	return rtn;
+}
+
+int jug_getEdad(Jugador *this, int *edad) {
+	int rtn = 0;
+	if (this != NULL && edad != NULL) {
+		*edad = this->edad;
+		rtn = 1;
+	}
+	return rtn;
+}
+
+int jug_getSIdSeleccion(Jugador *this, int *idSeleccion) {
+	int rtn = 0;
+	if (this != NULL && idSeleccion != NULL) {
+		*idSeleccion = this->idSeleccion;
+		rtn = 1;
+	}
+	return rtn;
+}
+
+int jug_getIsEmpty(Jugador *this, int *isEmpty) {
+	int rtn = 0;
+	if (this != NULL && isEmpty != NULL) {
+		*isEmpty = this->isEmpty;
+		rtn = 1;
+	}
+	return rtn;
+}
