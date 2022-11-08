@@ -10,6 +10,7 @@
 #define NOMBRE_CHARS 100
 #define POSICION_CHARS 30
 #define NACIONALIDAD_CHARS 30
+#define PRIMER_ID_MANUAL 371
 
 typedef struct {
 	int id;
@@ -18,7 +19,6 @@ typedef struct {
 	char posicion[30];
 	char nacionalidad[30];
 	int idSeleccion;
-	int isEmpty;
 } Jugador;
 
 Jugador* jug_new();
@@ -46,8 +46,5 @@ int jug_getEdad(Jugador *this, int *edad);
 
 int jug_setIdSeleccion(Jugador *this, int idSeleccion);
 int jug_getSIdSeleccion(Jugador *this, int *idSeleccion);
-
-int jug_setIsEmpty(Jugador *this, int isEmpty);
-int jug_getIsEmpty(Jugador *this, int *isEmpty);
 
 #endif // jug_H_INCLUDED

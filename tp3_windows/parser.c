@@ -45,6 +45,37 @@ int parser_JugadorFromText(FILE *pFile, LinkedList *pArrayListJugador) {
 	return rtn;
 }
 
+int parser_GuardarUltimoId(FILE *pFile, int *pId) {
+	int rtn = 0;
+
+	if (pFile != NULL) {
+		if (fwrite(pId, sizeof(int), 1, pFile)) {
+			puts("\nId actualizado correctamente.");
+		} else {
+			puts("\nOcurrio un error al actualizar el id");
+		}
+	}
+
+	return rtn;
+}
+
+int parser_ObtenerUltimoId(FILE *pFile, int *pId) {
+	int rtn = 0;
+
+	if (pFile != NULL) {
+
+		if (fread(pId, sizeof(int), 1, pFile) == 1) {
+			puts("\nUltimo id cargado okamente!");
+			rtn = 1;
+		} else {
+			puts("\nOcurrio un error :(.");
+		}
+
+	}
+
+	return rtn;
+}
+
 /** \brief Parsea los datos de los jugadores desde el archivo binario.
  *
  * \param path char*

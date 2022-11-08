@@ -9,6 +9,7 @@ int main() {
 	setbuf(stdout, NULL);
 	int opcion = 0;
 	LinkedList *listaJugadores = ll_newLinkedList();
+	int validaciones = 0;
 
 	do {
 
@@ -29,10 +30,17 @@ int main() {
 		case 1:
 			controller_cargarJugadoresDesdeTexto("jugadores.csv",
 					listaJugadores);
+			validaciones = 1;
 			break;
 		case 2:
+			if (!validaciones) {
+				puts("\nEs necesario cargar la opc 1 antes");
+			} else {
+				controller_agregarJugador(listaJugadores);
+			}
 			break;
 		case 3:
+			controller_editarJugador(listaJugadores);
 			break;
 		case 4:
 			break;

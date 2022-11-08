@@ -3,7 +3,7 @@
 // --------- CONSTRUCTORES ---------
 
 Jugador* jug_new() {
-	Jugador *pJugador = (Jugador*) malloc(sizeof(Jugador) * 2);
+	Jugador *pJugador = (Jugador*) malloc(sizeof(Jugador));
 
 	return pJugador;
 }
@@ -54,7 +54,6 @@ int jug_setNombreCompleto(Jugador *this, char *nombreCompleto) {
 int jug_setId(Jugador *this, int id) {
 	int rtn = 0;
 
-	// TODO: VALIDAR QUE ONDA ESE ID
 	if (this != NULL) {
 		this->id = id;
 		rtn = 1;
@@ -121,20 +120,6 @@ int jug_setIdSeleccion(Jugador *this, int idSeleccion) {
 	return rtn;
 }
 
-int jug_setIsEmpty(Jugador *this, int isEmpty) {
-	int rtn = 0;
-
-	// VALIDAR QUE ONDA ESE ID
-	if (this != NULL) {
-		this->isEmpty = isEmpty;
-		rtn = 1;
-	} else {
-		puts("\nVALOR INVALIDO");
-	}
-
-	return rtn;
-}
-
 //  --------- GETTERS ---------
 
 int jug_getId(Jugador *this, int *id) {
@@ -186,15 +171,6 @@ int jug_getSIdSeleccion(Jugador *this, int *idSeleccion) {
 	int rtn = 0;
 	if (this != NULL && idSeleccion != NULL) {
 		*idSeleccion = this->idSeleccion;
-		rtn = 1;
-	}
-	return rtn;
-}
-
-int jug_getIsEmpty(Jugador *this, int *isEmpty) {
-	int rtn = 0;
-	if (this != NULL && isEmpty != NULL) {
-		*isEmpty = this->isEmpty;
 		rtn = 1;
 	}
 	return rtn;
