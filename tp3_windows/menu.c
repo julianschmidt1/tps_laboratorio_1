@@ -24,3 +24,4 @@ int menu_opciones(char *titulo, char *opciones, char *mensajeError, int min,
 
 	return rtn;
 }
+

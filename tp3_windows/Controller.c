@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "Jugador.h"
 #include "Seleccion.h"
 #include "LinkedList.h"
 #include "parser.h"
 #include "inputs.h"
+#include "menu.h"
 
 /** \brief Carga los datos de los jugadores desde el archivo jugadores.csv (modo texto).
  *
@@ -32,7 +32,7 @@ int controller_cargarJugadoresDesdeTexto(char *path,
 					puts("\nERROR. Ocurrio un error al cargar el archivo");
 				}
 			} else {
-				// TODO: hacer else
+				puts("\nLa lista no esta vacia.");
 			}
 		}
 	}
@@ -215,6 +215,9 @@ Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
 int controller_editarJugador(LinkedList *pArrayListJugador) {
 	int rtn = 0;
 	int auxIdSeleccionado;
+	int opcion;
+	Jugador *pAuxJugador = NULL;
+	Jugador auxJugador;
 
 	if (pArrayListJugador != NULL) {
 		controller_listarJugadores(pArrayListJugador);
@@ -227,6 +230,83 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 					"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
 		}
 
+		pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
+				auxIdSeleccionado);
+
+		if (pAuxJugador != NULL) {
+
+			do {
+
+				opcion = menu_opciones(
+						"\n ---------- Edicion de usuario ----------",
+						"\n1. Editar nombre"
+								"\n2. Editar edad"
+								"\n3. Editar posicion"
+								"\n4. Editar nacionalidad"
+								"\n5. Volver al menu principal",
+						"\nOpcion invalida. Ingrese la opcion", 1, 5);
+
+				switch (opcion) {
+				case 1:
+					utn_getString("\nIngrese el nombre: ",
+							"\nError. Nombre invalido. ", 9999, NOMBRE_CHARS,
+							auxJugador.nombreCompleto);
+					if (menu_opciones("\nEsta seguro que desea modificar?",
+							"(1. SI | 2. NO )",
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)) {
+						jug_setNombreCompleto(pAuxJugador,
+								auxJugador.nombreCompleto);
+						puts("\n ---- Modificacion exitosa ---- \n");
+					} else {
+						puts("\n ---- Modificacion cancelada ---- \n");
+					}
+
+					break;
+				case 2:
+					utn_getNumero(&auxJugador.edad, "\nIngrese la edad: ",
+							"\nEdad invalida, ingrese la edad: ", 18, 100,
+							9999);
+					if (menu_opciones("\nEsta seguro que desea modificar?",
+							"(1. SI | 2. NO )",
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)) {
+						jug_setEdad(pAuxJugador, auxJugador.edad);
+						puts("\n ---- Modificacion exitosa ---- \n");
+					} else {
+						puts("\n ---- Modificacion cancelada ---- \n");
+					}
+					break;
+				case 3:
+					utn_getString("\nIngrese la posicion: ",
+							"\nError. Nombre invalido. ", 9999, POSICION_CHARS,
+							auxJugador.posicion);
+					if (menu_opciones("\nEsta seguro que desea modificar?",
+							"(1. SI | 2. NO )",
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)) {
+						jug_setPosicion(pAuxJugador, auxJugador.posicion);
+						puts("\n ---- Modificacion exitosa ---- \n");
+					} else {
+						puts("\n ---- Modificacion cancelada ---- \n");
+					}
+					break;
+				case 4:
+					utn_getString("\nIngrese la nacionalidad: ",
+							"\nError. Nacionalidad invalida. ", 9999,
+							NACIONALIDAD_CHARS, auxJugador.nacionalidad);
+					if (menu_opciones("\nEsta seguro que desea modificar?",
+							"(1. SI | 2. NO )",
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)) {
+						jug_setNacionalidad(pAuxJugador,
+								auxJugador.nacionalidad);
+						puts("\n ---- Modificacion exitosa ---- \n");
+					} else {
+						puts("\n ---- Modificacion cancelada ---- \n");
+					}
+					break;
+				}
+
+			} while (opcion != 5);
+
+		}
 	}
 
 	return rtn;
