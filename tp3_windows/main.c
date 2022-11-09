@@ -13,7 +13,7 @@ int main() {
 
 	do {
 
-		opcion = menu_opciones("\n ------- TRABAJO PRACTICO 3  ------- \n",
+		opcion = menu_opciones("\n\n ------- TRABAJO PRACTICO 3  ------- \n",
 				"\n1. CARGA DE ARCHIVOS"
 						"\n2. ALTA DE JUGADOR"
 						"\n3. MODIFICACION DE JUGADOR"
@@ -43,6 +43,7 @@ int main() {
 			controller_editarJugador(listaJugadores);
 			break;
 		case 4:
+			controller_removerJugador(listaJugadores);
 			break;
 		case 5:
 			controller_listarJugadores(listaJugadores);

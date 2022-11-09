@@ -62,6 +62,10 @@ int jug_setId(Jugador *this, int id) {
 	return rtn;
 }
 
+void jug_delete(Jugador *this) {
+	free(this);
+}
+
 int jug_setPosicion(Jugador *this, char *posicion) {
 	int rtn = 0;
 

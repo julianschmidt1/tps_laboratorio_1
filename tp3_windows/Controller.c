@@ -125,17 +125,6 @@ int controller_agregarJugador(LinkedList *pArrayListJugador) {
 	return rtn;
 }
 
-/** \brief Baja del jugador
- *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
- *
- */
-int controller_removerJugador(LinkedList *pArrayListJugador) {
-	return 1;
-}
-
 /** \brief Listar jugadores
  *
  * \param path char*
@@ -205,6 +194,47 @@ Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
 	return rtn;
 }
 
+/** \brief Baja del jugador
+ *
+ * \param path char*
+ * \param pArrayListJugador LinkedList*
+ * \return int
+ *
+ */
+int controller_removerJugador(LinkedList *pArrayListJugador) {
+	int rtn = 0;
+	int auxIdSeleccionado;
+	Jugador *pAuxJugador;
+	int indiceJugador;
+
+	if (pArrayListJugador != NULL) {
+		controller_listarJugadores(pArrayListJugador);
+		utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
+				"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
+		while (controller_buscarJugadorPorId(pArrayListJugador,
+				auxIdSeleccionado) == NULL) {
+			utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
+					"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
+		}
+
+		pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
+				auxIdSeleccionado);
+
+		if (menu_opciones("\n\nEsta seguro de que desea eliminar el jugador? ",
+				"\n(1. SI | 2. NO)", "\nOpcion invalida. Ingrese la opcion: ",
+				1, 2) == 1) {
+			indiceJugador = ll_indexOf(pArrayListJugador, pAuxJugador);
+			if (ll_remove(pArrayListJugador, indiceJugador)) {
+				jug_delete(pAuxJugador);
+				puts("\nJugador dado de baja exitosamente");
+			}
+		}
+
+	}
+
+	return rtn;
+}
+
 /** \brief Modificar datos del jugador
  *
  * \param path char*
@@ -253,7 +283,8 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 							auxJugador.nombreCompleto);
 					if (menu_opciones("\nEsta seguro que desea modificar?",
 							"(1. SI | 2. NO )",
-							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)) {
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)
+							== 1) {
 						jug_setNombreCompleto(pAuxJugador,
 								auxJugador.nombreCompleto);
 						puts("\n ---- Modificacion exitosa ---- \n");
@@ -268,7 +299,8 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 							9999);
 					if (menu_opciones("\nEsta seguro que desea modificar?",
 							"(1. SI | 2. NO )",
-							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)) {
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)
+							== 1) {
 						jug_setEdad(pAuxJugador, auxJugador.edad);
 						puts("\n ---- Modificacion exitosa ---- \n");
 					} else {
@@ -281,7 +313,8 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 							auxJugador.posicion);
 					if (menu_opciones("\nEsta seguro que desea modificar?",
 							"(1. SI | 2. NO )",
-							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)) {
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)
+							== 1) {
 						jug_setPosicion(pAuxJugador, auxJugador.posicion);
 						puts("\n ---- Modificacion exitosa ---- \n");
 					} else {
@@ -294,7 +327,8 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 							NACIONALIDAD_CHARS, auxJugador.nacionalidad);
 					if (menu_opciones("\nEsta seguro que desea modificar?",
 							"(1. SI | 2. NO )",
-							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)) {
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)
+							== 1) {
 						jug_setNacionalidad(pAuxJugador,
 								auxJugador.nacionalidad);
 						puts("\n ---- Modificacion exitosa ---- \n");
