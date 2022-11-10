@@ -7,13 +7,16 @@
 
 int main() {
 	setbuf(stdout, NULL);
-	int opcion = 0;
+	int menuPrincipal;
+	int menuListados;
 	LinkedList *listaJugadores = ll_newLinkedList();
+	LinkedList *listaSelecciones = ll_newLinkedList();
 	int validaciones = 0;
 
 	do {
 
-		opcion = menu_opciones("\n\n ------- TRABAJO PRACTICO 3  ------- \n",
+		menuPrincipal = menu_opciones(
+				"\n\n ------- TRABAJO PRACTICO 3  ------- \n",
 				"\n1. CARGA DE ARCHIVOS"
 						"\n2. ALTA DE JUGADOR"
 						"\n3. MODIFICACION DE JUGADOR"
@@ -26,10 +29,12 @@ int main() {
 						"\n10. GUARDAR ARCHIVOS .CSV"
 						"\n11. SALIR", "\nOpcion invalida. Ingrese la opcion: ",
 				1, 11);
-		switch (opcion) {
+		switch (menuPrincipal) {
 		case 1:
 			controller_cargarJugadoresDesdeTexto("jugadores.csv",
 					listaJugadores);
+			controller_cargarSeleccionesDesdeTexto("selecciones.csv",
+					listaSelecciones);
 			validaciones = 1;
 			break;
 		case 2:
@@ -46,7 +51,25 @@ int main() {
 			controller_removerJugador(listaJugadores);
 			break;
 		case 5:
-			controller_listarJugadores(listaJugadores);
+			do {
+				menuListados = menu_opciones("\n\n\n ---- LISTADOS ----- \n",
+						"\n1. TODOS LOS JUGADORES"
+								"\n2. TODAS LAS SELECCIONES"
+								"\n3. JUGADORES CONVOCADOS"
+								"\n4. VOLVER AL MENU PRINCIPAL",
+						"\nOpcion invalida. Ingrese la opcion", 1, 4);
+
+				switch (menuListados) {
+				case 1:
+					controller_listarJugadores(listaJugadores);
+					break;
+				case 2:
+					controller_listarSelecciones(listaSelecciones);
+					break;
+				case 3:
+					break;
+				}
+			} while (menuListados != 4);
 			break;
 		case 6:
 			break;
@@ -61,7 +84,7 @@ int main() {
 		case 11:
 			break;
 		}
-	} while (opcion != 11);
+	} while (menuPrincipal != 11);
 
 	return 0;
 }

@@ -26,7 +26,7 @@ int controller_cargarJugadoresDesdeTexto(char *path,
 		} else {
 			if (ll_isEmpty(pArrayListJugador)) {
 				if (parser_JugadorFromText(pFile, pArrayListJugador)) {
-					printf("\nArchivos cargados con exito");
+					printf("\nJugadores cargados con exito");
 					rtn = 1;
 				} else {
 					puts("\nERROR. Ocurrio un error al cargar el archivo");
@@ -143,17 +143,23 @@ int controller_listarJugadores(LinkedList *pArrayListJugador) {
 
 		if (arrayTam != -1) {
 
+			puts(
+					"\n==============================================================================================================");
+			printf("| %-5s  | %-25s | %-15s | %-8s | %-25s | %-8s |\n", "ID",
+					"NOMBRE COMPLETO", "NACIONALIDAD", "EDAD", "POSICION",
+					"SELECCION");
+			puts(
+					"==============================================================================================================");
 			for (int i = 0; i < arrayTam; i++) {
 				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
 				if (pJugador != NULL) {
-
 					jug_getId(pJugador, &auxJugador.id);
 					jug_getNombreCompleto(pJugador, auxJugador.nombreCompleto);
 					jug_getPosicion(pJugador, auxJugador.posicion);
 					jug_getEdad(pJugador, &auxJugador.edad);
 					jug_getNacionalidad(pJugador, auxJugador.nacionalidad);
 					jug_getSIdSeleccion(pJugador, &auxJugador.idSeleccion);
-					printf("\n A ver que onda: %d %s %s %d %s %d",
+					printf("\n| %-5d  | %-25s | %-15s | %-8d| %-25s | %-8d |",
 							auxJugador.id, auxJugador.nombreCompleto,
 							auxJugador.nacionalidad, auxJugador.edad,
 							auxJugador.posicion, auxJugador.idSeleccion);
@@ -390,7 +396,29 @@ int controller_guardarJugadoresModoBinario(char *path,
  */
 int controller_cargarSeleccionesDesdeTexto(char *path,
 		LinkedList *pArrayListSeleccion) {
-	return 1;
+	int rtn = 0;
+
+	FILE *pFile = fopen(path, "r");
+
+	if (path != NULL && pArrayListSeleccion != NULL) {
+		if (pFile == NULL) {
+			puts("\nERROR. No es posible abrir el archivo");
+		} else {
+			if (ll_isEmpty(pArrayListSeleccion)) {
+				if (parser_SeleccionFromText(pFile, pArrayListSeleccion)) {
+					printf("\nSelecciones cargadas con exito");
+					rtn = 1;
+				} else {
+					puts("\nERROR. Ocurrio un error al cargar el archivo");
+				}
+			} else {
+				puts("\nLa lista no esta vacia.");
+			}
+		}
+	}
+
+	fclose(pFile);
+	return rtn;
 }
 
 /** \brief Modificar datos de empleado
@@ -412,7 +440,44 @@ int controller_editarSeleccion(LinkedList *pArrayListSeleccion) {
  *
  */
 int controller_listarSelecciones(LinkedList *pArrayListSeleccion) {
-	return 1;
+	int rtn = 0;
+	int arrayTam;
+	Seleccion *pSeleccion;
+	Seleccion auxSeleccion;
+
+	if (pArrayListSeleccion != NULL) {
+		arrayTam = ll_len(pArrayListSeleccion);
+
+		if (arrayTam != -1) {
+
+			puts(
+					"\n=================================================================");
+			printf("| %-5s  | %-20s | %-15s | %-8s |", "ID", "PAIS",
+					"CONFEDERACION", "CONVOCADOS");
+			puts(
+					"\n=================================================================");
+			for (int i = 0; i < arrayTam; i++) {
+				pSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
+				if (pSeleccion != NULL) {
+
+					selec_getId(pSeleccion, &auxSeleccion.id);
+					selec_getPais(pSeleccion, auxSeleccion.pais);
+					selec_getConfederacion(pSeleccion,
+							auxSeleccion.confederacion);
+					selec_getConvocados(pSeleccion, &auxSeleccion.convocados);
+					printf("\n| %-5d  | %-20s | %-15s | %-8d |",
+							auxSeleccion.id, auxSeleccion.pais,
+							auxSeleccion.confederacion,
+							auxSeleccion.convocados);
+					rtn = 1;
+				}
+			}
+			puts(
+					"\n=================================================================");
+		}
+	}
+
+	return rtn;
 }
 
 /** \brief Ordenar selecciones
