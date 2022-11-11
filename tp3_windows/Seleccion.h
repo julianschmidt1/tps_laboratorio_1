@@ -36,4 +36,7 @@ int selec_getConvocados(Seleccion *this, int *convocados);
 
 int selec_eliminarUnConvocado(LinkedList *pSeleccion, int idSeleccion);
 
+int selec_ordenarPorConfederacion(void *pPrimerSeleccion,
+		void *pSegundaSeleccion);
+
 #endif // selec_H_INCLUDED

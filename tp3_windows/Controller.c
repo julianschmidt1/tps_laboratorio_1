@@ -429,7 +429,56 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
  *
  */
 int controller_ordenarJugadores(LinkedList *pArrayListJugador) {
-	return 1;
+	int rtn = 0;
+	int (*pOrdenamiento)(void*, void*);
+	int menuOrdenamiento;
+	int criterioOrdenamiento;
+
+	if (pArrayListJugador != NULL) {
+
+		do {
+
+			menuOrdenamiento = menu_opciones(
+					"\n ---- ORDENAR Y LISTAR JUGADORES ----- \n",
+					"\n1. JUGADORES POR NACIONALIDAD"
+							"\n2. JUGADORES POR EDAD"
+							"\n3. JUGADORES POR NOMBRE"
+							"\n4. SALIR",
+					"\nOpcion invalida. Ingrese la opcion: ", 1, 4);
+
+			switch (menuOrdenamiento) {
+			case 1:
+				pOrdenamiento = jug_ordenarPorNacionalidad;
+				break;
+			case 2:
+				pOrdenamiento = jug_ordenarPorEdad;
+				break;
+			case 3:
+				pOrdenamiento = jug_ordenarPorNombreCompleto;
+				break;
+			}
+
+			if (menuOrdenamiento != 4) {
+				if (utn_getNumero(&criterioOrdenamiento,
+						"\nCRITERIO DE ORDENAMIENTO (0. ASC | 1. DESC): ",
+						"\nError. Opcion invalida. Ingrese la opcion: ", 0, 1,
+						9999)) {
+					if (!ll_sort(pArrayListJugador, pOrdenamiento,
+							criterioOrdenamiento)) {
+						puts("\nJugadores ordenados exitosamente");
+						controller_listarJugadores(pArrayListJugador);
+					} else {
+						puts("\nNo se pudieron ordenar los jugadores");
+					}
+				} else {
+					puts("\nLimite de reintentos alcanzados.");
+				}
+
+			}
+		} while (menuOrdenamiento != 4);
+	}
+
+	return rtn;
 }
 
 /** \brief Guarda los datos de los jugadores en el archivo jugadores.csv (modo texto).
@@ -586,7 +635,29 @@ int controller_editarSeleccion(LinkedList *pArrayListSeleccion) {
  *
  */
 int controller_ordenarSelecciones(LinkedList *pArrayListSeleccion) {
-	return 1;
+	int rtn = 0;
+	int criterioOrdenamiento;
+	int (*pOrdenamiento)(void*, void*);
+
+	if (pArrayListSeleccion != NULL) {
+		pOrdenamiento = selec_ordenarPorConfederacion;
+
+		if (utn_getNumero(&criterioOrdenamiento,
+				"\nCRITERIO DE ORDENAMIENTO (0. ASC | 1. DESC): ",
+				"\nError. Opcion invalida. Ingrese la opcion: ", 0, 1, 9999)) {
+			if (!ll_sort(pArrayListSeleccion, pOrdenamiento,
+					criterioOrdenamiento)) {
+				puts("\nJugadores ordenados exitosamente");
+				controller_listarSelecciones(pArrayListSeleccion);
+			} else {
+				puts("\nNo se pudieron ordenar los jugadores");
+			}
+		} else {
+			puts("\nLimite de reintentos alcanzados.");
+		}
+	}
+
+	return rtn;
 }
 
 /** \brief Guarda los datos de los selecciones en el archivo selecciones.csv (modo texto).

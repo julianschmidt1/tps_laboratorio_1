@@ -141,3 +141,35 @@ int selec_eliminarUnConvocado(LinkedList *listaSelecciones, int idSeleccion) {
 	return rtn;
 }
 
+// ordenamiento
+
+int selec_ordenarPorConfederacion(void *pPrimerSeleccion,
+		void *pSegundaSeleccion) {
+	int rtn = 0;
+	Seleccion *auxPrimerSeleccion;
+	Seleccion *auxSegundoSeleccion;
+	char confederacionPrimerSeleccion[NACIONALIDAD_CHARS];
+	char confederacionSegundoSeleccion[NACIONALIDAD_CHARS];
+	int resultadoOrdenamiento;
+
+	if (pPrimerSeleccion != NULL && pSegundaSeleccion != NULL) {
+		auxPrimerSeleccion = (Seleccion*) pPrimerSeleccion;
+		auxSegundoSeleccion = (Seleccion*) pSegundaSeleccion;
+		if (selec_getConfederacion(auxPrimerSeleccion,
+				confederacionPrimerSeleccion)
+				&& selec_getConfederacion(auxSegundoSeleccion,
+						confederacionSegundoSeleccion)) {
+			resultadoOrdenamiento = strncmp(confederacionPrimerSeleccion,
+					confederacionSegundoSeleccion, NACIONALIDAD_CHARS);
+			if (resultadoOrdenamiento > 0) {
+				rtn = 1;
+			} else {
+				if (resultadoOrdenamiento < 0) {
+					rtn = -1;
+				}
+			}
+		}
+	}
+	return rtn;
+}
+

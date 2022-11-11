@@ -10,6 +10,7 @@ int main() {
 	int menuPrincipal;
 	int menuListados;
 	int menuConvocatoria;
+	int menuOrdenamiento;
 	LinkedList *listaJugadores = ll_newLinkedList();
 	LinkedList *listaSelecciones = ll_newLinkedList();
 	int validaciones = 0;
@@ -137,6 +138,15 @@ int main() {
 			} while (menuConvocatoria != 3);
 			break;
 		case 7:
+			menuOrdenamiento = menu_opciones(
+					"\n ------- ORDENAR Y LISTAR -------- \n", "\n1. JUGADORES"
+							"\n2. SELECCIONES POR CONFEDERACION",
+					"\nOpcin invalida, ingrese la opcion: ", 1, 2);
+			if (menuOrdenamiento == 1) {
+				controller_ordenarJugadores(listaJugadores);
+			} else if (menuOrdenamiento == 2) {
+				controller_ordenarSelecciones(listaSelecciones);
+			}
 			break;
 		case 8:
 			break;

@@ -179,3 +179,85 @@ int jug_getSIdSeleccion(Jugador *this, int *idSeleccion) {
 	}
 	return rtn;
 }
+
+// ordenamiento
+int jug_ordenarPorNacionalidad(void *pPrimerJugador, void *pSegundoJugador) {
+	int rtn = 0;
+	Jugador *auxPrimerJugador;
+	Jugador *auxSegundoJugador;
+	char nacionalidadPrimerJugador[NACIONALIDAD_CHARS];
+	char nacionalidadSegundoJugador[NACIONALIDAD_CHARS];
+	int resultadoOrdenamiento;
+
+	if (pPrimerJugador != NULL && pSegundoJugador != NULL) {
+		auxPrimerJugador = (Jugador*) pPrimerJugador;
+		auxSegundoJugador = (Jugador*) pSegundoJugador;
+		if (jug_getNacionalidad(auxPrimerJugador, nacionalidadPrimerJugador)
+				&& jug_getNacionalidad(auxSegundoJugador,
+						nacionalidadSegundoJugador)) {
+			resultadoOrdenamiento = strncmp(nacionalidadPrimerJugador,
+					nacionalidadSegundoJugador, NACIONALIDAD_CHARS);
+			if (resultadoOrdenamiento > 0) {
+				rtn = 1;
+			} else {
+				if (resultadoOrdenamiento < 0) {
+					rtn = -1;
+				}
+			}
+		}
+	}
+	return rtn;
+}
+
+int jug_ordenarPorNombreCompleto(void *pPrimerJugador, void *pSegundoJugador) {
+	int rtn = 0;
+	Jugador *auxPrimerJugador;
+	Jugador *auxSegundoJugador;
+	char nombrePrimerJugador[NACIONALIDAD_CHARS];
+	char nombreSegundoJugador[NACIONALIDAD_CHARS];
+	int resultadoOrdenamiento;
+
+	if (pPrimerJugador != NULL && pSegundoJugador != NULL) {
+		auxPrimerJugador = (Jugador*) pPrimerJugador;
+		auxSegundoJugador = (Jugador*) pSegundoJugador;
+		if (jug_getNombreCompleto(auxPrimerJugador, nombrePrimerJugador)
+				&& jug_getNombreCompleto(auxSegundoJugador,
+						nombreSegundoJugador)) {
+			resultadoOrdenamiento = strncmp(nombrePrimerJugador,
+					nombreSegundoJugador, NACIONALIDAD_CHARS);
+			if (resultadoOrdenamiento > 0) {
+				rtn = 1;
+			} else {
+				if (resultadoOrdenamiento < 0) {
+					rtn = -1;
+				}
+			}
+		}
+	}
+	return rtn;
+}
+
+int jug_ordenarPorEdad(void *pPrimerJugador, void *pSegundoJugador) {
+	int rtn = 0;
+	Jugador *auxPrimerJugador;
+	Jugador *auxSegundoJugador;
+	int auxPrimerEdad;
+	int auxSegundaEdad;
+
+	if (pPrimerJugador != NULL && pSegundoJugador != NULL) {
+		auxPrimerJugador = (Jugador*) pPrimerJugador;
+		auxSegundoJugador = (Jugador*) pSegundoJugador;
+		if (jug_getEdad(auxPrimerJugador, &auxPrimerEdad)
+				&& jug_getEdad(auxSegundoJugador, &auxSegundaEdad)) {
+			if (auxPrimerEdad > auxSegundaEdad) {
+				rtn = 1;
+			} else {
+				if (auxPrimerEdad < auxSegundaEdad) {
+					rtn = -1;
+				}
+			}
+		}
+	}
+	return rtn;
+}
+
