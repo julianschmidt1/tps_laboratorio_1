@@ -7,6 +7,7 @@
 #ifndef selec_H_INCLUDED
 #define selec_H_INCLUDED
 #define MAX_CHARS 30
+#define MAX_JUGADORES 22
 
 typedef struct {
 	int id;
@@ -32,5 +33,7 @@ int selec_setConfederacion(Seleccion *this, char *confederacion);
 
 int selec_setConvocados(Seleccion *this, int convocados);
 int selec_getConvocados(Seleccion *this, int *convocados);
+
+int selec_eliminarUnConvocado(LinkedList *pSeleccion, int idSeleccion);
 
 #endif // selec_H_INCLUDED

@@ -9,9 +9,13 @@ int main() {
 	setbuf(stdout, NULL);
 	int menuPrincipal;
 	int menuListados;
+	int menuConvocatoria;
 	LinkedList *listaJugadores = ll_newLinkedList();
 	LinkedList *listaSelecciones = ll_newLinkedList();
 	int validaciones = 0;
+	int auxIdJugador;
+	Jugador *pAuxJugador;
+	int auxIdSeleccion;
 
 	do {
 
@@ -48,7 +52,7 @@ int main() {
 			controller_editarJugador(listaJugadores);
 			break;
 		case 4:
-			controller_removerJugador(listaJugadores);
+			controller_removerJugador(listaJugadores, listaSelecciones);
 			break;
 		case 5:
 			do {
@@ -72,6 +76,66 @@ int main() {
 			} while (menuListados != 4);
 			break;
 		case 6:
+			do {
+				menuConvocatoria = menu_opciones(
+						"\n --------- CONVOCAR JUGADORES --------- \n",
+						"\n1. CONVOCAR"
+								"\n2. QUITAR DE LA SELECCION"
+								"\n3. VOLVER AL MENU PRINCIPAL",
+						"\nOpcion invalida. Ingrese la opcion: ", 1, 3);
+				if (menuConvocatoria == 3) {
+					break;
+				}
+
+				controller_listarJugadores(listaJugadores);
+				utn_getNumero(&auxIdJugador, "\nIngrese el id de jugador: ",
+						"\nId invalido. Ingrese el id de jugador: ", 1, 99999,
+						9999);
+
+				if (controller_buscarJugadorPorId(listaJugadores,
+						auxIdJugador) == NULL) {
+					puts(
+							"\n  -------- ERROR. EL JUGADOR NO EXISTE. ------------ \n");
+					break;
+				}
+
+				switch (menuConvocatoria) {
+				case 1:
+					pAuxJugador = controller_buscarJugadorPorId(listaJugadores,
+							auxIdJugador);
+					if (pAuxJugador->idSeleccion != 0) {
+						puts(
+								"\n  -------- ERROR. EL JUGADOR YA ESTA CONVOCADO EN UNA SELECCION. ------------ \n");
+						break;
+					}
+					auxIdSeleccion = controller_editarSeleccion(
+							listaSelecciones);
+					if (auxIdSeleccion) {
+						jug_setIdSeleccion(pAuxJugador, auxIdSeleccion);
+					} else {
+						puts("\n -------- OCURRIO UN ERROR -------- ");
+					}
+					break;
+				case 2:
+
+					if (controller_buscarSeleccionPorId(listaSelecciones,
+							pAuxJugador->idSeleccion) == NULL) {
+						puts(
+								"\nEL JUGADOR NO FUE CONVOCADO POR NINGUNA SELECCION.");
+						break;
+					} else {
+						selec_eliminarUnConvocado(listaSelecciones,
+								pAuxJugador->idSeleccion);
+						jug_setIdSeleccion(pAuxJugador, 0);
+						printf(
+								"\n ---------- El jugador %s ya no forma parte de la seleccion \n",
+								pAuxJugador->nombreCompleto);
+					}
+
+					break;
+				}
+
+			} while (menuConvocatoria != 3);
 			break;
 		case 7:
 			break;

@@ -67,8 +67,6 @@ int controller_agregarJugador(LinkedList *pArrayListJugador) {
 	int auxUltimoId;
 	Jugador auxBufferJugador;
 
-	//FILE *idFile = fopen("ultimoId.bin", "");
-
 	if (pArrayListJugador != NULL) {
 		nuevoJugador = jug_new();
 		idFile = fopen("ultimoId.bin", "rb");
@@ -77,7 +75,6 @@ int controller_agregarJugador(LinkedList *pArrayListJugador) {
 			auxUltimoId = PRIMER_ID_MANUAL;
 		} else {
 			if (!parser_ObtenerUltimoId(idFile, &auxUltimoId)) {
-				printf("%d", auxUltimoId);
 				puts("\nOcurrio un error");
 			}
 		}
@@ -200,6 +197,33 @@ Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
 	return rtn;
 }
 
+Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
+		int idBusqueda) {
+	Seleccion *rtn = NULL;
+	int tamArray;
+	int i;
+	int auxIdSeleccion;
+	Seleccion *pSeleccion;
+	if (pArrayListSeleccion != NULL) {
+		if (!ll_isEmpty(pArrayListSeleccion)) {
+			tamArray = ll_len(pArrayListSeleccion);
+			for (i = 0; i < tamArray; i++) {
+				pSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
+				selec_getId(pSeleccion, &auxIdSeleccion);
+				if (auxIdSeleccion == idBusqueda) {
+					rtn = pSeleccion;
+					break;
+				}
+			}
+			if (rtn != pSeleccion) {
+				printf("\nNo se encontro el id");
+			}
+		}
+	}
+
+	return rtn;
+}
+
 /** \brief Baja del jugador
  *
  * \param path char*
@@ -207,13 +231,14 @@ Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
  * \return int
  *
  */
-int controller_removerJugador(LinkedList *pArrayListJugador) {
+int controller_removerJugador(LinkedList *pArrayListJugador,
+		LinkedList *pArrayListSeleccion) {
 	int rtn = 0;
 	int auxIdSeleccionado;
 	Jugador *pAuxJugador;
 	int indiceJugador;
 
-	if (pArrayListJugador != NULL) {
+	if (pArrayListJugador != NULL && pArrayListSeleccion) {
 		controller_listarJugadores(pArrayListJugador);
 		utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
 				"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
@@ -230,7 +255,9 @@ int controller_removerJugador(LinkedList *pArrayListJugador) {
 				"\n(1. SI | 2. NO)", "\nOpcion invalida. Ingrese la opcion: ",
 				1, 2) == 1) {
 			indiceJugador = ll_indexOf(pArrayListJugador, pAuxJugador);
-			if (ll_remove(pArrayListJugador, indiceJugador)) {
+			if (ll_remove(pArrayListJugador, indiceJugador) == 0) {
+				selec_eliminarUnConvocado(pArrayListSeleccion,
+						pAuxJugador->idSeleccion);
 				jug_delete(pAuxJugador);
 				puts("\nJugador dado de baja exitosamente");
 			}
@@ -421,17 +448,6 @@ int controller_cargarSeleccionesDesdeTexto(char *path,
 	return rtn;
 }
 
-/** \brief Modificar datos de empleado
- *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
- *
- */
-int controller_editarSeleccion(LinkedList *pArrayListSeleccion) {
-	return 1;
-}
-
 /** \brief Listar selecciones
  *
  * \param path char*
@@ -475,6 +491,46 @@ int controller_listarSelecciones(LinkedList *pArrayListSeleccion) {
 			puts(
 					"\n=================================================================");
 		}
+	}
+
+	return rtn;
+}
+
+/** \brief Modificar datos de empleado
+ *
+ * \param path char*
+ * \param pArrayListSeleccion LinkedList*
+ * \return int
+ *
+ */
+int controller_editarSeleccion(LinkedList *pArrayListSeleccion) {
+	int rtn = 0;
+
+	int auxIdSeleccion;
+	Seleccion *pAuxSeleccion;
+	int auxCantidadConvocados;
+
+	if (pArrayListSeleccion != NULL) {
+		controller_listarSelecciones(pArrayListSeleccion);
+		utn_getNumero(&auxIdSeleccion, "\nIngrese el id de seleccion: ",
+				"\nId invalido. Ingrese el id de seleccion: ", 1, 50, 9999);
+		if (controller_buscarSeleccionPorId(pArrayListSeleccion,
+				auxIdSeleccion) == NULL) {
+			puts("\n  -------- ERROR. LA SELECCION NO EXISTE. ------------ \n");
+		} else {
+			pAuxSeleccion = controller_buscarSeleccionPorId(pArrayListSeleccion,
+					auxIdSeleccion);
+			if (pAuxSeleccion->convocados == MAX_JUGADORES) {
+				puts(
+						"\n  -------- ERROR. CANTIDAD DE CONVOCADOS ALCANZADA EN ESTA SELECCION. ------------ \n");
+			} else {
+				selec_getConvocados(pAuxSeleccion, &auxCantidadConvocados);
+				auxCantidadConvocados++;
+				selec_setConvocados(pAuxSeleccion, auxCantidadConvocados);
+				rtn = pAuxSeleccion->id;
+			}
+		}
+
 	}
 
 	return rtn;

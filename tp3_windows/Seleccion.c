@@ -1,4 +1,5 @@
 #include "Seleccion.h"
+#include "Controller.h"
 // --------- CONSTRUCTORES ---------
 
 Seleccion* selec_new() {
@@ -121,3 +122,22 @@ int selec_getConvocados(Seleccion *this, int *convocados) {
 	}
 	return rtn;
 }
+
+// FUNCIONES AUXILIARES
+
+int selec_eliminarUnConvocado(LinkedList *listaSelecciones, int idSeleccion) {
+	int rtn = 0;
+	int auxConvocados;
+	Seleccion *pAuxSeleccion;
+
+	if (listaSelecciones != NULL) {
+		pAuxSeleccion = controller_buscarSeleccionPorId(listaSelecciones,
+				idSeleccion);
+		selec_getConvocados(pAuxSeleccion, &auxConvocados);
+		auxConvocados--;
+		selec_setConvocados(pAuxSeleccion, auxConvocados);
+	}
+
+	return rtn;
+}
+

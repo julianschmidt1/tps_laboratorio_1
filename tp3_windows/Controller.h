@@ -1,4 +1,5 @@
 #include "Jugador.h"
+#include "Seleccion.h"
 
 int controller_cargarJugadoresDesdeTexto(char *path,
 		LinkedList *pArrayListJugador);
@@ -6,7 +7,8 @@ int controller_cargarJugadoresDesdeBinario(char *path,
 		LinkedList *pArrayListJugador);
 int controller_agregarJugador(LinkedList *pArrayListJugador);
 int controller_editarJugador(LinkedList *pArrayListJugador);
-int controller_removerJugador(LinkedList *pArrayListJugador);
+int controller_removerJugador(LinkedList *pArrayListJugador,
+		LinkedList *pArrayListSeleccion);
 int controller_listarJugadores(LinkedList *pArrayListJugador);
 int controller_ordenarJugadores(LinkedList *pArrayListJugador);
 
@@ -24,4 +26,6 @@ int controller_guardarSeleccionesModoTexto(char *path,
 		LinkedList *pArrayListSeleccion);
 
 Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
+		int idBusqueda);
+Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
 		int idBusqueda);
