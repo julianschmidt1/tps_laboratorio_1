@@ -71,6 +71,7 @@ int main() {
 					controller_listarSelecciones(listaSelecciones);
 					break;
 				case 3:
+					controller_listarJugadoresConvocados(listaJugadores);
 					break;
 				}
 			} while (menuListados != 4);
@@ -91,14 +92,12 @@ int main() {
 				utn_getNumero(&auxIdJugador, "\nIngrese el id de jugador: ",
 						"\nId invalido. Ingrese el id de jugador: ", 1, 99999,
 						9999);
-
 				if (controller_buscarJugadorPorId(listaJugadores,
 						auxIdJugador) == NULL) {
 					puts(
 							"\n  -------- ERROR. EL JUGADOR NO EXISTE. ------------ \n");
 					break;
 				}
-
 				switch (menuConvocatoria) {
 				case 1:
 					pAuxJugador = controller_buscarJugadorPorId(listaJugadores,

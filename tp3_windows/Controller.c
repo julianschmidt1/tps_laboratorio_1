@@ -224,6 +224,48 @@ Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
 	return rtn;
 }
 
+int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
+	int rtn = 0;
+	int arrayTam;
+	Jugador *pJugador;
+	Jugador auxJugador;
+
+	if (pArrayListJugador != NULL) {
+		arrayTam = ll_len(pArrayListJugador);
+
+		if (arrayTam != -1) {
+			puts(
+					"\n==============================================================================================================");
+			printf("| %-5s  | %-25s | %-15s | %-8s | %-25s | %-8s |\n", "ID",
+					"NOMBRE COMPLETO", "NACIONALIDAD", "EDAD", "POSICION",
+					"SELECCION");
+			puts(
+					"==============================================================================================================");
+			for (int i = 0; i < arrayTam; i++) {
+				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
+				if (pJugador != NULL && pJugador->idSeleccion != 0) {
+					jug_getId(pJugador, &auxJugador.id);
+					jug_getNombreCompleto(pJugador, auxJugador.nombreCompleto);
+					jug_getPosicion(pJugador, auxJugador.posicion);
+					jug_getEdad(pJugador, &auxJugador.edad);
+					jug_getNacionalidad(pJugador, auxJugador.nacionalidad);
+					jug_getSIdSeleccion(pJugador, &auxJugador.idSeleccion);
+
+					printf("\n| %-5d  | %-25s | %-15s | %-8d| %-25s | %-8d |",
+							auxJugador.id, auxJugador.nombreCompleto,
+							auxJugador.nacionalidad, auxJugador.edad,
+							auxJugador.posicion, auxJugador.idSeleccion);
+					rtn = 1;
+				}
+			}
+			puts(
+					"\n==============================================================================================================");
+		}
+	}
+
+	return rtn;
+}
+
 /** \brief Baja del jugador
  *
  * \param path char*
