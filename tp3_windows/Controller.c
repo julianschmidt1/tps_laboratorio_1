@@ -566,18 +566,6 @@ int controller_ordenarJugadores(LinkedList *pArrayListJugador) {
 	return rtn;
 }
 
-/** \brief Guarda los datos de los jugadores en el archivo jugadores.csv (modo texto).
- *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
- *
- */
-int controller_guardarJugadoresModoTexto(char *path,
-		LinkedList *pArrayListJugador) {
-	return 1;
-}
-
 /** \brief Guarda los datos de los jugadores en el archivo binario.
  *
  * \param path char*
@@ -773,6 +761,59 @@ int controller_ordenarSelecciones(LinkedList *pArrayListSeleccion) {
 	return rtn;
 }
 
+/** \brief Guarda los datos de los jugadores en el archivo jugadores.csv (modo texto).
+ *
+ * \param path char*
+ * \param pArrayListSeleccion LinkedList*
+ * \return int
+ *
+ */
+int controller_guardarJugadoresModoTexto(char *path,
+		LinkedList *pArrayListJugador) {
+	int rtn = 0;
+	FILE *pFile;
+	int tamArray;
+	int i;
+	Jugador auxJugador;
+	Jugador *pJugador = NULL;
+	if (path != NULL && pArrayListJugador != NULL) {
+		pFile = fopen(path, "w");
+		if (pFile != NULL) {
+			fprintf(pFile,
+					"id,nombreCompleto,edad,posicion,nacionalidad,idSelecion\n");
+			tamArray = ll_len(pArrayListJugador);
+			for (i = 0; i < tamArray; i++) {
+				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
+				if (pJugador != NULL) {
+					if (!(jug_getId(pJugador, &auxJugador.id)
+							&& jug_getNombreCompleto(pJugador,
+									auxJugador.nombreCompleto)
+							&& jug_getPosicion(pJugador, auxJugador.posicion)
+							&& jug_getEdad(pJugador, &auxJugador.edad)
+							&& jug_getNacionalidad(pJugador,
+									auxJugador.nacionalidad)
+							&& jug_getSIdSeleccion(pJugador,
+									&auxJugador.idSeleccion))) {
+						pJugador = NULL;
+						jug_delete(pJugador);
+						printf(
+								"\nOcurrio un error el guardar daots en el archivo");
+						break;
+					} else {
+						fprintf(pFile, "%d,%s,%d,%s,%s,%d\n", auxJugador.id,
+								auxJugador.nombreCompleto, auxJugador.edad,
+								auxJugador.posicion, auxJugador.nacionalidad,
+								auxJugador.idSeleccion);
+						rtn = 1;
+					}
+				}
+			}
+		}
+	}
+	fclose(pFile);
+	return rtn;
+}
+
 /** \brief Guarda los datos de los selecciones en el archivo selecciones.csv (modo texto).
  *
  * \param path char*
@@ -782,5 +823,41 @@ int controller_ordenarSelecciones(LinkedList *pArrayListSeleccion) {
  */
 int controller_guardarSeleccionesModoTexto(char *path,
 		LinkedList *pArrayListSeleccion) {
-	return 1;
+	int rtn = 0;
+	FILE *pFile;
+	int tamArray;
+	int i;
+	Seleccion auxSeleccion;
+	Seleccion *pSeleccion = NULL;
+	if (path != NULL && pArrayListSeleccion != NULL) {
+		pFile = fopen(path, "w");
+		if (pFile != NULL) {
+			fprintf(pFile, "id,pais,confederacion,convocados\n");
+			tamArray = ll_len(pArrayListSeleccion);
+			for (i = 0; i < tamArray; i++) {
+				pSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
+				if (pSeleccion != NULL) {
+					if (!(selec_getId(pSeleccion, &auxSeleccion.id)
+							&& selec_getPais(pSeleccion, auxSeleccion.pais)
+							&& selec_getConfederacion(pSeleccion,
+									auxSeleccion.confederacion)
+							&& selec_getConvocados(pSeleccion,
+									&auxSeleccion.convocados))) {
+						pSeleccion = NULL;
+						selec_delete(pSeleccion);
+						printf(
+								"\nOcurrio un error el guardar daots en el archivo");
+						break;
+					} else {
+						fprintf(pFile, "%d,%s,%s,%d\n", auxSeleccion.id,
+								auxSeleccion.pais, auxSeleccion.confederacion,
+								auxSeleccion.convocados);
+						rtn = 1;
+					}
+				}
+			}
+		}
+	}
+	fclose(pFile);
+	return rtn;
 }

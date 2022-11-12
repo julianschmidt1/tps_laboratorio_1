@@ -1,5 +1,5 @@
 id,nombreCompleto,edad,posicion,nacionalidad,idSelecion
-1,Emiliano Martinez,28,Portero,Argentino,1
+1,Emiliano Martinez,28,Portero,Argentino,0
 2,Juan Musso,27,Portero,Argentino,0
 3,Agustin Marchesin,33,Portero,Argentino,0
 4,Esteban Andrada,30,Portero,Argentino,0
@@ -252,7 +252,7 @@ id,nombreCompleto,edad,posicion,nacionalidad,idSelecion
 251,Brenden Aaronson,22,Mediocentro ofensivo,Estado Unidense,0
 252,Malik Tillman,20,Mediocentro ofensivo,Estado Unidense,0
 253,Jordan Morris,28,Extremo izquierdo,Estado Unidense,0
-254,Paul Arriola,27,Extremo derecho,Estado Unidense,20
+254,Paul Arriola,27,Extremo derecho,Estado Unidense,0
 255,Josh Sargent,22,Delantero centro,Estado Unidense,0
 256,Ricardo Pepi,19,Delantero centro,Estado Unidense,0
 257,Jesus Ferreira,21,Delantero centro,Estado Unidense,0
@@ -367,4 +367,5 @@ id,nombreCompleto,edad,posicion,nacionalidad,idSelecion
 366,Ismaeel Mohammed,32,Extremo derecho,Qatari,0
 367,Naif Al Hadhrami,21,Extremo derecho,Qatari,0
 368,Almoez Ali,26,Delantero centro,Qatari,0
-369,Ahmed Alaaeldin,29,Delantero centro,Qatari,29
+369,Ahmed Alaaeldin,29,Delantero centro,Qatari,0
+370,Mohammed Muntari,28,Delantero centro,Qatari,0

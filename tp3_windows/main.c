@@ -163,6 +163,10 @@ int main() {
 			controller_listarJugadores(listaJugadoresConvocados);
 			break;
 		case 10:
+			controller_guardarJugadoresModoTexto("jugadores.csv",
+					listaJugadores);
+			controller_guardarSeleccionesModoTexto("selecciones.csv",
+					listaSelecciones);
 			break;
 		case 11:
 			break;
