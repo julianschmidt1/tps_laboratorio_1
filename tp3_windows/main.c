@@ -13,6 +13,7 @@ int main() {
 	int menuOrdenamiento;
 	LinkedList *listaJugadores = ll_newLinkedList();
 	LinkedList *listaSelecciones = ll_newLinkedList();
+	LinkedList *listaJugadoresConvocados = ll_newLinkedList();
 	int validaciones = 0;
 	int auxIdJugador;
 	Jugador *pAuxJugador;
@@ -149,8 +150,17 @@ int main() {
 			}
 			break;
 		case 8:
+			controller_crearListaJugadoresConvocados(listaJugadores,
+					listaSelecciones, listaJugadoresConvocados);
+			if (controller_guardarJugadoresModoBinario("convocados.bin",
+					listaJugadoresConvocados)) {
+				puts("\n Lista guardada OK ");
+			}
 			break;
 		case 9:
+			controller_cargarJugadoresDesdeBinario("convocados.bin",
+					listaJugadoresConvocados);
+			controller_listarJugadores(listaJugadoresConvocados);
 			break;
 		case 10:
 			break;

@@ -82,7 +82,26 @@ int parser_ObtenerUltimoId(FILE *pFile, int *pId) {
  *
  */
 int parser_JugadorFromBinary(FILE *pFile, LinkedList *pArrayListJugador) {
-	return 1;
+	int rtn = 0;
+
+	if (pFile != NULL && pArrayListJugador != NULL) {
+		do {
+			Jugador *nuevoJugador = jug_new();
+			if (nuevoJugador != NULL) {
+				if (fread(nuevoJugador, sizeof(Jugador), 1, pFile) == 1) {
+					if (ll_add(pArrayListJugador, nuevoJugador) == 0) {
+						rtn = 1;
+					}
+				} else {
+					puts("\n Cualquiereo");
+					free(nuevoJugador);
+					break;
+				}
+			}
+		} while (!feof(pFile));
+	}
+
+	return rtn;
 }
 
 /** \brief Parsea los datos de los selecciones desde el archivo selecciones.csv (modo texto).

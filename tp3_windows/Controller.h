@@ -30,3 +30,5 @@ Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
 Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
 		int idBusqueda);
 int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador);
+int controller_crearListaJugadoresConvocados(LinkedList *pArrayListJugador,
+		LinkedList *pArrayListSeleccion, LinkedList *pArrayListJugadorConvocado);

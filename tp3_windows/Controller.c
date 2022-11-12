@@ -50,7 +50,23 @@ int controller_cargarJugadoresDesdeTexto(char *path,
  */
 int controller_cargarJugadoresDesdeBinario(char *path,
 		LinkedList *pArrayListJugador) {
-	return 1;
+	int rtn = 0;
+	FILE *pFile;
+
+	if (path != NULL && pArrayListJugador != NULL) {
+		pFile = fopen(path, "rb");
+		if (ll_isEmpty(pArrayListJugador)) {
+			if (parser_JugadorFromBinary(pFile, pArrayListJugador)) {
+				puts("\n ---- Archivo cargado con exito ---- ");
+			} else {
+				puts("\nERROR. Ocurrio un error al cargar el archivo");
+			}
+			fclose(pFile);
+		}
+	} else {
+		puts("\n --- No es posible cargar jugadores ---- ");
+	}
+	return rtn;
 }
 
 /** \brief Alta de jugadores
@@ -170,33 +186,6 @@ int controller_listarJugadores(LinkedList *pArrayListJugador) {
 	return rtn;
 }
 
-Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
-		int idBusqueda) {
-	Jugador *rtn = NULL;
-	int tamArray;
-	int i;
-	int auxIdJugador;
-	Jugador *pJugador;
-	if (pArrayListJugador != NULL) {
-		if (!ll_isEmpty(pArrayListJugador)) {
-			tamArray = ll_len(pArrayListJugador);
-			for (i = 0; i < tamArray; i++) {
-				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
-				jug_getId(pJugador, &auxIdJugador);
-				if (auxIdJugador == idBusqueda) {
-					rtn = pJugador;
-					break;
-				}
-			}
-			if (rtn != pJugador) {
-				printf("\nNo se encontro el id");
-			}
-		}
-	}
-
-	return rtn;
-}
-
 Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
 		int idBusqueda) {
 	Seleccion *rtn = NULL;
@@ -216,6 +205,102 @@ Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
 				}
 			}
 			if (rtn != pSeleccion) {
+				printf("\nNo se encontro el id");
+			}
+		}
+	}
+
+	return rtn;
+}
+
+int controller_crearListaJugadoresConvocados(LinkedList *pArrayListJugador,
+		LinkedList *pArrayListSeleccion, LinkedList *pArrayListJugadorConvocado) {
+	int rtn = 0;
+	Jugador *pAuxJugador;
+	Seleccion *pAuxSeleccion;
+	int auxIdSeleccion;
+	char auxConfederacion[MAX_CHARS];
+	char bufferConfederacion[MAX_CHARS];
+	Jugador *nuevoJugador;
+	Jugador auxJugador;
+
+	if (pArrayListJugador != NULL && pArrayListSeleccion != NULL
+			&& pArrayListJugadorConvocado) {
+
+		utn_getString("\nIngrese el nombre de la confederacion: ",
+				"\nError. Ingrese la confederacion", 9999, MAX_CHARS,
+				bufferConfederacion);
+
+		for (int i = 0; i < ll_len(pArrayListJugador); i++) {
+			pAuxJugador = ll_get(pArrayListJugador, i);
+			jug_getSIdSeleccion(pAuxJugador, &auxIdSeleccion);
+			if (auxIdSeleccion != 0) {
+				pAuxSeleccion = controller_buscarSeleccionPorId(
+						pArrayListSeleccion, auxIdSeleccion);
+				selec_getConfederacion(pAuxSeleccion, auxConfederacion);
+				if (stricmp(auxConfederacion, bufferConfederacion) == 0) {
+
+					nuevoJugador = jug_new();
+					jug_getId(pAuxJugador, &auxJugador.id);
+					jug_getEdad(pAuxJugador, &auxJugador.edad);
+					jug_getNacionalidad(pAuxJugador, auxJugador.nacionalidad);
+					jug_getNombreCompleto(pAuxJugador,
+							auxJugador.nombreCompleto);
+					jug_getPosicion(pAuxJugador, auxJugador.posicion);
+					jug_getSIdSeleccion(pAuxJugador, &auxJugador.idSeleccion);
+
+					jug_setId(nuevoJugador, auxJugador.id);
+					jug_setEdad(nuevoJugador, auxJugador.edad);
+					jug_setNacionalidad(nuevoJugador, auxJugador.nacionalidad);
+					jug_setNombreCompleto(nuevoJugador,
+							auxJugador.nombreCompleto);
+					jug_setPosicion(nuevoJugador, auxJugador.posicion);
+					jug_setIdSeleccion(nuevoJugador, auxJugador.idSeleccion);
+
+					printf(
+							"id: %d nombre: %s nacionalidad: %s posicion: %s edad: %d",
+							auxJugador.id, auxJugador.nombreCompleto,
+							auxJugador.nacionalidad, auxJugador.posicion,
+							auxJugador.edad);
+
+					printf("\nTESTT: %s %s", nuevoJugador->nombreCompleto,
+							nuevoJugador->posicion);
+
+					ll_add(pArrayListJugadorConvocado, nuevoJugador);
+					rtn = 1;
+				}
+			}
+
+		}
+	}
+	if (rtn) {
+		puts("\n ----- LISTA CREADA EXITOSAMENTE -----");
+	} else {
+		puts("\n ----- NO HAY JUGADORES EN LA CONFEDERACION INGRESADA ---- \n");
+	}
+
+	return rtn;
+}
+
+Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
+		int idBusqueda) {
+	Jugador *rtn = NULL;
+	int tamArray;
+	int i;
+	int auxIdJugador;
+	Jugador *pJugador;
+	if (pArrayListJugador != NULL) {
+		if (!ll_isEmpty(pArrayListJugador)) {
+			tamArray = ll_len(pArrayListJugador);
+			for (i = 0; i < tamArray; i++) {
+				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
+				jug_getId(pJugador, &auxIdJugador);
+				if (auxIdJugador == idBusqueda) {
+					rtn = pJugador;
+					break;
+				}
+			}
+			if (rtn != pJugador) {
 				printf("\nNo se encontro el id");
 			}
 		}
@@ -502,7 +587,35 @@ int controller_guardarJugadoresModoTexto(char *path,
  */
 int controller_guardarJugadoresModoBinario(char *path,
 		LinkedList *pArrayListJugador) {
-	return 1;
+	int rtn = 0;
+	Jugador *pJugador = NULL;
+	FILE *pFile;
+	int tamArray;
+
+	if (path != NULL && pArrayListJugador != NULL) {
+		pFile = fopen(path, "wb");
+
+		if (pFile != NULL) {
+			tamArray = ll_len(pArrayListJugador);
+
+			for (int i = 0; i < tamArray; i++) {
+				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
+
+				if (pJugador != NULL) {
+					if (fwrite(pJugador, sizeof(Jugador), 1, pFile) != 1) {
+						puts("\nError al guardar el archivo");
+						jug_delete(pJugador);
+						pJugador = NULL;
+						break;
+					}
+				} else {
+					rtn = 1;
+				}
+			}
+		}
+	}
+	fclose(pFile);
+	return rtn;
 }
 
 /** \brief Carga los datos de los selecciones desde el archivo selecciones.csv (modo texto).

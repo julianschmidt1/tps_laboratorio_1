@@ -36,13 +36,9 @@ Jugador* jug_newParametros(char *idStr, char *nombreCompletoStr, char *edadStr,
 int jug_setNombreCompleto(Jugador *this, char *nombreCompleto) {
 	int rtn = 0;
 
-	char auxCadena[NOMBRE_CHARS];
 	if (this != NULL && nombreCompleto != NULL
 			&& strlen(nombreCompleto) <= NOMBRE_CHARS) {
-		strcpy(auxCadena, nombreCompleto);
-		//strlwr(auxCadena);
-		auxCadena[0] = toupper(auxCadena[0]);
-		strcpy(this->nombreCompleto, auxCadena);
+		strcpy(this->nombreCompleto, nombreCompleto);
 		rtn = 1;
 	} else {
 		puts("\nNOMBRE INVALIDO.");
@@ -69,11 +65,7 @@ void jug_delete(Jugador *this) {
 int jug_setPosicion(Jugador *this, char *posicion) {
 	int rtn = 0;
 
-	char auxCadena[POSICION_CHARS];
-	// TODO: VALIDAR POSICIONES ?
 	if (this != NULL && posicion != NULL && strlen(posicion) <= POSICION_CHARS) {
-		strcpy(auxCadena, posicion);
-		//strlwr(auxCadena);
 		strcpy(this->posicion, posicion);
 		rtn = 1;
 	} else {
