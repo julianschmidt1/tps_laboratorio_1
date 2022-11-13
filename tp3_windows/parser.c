@@ -43,20 +43,6 @@ int parser_JugadorFromText(FILE *pFile, LinkedList *pArrayListJugador) {
 	return rtn;
 }
 
-int parser_GuardarUltimoId(FILE *pFile, int *pId) {
-	int rtn = 0;
-
-	if (pFile != NULL) {
-		if (fwrite(pId, sizeof(int), 1, pFile)) {
-			puts("\nId actualizado correctamente.");
-		} else {
-			puts("\nOcurrio un error al actualizar el id");
-		}
-	}
-
-	return rtn;
-}
-
 int parser_ObtenerUltimoId(FILE *pFile, int *pId) {
 	int rtn = 0;
 

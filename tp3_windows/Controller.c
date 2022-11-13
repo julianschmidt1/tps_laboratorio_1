@@ -123,18 +123,31 @@ int controller_agregarJugador(LinkedList *pArrayListJugador) {
 					free(nuevoJugador);
 					nuevoJugador = NULL;
 				} else {
-					rtn = 1;
+					rtn = auxUltimoId;
 					ll_add(pArrayListJugador, nuevoJugador);
-					idFile = fopen("ultimoId.bin", "wb");
-					auxUltimoId++;
-					parser_GuardarUltimoId(idFile, &auxUltimoId);
-					fclose(idFile);
 				}
 			}
 		}
 
 	}
 
+	return rtn;
+}
+
+int controller_guardarUltimoId(char *path, int *pId) {
+	int rtn = 0;
+	FILE *pFile;
+
+	pFile = fopen("ultimoId.bin", "wb");
+
+	if (pFile != NULL) {
+		if (fwrite(pId, sizeof(int), 1, pFile)) {
+			puts("\nId actualizado correctamente.");
+		} else {
+			puts("\nOcurrio un error al actualizar el id");
+		}
+	}
+	fclose(pFile);
 	return rtn;
 }
 
@@ -257,15 +270,6 @@ int controller_crearListaJugadoresConvocados(LinkedList *pArrayListJugador,
 					jug_setPosicion(nuevoJugador, auxJugador.posicion);
 					jug_setIdSeleccion(nuevoJugador, auxJugador.idSeleccion);
 
-					printf(
-							"id: %d nombre: %s nacionalidad: %s posicion: %s edad: %d",
-							auxJugador.id, auxJugador.nombreCompleto,
-							auxJugador.nacionalidad, auxJugador.posicion,
-							auxJugador.edad);
-
-					printf("\nTESTT: %s %s", nuevoJugador->nombreCompleto,
-							nuevoJugador->posicion);
-
 					ll_add(pArrayListJugadorConvocado, nuevoJugador);
 					rtn = 1;
 				}
@@ -314,6 +318,7 @@ int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 	int arrayTam;
 	Jugador *pJugador;
 	Jugador auxJugador;
+	int auxIdSeleccion;
 
 	if (pArrayListJugador != NULL) {
 		arrayTam = ll_len(pArrayListJugador);
@@ -328,7 +333,8 @@ int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 					"==============================================================================================================");
 			for (int i = 0; i < arrayTam; i++) {
 				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
-				if (pJugador != NULL && pJugador->idSeleccion != 0) {
+				jug_getSIdSeleccion(pJugador, &auxIdSeleccion);
+				if (pJugador != NULL && auxIdSeleccion != 0) {
 					jug_getId(pJugador, &auxJugador.id);
 					jug_getNombreCompleto(pJugador, auxJugador.nombreCompleto);
 					jug_getPosicion(pJugador, auxJugador.posicion);
@@ -364,6 +370,7 @@ int controller_removerJugador(LinkedList *pArrayListJugador,
 	int auxIdSeleccionado;
 	Jugador *pAuxJugador;
 	int indiceJugador;
+	int auxIdSeleccion;
 
 	if (pArrayListJugador != NULL && pArrayListSeleccion) {
 		controller_listarJugadores(pArrayListJugador);
@@ -377,14 +384,14 @@ int controller_removerJugador(LinkedList *pArrayListJugador,
 
 		pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
 				auxIdSeleccionado);
+		jug_getSIdSeleccion(pAuxJugador, &auxIdSeleccion);
 
 		if (menu_opciones("\n\nEsta seguro de que desea eliminar el jugador? ",
 				"\n(1. SI | 2. NO)", "\nOpcion invalida. Ingrese la opcion: ",
 				1, 2) == 1) {
 			indiceJugador = ll_indexOf(pArrayListJugador, pAuxJugador);
 			if (ll_remove(pArrayListJugador, indiceJugador) == 0) {
-				selec_eliminarUnConvocado(pArrayListSeleccion,
-						pAuxJugador->idSeleccion);
+				selec_eliminarUnConvocado(pArrayListSeleccion, auxIdSeleccion);
 				jug_delete(pAuxJugador);
 				puts("\nJugador dado de baja exitosamente");
 			}
@@ -712,14 +719,16 @@ int controller_editarSeleccion(LinkedList *pArrayListSeleccion) {
 		} else {
 			pAuxSeleccion = controller_buscarSeleccionPorId(pArrayListSeleccion,
 					auxIdSeleccion);
-			if (pAuxSeleccion->convocados == MAX_JUGADORES) {
+
+			selec_getConvocados(pAuxSeleccion, &auxCantidadConvocados);
+			selec_getId(pAuxSeleccion, &auxIdSeleccion);
+			if (auxCantidadConvocados == MAX_JUGADORES) {
 				puts(
 						"\n  -------- ERROR. CANTIDAD DE CONVOCADOS ALCANZADA EN ESTA SELECCION. ------------ \n");
 			} else {
-				selec_getConvocados(pAuxSeleccion, &auxCantidadConvocados);
 				auxCantidadConvocados++;
 				selec_setConvocados(pAuxSeleccion, auxCantidadConvocados);
-				rtn = pAuxSeleccion->id;
+				rtn = auxIdSeleccion;
 			}
 		}
 

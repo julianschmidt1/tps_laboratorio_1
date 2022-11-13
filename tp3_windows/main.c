@@ -18,9 +18,9 @@ int main() {
 	int auxIdJugador;
 	Jugador *pAuxJugador;
 	int auxIdSeleccion;
+	int auxUltimoId;
 
 	do {
-
 		menuPrincipal = menu_opciones(
 				"\n\n ------- TRABAJO PRACTICO 3  ------- \n",
 				"\n1. CARGA DE ARCHIVOS"
@@ -47,7 +47,7 @@ int main() {
 			if (!validaciones) {
 				puts("\nEs necesario cargar la opc 1 antes");
 			} else {
-				controller_agregarJugador(listaJugadores);
+				auxUltimoId = controller_agregarJugador(listaJugadores);
 			}
 			break;
 		case 3:
@@ -118,7 +118,6 @@ int main() {
 					}
 					break;
 				case 2:
-
 					if (controller_buscarSeleccionPorId(listaSelecciones,
 							pAuxJugador->idSeleccion) == NULL) {
 						puts(
@@ -132,7 +131,6 @@ int main() {
 								"\n ---------- El jugador %s ya no forma parte de la seleccion \n",
 								pAuxJugador->nombreCompleto);
 					}
-
 					break;
 				}
 
@@ -167,6 +165,10 @@ int main() {
 					listaJugadores);
 			controller_guardarSeleccionesModoTexto("selecciones.csv",
 					listaSelecciones);
+			if (auxUltimoId != 0) {
+				auxUltimoId++;
+				controller_guardarUltimoId("ultimoId.bin", &auxUltimoId);
+			}
 			break;
 		case 11:
 			break;
