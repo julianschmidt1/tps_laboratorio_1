@@ -393,6 +393,7 @@ int controller_removerJugador(LinkedList *pArrayListJugador,
 			if (ll_remove(pArrayListJugador, indiceJugador) == 0) {
 				selec_eliminarUnConvocado(pArrayListSeleccion, auxIdSeleccion);
 				jug_delete(pAuxJugador);
+				rtn = 1;
 				puts("\nJugador dado de baja exitosamente");
 			}
 		}
@@ -455,6 +456,7 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 						jug_setNombreCompleto(pAuxJugador,
 								auxJugador.nombreCompleto);
 						puts("\n ---- Modificacion exitosa ---- \n");
+						rtn = 1;
 					} else {
 						puts("\n ---- Modificacion cancelada ---- \n");
 					}
@@ -470,6 +472,7 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 							== 1) {
 						jug_setEdad(pAuxJugador, auxJugador.edad);
 						puts("\n ---- Modificacion exitosa ---- \n");
+						rtn = 1;
 					} else {
 						puts("\n ---- Modificacion cancelada ---- \n");
 					}
@@ -484,6 +487,7 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 							== 1) {
 						jug_setPosicion(pAuxJugador, auxJugador.posicion);
 						puts("\n ---- Modificacion exitosa ---- \n");
+						rtn = 1;
 					} else {
 						puts("\n ---- Modificacion cancelada ---- \n");
 					}
@@ -499,6 +503,7 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 						jug_setNacionalidad(pAuxJugador,
 								auxJugador.nacionalidad);
 						puts("\n ---- Modificacion exitosa ---- \n");
+						rtn = 1;
 					} else {
 						puts("\n ---- Modificacion cancelada ---- \n");
 					}

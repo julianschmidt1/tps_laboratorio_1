@@ -14,11 +14,14 @@ int main() {
 	LinkedList *listaJugadores = ll_newLinkedList();
 	LinkedList *listaSelecciones = ll_newLinkedList();
 	LinkedList *listaJugadoresConvocados = ll_newLinkedList();
-	int validaciones = 0;
 	int auxIdJugador;
 	Jugador *pAuxJugador;
 	int auxIdSeleccion;
 	int auxUltimoId;
+	char auxNombreCompleto[NOMBRE_CHARS];
+	int flagCargaArchivos = 0;
+	int flagGuardarArchivos = 0;
+	int confirmarSalida;
 
 	do {
 		menuPrincipal = menu_opciones(
@@ -41,110 +44,143 @@ int main() {
 					listaJugadores);
 			controller_cargarSeleccionesDesdeTexto("selecciones.csv",
 					listaSelecciones);
-			validaciones = 1;
+			flagCargaArchivos = 1;
 			break;
 		case 2:
-			if (!validaciones) {
+			if (!flagCargaArchivos) {
 				puts("\nEs necesario cargar la opc 1 antes");
 			} else {
 				auxUltimoId = controller_agregarJugador(listaJugadores);
+				flagGuardarArchivos = 0;
 			}
 			break;
 		case 3:
-			controller_editarJugador(listaJugadores);
+			if (!flagCargaArchivos) {
+				puts("\nEs necesario cargar la opc 1 antes");
+			} else {
+				if (controller_editarJugador(listaJugadores)) {
+					flagGuardarArchivos = 0;
+				}
+			}
 			break;
 		case 4:
-			controller_removerJugador(listaJugadores, listaSelecciones);
+			if (!flagCargaArchivos) {
+				puts("\nEs necesario cargar la opc 1 antes");
+			} else {
+				if (controller_removerJugador(listaJugadores,
+						listaSelecciones)) {
+					flagGuardarArchivos = 0;
+				}
+			}
 			break;
 		case 5:
-			do {
-				menuListados = menu_opciones("\n\n\n ---- LISTADOS ----- \n",
-						"\n1. TODOS LOS JUGADORES"
-								"\n2. TODAS LAS SELECCIONES"
-								"\n3. JUGADORES CONVOCADOS"
-								"\n4. VOLVER AL MENU PRINCIPAL",
-						"\nOpcion invalida. Ingrese la opcion", 1, 4);
+			if (!flagCargaArchivos) {
+				puts("\nEs necesario cargar la opc 1 antes");
+			} else {
+				do {
+					menuListados = menu_opciones(
+							"\n\n\n ---- LISTADOS ----- \n",
+							"\n1. TODOS LOS JUGADORES"
+									"\n2. TODAS LAS SELECCIONES"
+									"\n3. JUGADORES CONVOCADOS"
+									"\n4. VOLVER AL MENU PRINCIPAL",
+							"\nOpcion invalida. Ingrese la opcion", 1, 4);
 
-				switch (menuListados) {
-				case 1:
-					controller_listarJugadores(listaJugadores);
-					break;
-				case 2:
-					controller_listarSelecciones(listaSelecciones);
-					break;
-				case 3:
-					controller_listarJugadoresConvocados(listaJugadores);
-					break;
-				}
-			} while (menuListados != 4);
+					switch (menuListados) {
+					case 1:
+						controller_listarJugadores(listaJugadores);
+						break;
+					case 2:
+						controller_listarSelecciones(listaSelecciones);
+						break;
+					case 3:
+						controller_listarJugadoresConvocados(listaJugadores);
+						break;
+					}
+				} while (menuListados != 4);
+			}
 			break;
 		case 6:
-			do {
-				menuConvocatoria = menu_opciones(
-						"\n --------- CONVOCAR JUGADORES --------- \n",
-						"\n1. CONVOCAR"
-								"\n2. QUITAR DE LA SELECCION"
-								"\n3. VOLVER AL MENU PRINCIPAL",
-						"\nOpcion invalida. Ingrese la opcion: ", 1, 3);
-				if (menuConvocatoria == 3) {
-					break;
-				}
-
-				controller_listarJugadores(listaJugadores);
-				utn_getNumero(&auxIdJugador, "\nIngrese el id de jugador: ",
-						"\nId invalido. Ingrese el id de jugador: ", 1, 99999,
-						9999);
-				if (controller_buscarJugadorPorId(listaJugadores,
-						auxIdJugador) == NULL) {
-					puts(
-							"\n  -------- ERROR. EL JUGADOR NO EXISTE. ------------ \n");
-					break;
-				}
-				switch (menuConvocatoria) {
-				case 1:
-					pAuxJugador = controller_buscarJugadorPorId(listaJugadores,
-							auxIdJugador);
-					if (pAuxJugador->idSeleccion != 0) {
-						puts(
-								"\n  -------- ERROR. EL JUGADOR YA ESTA CONVOCADO EN UNA SELECCION. ------------ \n");
+			if (!flagCargaArchivos) {
+				puts("\nEs necesario cargar la opc 1 antes");
+			} else {
+				do {
+					menuConvocatoria = menu_opciones(
+							"\n --------- CONVOCAR JUGADORES --------- \n",
+							"\n1. CONVOCAR"
+									"\n2. QUITAR DE LA SELECCION"
+									"\n3. VOLVER AL MENU PRINCIPAL",
+							"\nOpcion invalida. Ingrese la opcion: ", 1, 3);
+					if (menuConvocatoria == 3) {
 						break;
 					}
-					auxIdSeleccion = controller_editarSeleccion(
-							listaSelecciones);
-					if (auxIdSeleccion) {
-						jug_setIdSeleccion(pAuxJugador, auxIdSeleccion);
-					} else {
-						puts("\n -------- OCURRIO UN ERROR -------- ");
-					}
-					break;
-				case 2:
-					if (controller_buscarSeleccionPorId(listaSelecciones,
-							pAuxJugador->idSeleccion) == NULL) {
-						puts(
-								"\nEL JUGADOR NO FUE CONVOCADO POR NINGUNA SELECCION.");
-						break;
-					} else {
-						selec_eliminarUnConvocado(listaSelecciones,
-								pAuxJugador->idSeleccion);
-						jug_setIdSeleccion(pAuxJugador, 0);
-						printf(
-								"\n ---------- El jugador %s ya no forma parte de la seleccion \n",
-								pAuxJugador->nombreCompleto);
-					}
-					break;
-				}
 
-			} while (menuConvocatoria != 3);
+					controller_listarJugadores(listaJugadores);
+					utn_getNumero(&auxIdJugador, "\nIngrese el id de jugador: ",
+							"\nId invalido. Ingrese el id de jugador: ", 1,
+							99999, 9999);
+					if (controller_buscarJugadorPorId(listaJugadores,
+							auxIdJugador) == NULL) {
+						puts(
+								"\n  -------- ERROR. EL JUGADOR NO EXISTE. ------------ \n");
+						break;
+					}
+					switch (menuConvocatoria) {
+					case 1:
+						pAuxJugador = controller_buscarJugadorPorId(
+								listaJugadores, auxIdJugador);
+						jug_getSIdSeleccion(pAuxJugador, &auxIdSeleccion);
+						if (auxIdSeleccion != 0) {
+							puts(
+									"\n  -------- ERROR. EL JUGADOR YA ESTA CONVOCADO EN UNA SELECCION. ------------ \n");
+							break;
+						}
+						auxIdSeleccion = controller_editarSeleccion(
+								listaSelecciones);
+						if (auxIdSeleccion) {
+							jug_setIdSeleccion(pAuxJugador, auxIdSeleccion);
+							flagGuardarArchivos = 0;
+						} else {
+							puts("\n -------- OCURRIO UN ERROR -------- ");
+						}
+						break;
+					case 2:
+						jug_getSIdSeleccion(pAuxJugador, &auxIdSeleccion);
+						jug_getNombreCompleto(pAuxJugador, auxNombreCompleto);
+						if (controller_buscarSeleccionPorId(listaSelecciones,
+								auxIdSeleccion) == NULL) {
+							puts(
+									"\nEL JUGADOR NO FUE CONVOCADO POR NINGUNA SELECCION.");
+							break;
+						} else {
+							selec_eliminarUnConvocado(listaSelecciones,
+									auxIdSeleccion);
+							jug_setIdSeleccion(pAuxJugador, 0);
+							flagGuardarArchivos = 0;
+							printf(
+									"\n ---------- El jugador %s ya no forma parte de la seleccion \n",
+									auxNombreCompleto);
+						}
+						break;
+					}
+
+				} while (menuConvocatoria != 3);
+			}
 			break;
 		case 7:
-			menuOrdenamiento = menu_opciones(
-					"\n ------- ORDENAR Y LISTAR -------- \n", "\n1. JUGADORES"
-							"\n2. SELECCIONES POR CONFEDERACION",
-					"\nOpcin invalida, ingrese la opcion: ", 1, 2);
-			if (menuOrdenamiento == 1) {
-				controller_ordenarJugadores(listaJugadores);
-			} else if (menuOrdenamiento == 2) {
-				controller_ordenarSelecciones(listaSelecciones);
+			if (!flagCargaArchivos) {
+				puts("\nEs necesario cargar la opc 1 antes");
+			} else {
+				menuOrdenamiento = menu_opciones(
+						"\n ------- ORDENAR Y LISTAR -------- \n",
+						"\n1. JUGADORES"
+								"\n2. SELECCIONES POR CONFEDERACION",
+						"\nOpcin invalida, ingrese la opcion: ", 1, 2);
+				if (menuOrdenamiento == 1) {
+					controller_ordenarJugadores(listaJugadores);
+				} else if (menuOrdenamiento == 2) {
+					controller_ordenarSelecciones(listaSelecciones);
+				}
 			}
 			break;
 		case 8:
@@ -169,11 +205,21 @@ int main() {
 				auxUltimoId++;
 				controller_guardarUltimoId("ultimoId.bin", &auxUltimoId);
 			}
+			puts("\nCambios guardados exitosamente!");
+			flagGuardarArchivos = 1;
 			break;
 		case 11:
+			if (!flagGuardarArchivos) {
+				puts(
+						"\nHay cambios sin guardar. (1. SALIR IGUALMENTE | 0. VOLVER AL MENU): ");
+				utn_getNumero(&confirmarSalida, "\nIngrese la opcion: ",
+						"\nOpcion invalida. Ingrese la opcion: ", 0, 1, 999999);
+			} else {
+				confirmarSalida = 1;
+			}
 			break;
 		}
-	} while (menuPrincipal != 11);
+	} while (menuPrincipal != 11 || !confirmarSalida);
 
 	return 0;
 }

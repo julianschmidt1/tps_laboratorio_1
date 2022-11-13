@@ -32,4 +32,4 @@ Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
 int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador);
 int controller_crearListaJugadoresConvocados(LinkedList *pArrayListJugador,
 		LinkedList *pArrayListSeleccion, LinkedList *pArrayListJugadorConvocado);
-int controller_guardarUltimoId(FILE *pFile, int *pId);
+int controller_guardarUltimoId(char *path, int *pId);
