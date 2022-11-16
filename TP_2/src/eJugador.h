@@ -19,9 +19,10 @@
 #define LIBRE 0
 #define BAJA 1
 #define OCUPADO -1
-#define MAX_JUGADORES 3000
+#define MAX_JUGADORES 15
 
 typedef struct {
+	int id; //PK
 	char nombre[MAX_CHARS];
 	char posicion[MAX_CHARS];
 	short numeroCamiseta;
@@ -29,7 +30,6 @@ typedef struct {
 	float salario;
 	short aniosContrato;
 
-	int id; //PK
 	short isEmpty;
 } eJugador;
 
@@ -120,5 +120,11 @@ int abm_listadoModificacionJugador(eJugador lista[], int tam,
 /// \param tam tamaño del array de eJugador
 /// \return retorna 1 en caso de exito y 0 en caso de error
 int ordenarJugadoresId(eJugador *jugadores, int tam);
+
+/// \brief Funcion que valida que la posicion del jugador sea (delantero, mediocampista, defensor, arquero).
+///
+/// \param posicion cadena a validar
+/// \return retorna 1 en caso de validacion exitosa, -1 en caso de que la cadena no se valide, y 0 en caso de puntero erroneo
+int validarPosicionJugador(char *posicion);
 
 #endif /* EJUGADOR_H_ */

@@ -22,4 +22,12 @@
 int menu_opciones(char *titulo, char *opciones, char *mensajeError, int min,
 		int max);
 
+/// \brief Funcion que muestra un menu de confirmacion
+///
+/// \param titulo Mensaje a mostrar
+/// \param mensajeError Mensaje ante caso de error
+/// \param valorConfirmacion puntero al valor que determina la confirmacion
+/// \return Retorna 1 en caso de exito, 0 en caso de que algun puntero sea invalido, y -1 si la opcion es incorrecta
+int menu_salir(char *titulo, char *mensajeError, int *valorConfirmacion);
+
 #endif /* MENU_H_ */

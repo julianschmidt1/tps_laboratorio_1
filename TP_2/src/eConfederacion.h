@@ -105,11 +105,4 @@ eConfederacion abm_modificacionConfederacion(eConfederacion Confederacion);
 /// \return Retorna 1 en caso de que las modificaciones sean aceptadas y 0 en caso de que se rechace o error
 int abm_listadoModificacionConfederacion(eConfederacion lista[], int tam);
 
-/// \brief Funcion que compara un contador de altas y bajas para comprobar si existen usuarios cargados hasta el momento
-///
-/// \param contadorAltas variable contador numerica
-/// \param contadorBajas variable contador numerica
-/// \return Retorna 1 si difiere la cantidad de altas con bajas y 0 si son iguales
-int validarIngresoOpciones(int contadorAltas, int contadorBajas);
-
 #endif /* ECONFEDERACION_H_ */

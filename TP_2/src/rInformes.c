@@ -147,7 +147,7 @@ int informe_mostrarPorcentajeJugadoresConfederacion(
 		}
 
 		for (int i = 0; i < tamConfederaciones; i++) {
-			printf("\nConfederacion: %s tiene un: %2.f%% de los jugadores.",
+			printf("\nConfederacion: %s tiene un: %.2f%% de los jugadores.",
 					confederaciones[i].nombre,
 					op_calcularPorcentaje(
 							(float) contadoresJugadoresDeConfederaciones[i],
@@ -210,18 +210,21 @@ int informe_mostrarTotalPromedioJugadores(eJugador *jugadores, int tamJugadores)
 
 	if (jugadores != NULL && tamJugadores > 0) {
 		for (i = 0; i < tamJugadores; i++) {
-			totalSalarios += jugadores[i].salario;
+			if (jugadores[i].isEmpty == OCUPADO) {
+				totalSalarios = op_sumar(totalSalarios, jugadores[i].salario);
+			}
 		}
-		promedioSalarios = (float) (totalSalarios / i);
+		promedioSalarios = op_dividir(totalSalarios, i);
 
 		for (i = 0; i < tamJugadores; i++) {
-			if (jugadores[i].salario > promedioSalarios) {
+			if (jugadores[i].salario
+					> promedioSalarios&& jugadores[i].isEmpty == OCUPADO) {
 				contadorMayoresPromedio++;
 			}
 		}
 
-		printf("\n SALARIO TOTAL: %f", totalSalarios);
-		printf("\n SALARIO PROMEDIO: %f", promedioSalarios);
+		printf("\n SALARIO TOTAL: %.2f", totalSalarios);
+		printf("\n SALARIO PROMEDIO: %.2f", promedioSalarios);
 		printf(
 				"\n CANTIDAD DE JUGADORES QUE COBRAN MAS DEL SALARIO PROMEDIO: %d",
 				contadorMayoresPromedio);

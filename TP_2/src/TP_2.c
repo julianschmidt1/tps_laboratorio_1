@@ -18,7 +18,7 @@
 
 int main(void) {
 	setbuf(stdout, NULL);
-	eJugador jugadores[MAX_JUGADORES];
+//	eJugador jugadores[MAX_JUGADORES];
 	eConfederacion confederaciones[MAX_CONFEDERACIONES] = { { 100, "CONMEBOL",
 			"SUDAMERICA", 1916, -1 }, { 101, "UEFA", "EUROPA", 1954, -1 }, {
 			102, "AFC", "ASIA", 1954, -1 }, { 103, "CAF", "AFRICA", 1957, -1 },
@@ -30,27 +30,30 @@ int main(void) {
 	eJugador nuevoJugador;
 	int confirmarSalida;
 	int contadorAltas = 0;
-	int contadorBajas = 0;
 	int opcionInformes;
 
-	if (!abm_inicializarJugador(jugadores, MAX_JUGADORES)) {
-		puts(
-				" ----------- OCURRIO UN ERROR AL INICIALIZAR JUGADORES ------------");
-	}
+//	if (!abm_inicializarJugador(jugadores, MAX_JUGADORES)) {
+//		puts(
+//				" ----------- OCURRIO UN ERROR AL INICIALIZAR JUGADORES ------------");
+//	}
 
-	// Si queres testar rapido podes descomentar esto. podes cambiarle el tam a los jugadores para ver una cantidad normalita. Me sirvio para propositos de testing, suerte
-	/*for (int i = 0; i < MAX_JUGADORES; i++) {
-	 eJugador hardcodeado = { "Test user", "Delantero", 1, 100 + i, 9999 + i,
-	 1 + i, i, -1 };
-	 contadorAltas++;
-	 if (i < 5) {
-	 abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, hardcodeado);
-	 } else {
-	 eJugador test = { "Test user", "Delantero", 1, 100, 9999 + i, 1 + i,
-	 i, -1 };
-	 abm_altaJugador(jugadores, MAX_JUGADORES, i + 1, test);
-	 }
-	 }*/
+	int OK = -1;
+	eJugador jugadores[15] = { { 1, "Emiliano Martinez", "ARQUERO", 1, 100,
+			100000, 4, OK },
+			{ 2, "Juan Musso", "ARQUERO", 12, 100, 80000, 2, OK }, { 3,
+					"Leo Messi", "DELANTERO", 10, 100, 80000, 4, OK }, { 4,
+					"Almirez Ali", "DELANTERO", 9, 100, 55000, 1, OK }, { 5,
+					"Harry Maguire", "DEFENSOR", 2, 101, 70000, 4, OK }, { 6,
+					"Eric Dier", "DEFENSOR", 3, 101, 60000, 2, OK }, { 7,
+					"Harry Kane", "DELANTERO", 10, 101, 3000, 2, OK }, { 8,
+					"Alfred Gomis", "ARQUERO", 1, 101, 9000, 1, OK },
+			{ 9, "Abdelkarim Hassan", "MEDIOCAMPISTA", 8, 101, 48000, 1, OK }, {
+					10, "Guillermo Ochoa", "ARQUERO", 1, 104, 90000, 4, OK }, {
+					11, "Tecatito", "DELANTERO", 11, 104, 100000, 3, OK }, { 12,
+					"Luis Romo", "MEDIOCAMPISTA", 7, 104, 100000, 2, OK }, { 13,
+					"Bamba Dieng ", "DELANTERO", 9, 103, 100000, 2, OK }, { 14,
+					"Demba Seck", "DELANTERO", 11, 103, 6000, 2, OK }, { 15,
+					"Tarek Salman", "DEFENSOR", 6, 102, 78000, 5, OK } };
 
 	do {
 		opcionSeleccionada = menu_opciones(
@@ -61,17 +64,26 @@ int main(void) {
 						"\n 4. INFORMES"
 						"\n 5. SALIR", "\nError, opcion invalida.", 1, 5);
 
+		for (int i = 0; i < MAX_JUGADORES; i++) {
+			if (jugadores[i].isEmpty == OCUPADO) {
+				contadorAltas++;
+			}
+		}
+
 		switch (opcionSeleccionada) {
 		case 1:
+
 			utn_getString("\nIngrese el nombre del jugador: ",
 					"\nError. Nombre invalido. Ingrese el nombre del jugador",
 					9999,
 					MAX_CHARS, nuevoJugador.nombre);
 
-			utn_getString("\nIngrese la posicion del jugador: ",
-					"\nError. Posicion invalida. Ingrese el nombre del jugador",
-					9999,
-					MAX_CHARS, nuevoJugador.posicion);
+			while (validarPosicionJugador(nuevoJugador.posicion) != 1) {
+				utn_getString("\nIngrese la posicion del jugador: ",
+						"\nError. Posicion invalida. Ingrese el nombre del jugador",
+						1,
+						MAX_CHARS, nuevoJugador.posicion);
+			}
 
 			utn_getNumeroShort(&nuevoJugador.numeroCamiseta,
 					"\nIngrese el numero de camiseta: ",
@@ -105,7 +117,6 @@ int main(void) {
 			if (abm_altaJugador(jugadores, MAX_JUGADORES, idJugador,
 					nuevoJugador)) {
 				puts("\n\n ---- JUGADOR DADO DE ALTA EXITOSAMENTE ------");
-				contadorAltas++;
 			} else {
 				puts(
 						"\n\n ---- OCURRIO UN ERROR EN EL ALTA DEL JUGADOR  ---- ");
@@ -113,28 +124,35 @@ int main(void) {
 
 			break;
 		case 2:
-			if (validarIngresoOpciones(contadorAltas, contadorBajas)) {
-				abm_listadoBajaJugador(jugadores, MAX_JUGADORES,
+			if (contadorAltas > 0) {
+				if (abm_listadoBajaJugador(jugadores, MAX_JUGADORES,
 						confederaciones,
-						MAX_CONFEDERACIONES);
-				contadorBajas++;
+						MAX_CONFEDERACIONES)) {
+					puts("\n\n ---- JUGADOR DADO DE BAJA EXITOSAMENTE ------");
+				} else {
+					puts("\n\n ---- BAJA CANCELADA ------");
+				}
 			} else {
 				puts(
 						"\n---NO ES POSIBLE LISTAR USUARIOS SI NO FUERON PREVIAMENTE CARGADOS -----");
 			}
 			break;
 		case 3:
-			if (validarIngresoOpciones(contadorAltas, contadorBajas)) {
-				abm_listadoModificacionJugador(jugadores, MAX_JUGADORES,
+			if (contadorAltas > 0) {
+				if (abm_listadoModificacionJugador(jugadores, MAX_JUGADORES,
 						confederaciones,
-						MAX_CONFEDERACIONES);
+						MAX_CONFEDERACIONES)) {
+					puts("\n\n ---- JUGADOR MODIFICADO EXITOSAMENTE ------");
+				} else {
+					puts("\n\n ---- MODIFICACION CANCELADA ------");
+				}
 			} else {
 				puts(
 						"\n---NO ES POSIBLE LISTAR USUARIOS SI NO FUERON PREVIAMENTE CARGADOS -----");
 			}
 			break;
 		case 4:
-			if (validarIngresoOpciones(contadorAltas, contadorBajas)) {
+			if (contadorAltas > 0) {
 				do {
 
 					opcionInformes =
@@ -192,15 +210,17 @@ int main(void) {
 			}
 			break;
 		case 5:
-			utn_getNumero(&confirmarSalida,
+			if (menu_salir(
 					"\nEsta seguro que desea salir del programa? (1. SI | 0. NO) \nIngrese la opcion: ",
-					"\nError. Opcion ingresada invalida. Intentelo nuevamente",
-					0, 1, 9999);
-			if (confirmarSalida) {
-				puts("\n GRACIAS POR USAR EL SISTEMA.");
-			} else {
-				puts("\n Volviendo al menu principal ...");
+					"\nError. Opcion ingresada invalida.", &confirmarSalida)
+					== 1) {
+				if (confirmarSalida == 1) {
+					puts("\n GRACIAS POR USAR EL SISTEMA.");
+				} else {
+					puts("\n Volviendo al menu principal ...");
+				}
 			}
+
 			break;
 		}
 

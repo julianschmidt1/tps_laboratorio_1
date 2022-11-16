@@ -78,6 +78,24 @@ void abm_mostrarUnJugador(eJugador Jugador, eConfederacion *confederaciones,
 			Jugador.aniosContrato);
 }
 
+int validarPosicionJugador(char *posicion) {
+	int rtn = 0;
+	char auxPosicion[MAX_CHARS];
+
+	if (posicion != NULL) {
+		strcpy(auxPosicion, strupr(posicion));
+		if (!strcmp(auxPosicion, "ARQUERO") || !strcmp(auxPosicion, "DEFENSOR")
+				|| !strcmp(auxPosicion, "MEDIOCAMPISTA")
+				|| !strcmp(auxPosicion, "DELANTERO")) {
+			strcpy(posicion, auxPosicion);
+			rtn = 1;
+		} else {
+			rtn = -1;
+		}
+	}
+	return rtn;
+}
+
 int abm_mostrarTodosJugador(eJugador *lista, int tam,
 		eConfederacion *confederaciones, int tamConfederaciones) {
 	int i;
@@ -151,9 +169,9 @@ int abm_listadoBajaJugador(eJugador *lista, int tam,
 		abm_mostrarUnJugador(
 				lista[abm_encontrarJugadorPorId(lista, tam, idJugador)],
 				confederaciones, tamConfederacion);
-		utn_getNumero(&confirmar,
-				"\nEsta seguro que desea dar de baja? (1. SI - 0. NO)",
-				"Opcion incorrecta", 0, 1, 9999);
+		menu_salir(
+				"\nEsta seguro que quiere modificar el usuario? (1. SI - 0. NO): ",
+				"\nOpcion incorrecta", &confirmar);
 		if (confirmar) {
 			abm_bajaJugador(lista, tam, idJugador);
 			rtn = 1;
@@ -170,8 +188,6 @@ int abm_bajaJugador(eJugador *lista, int tam, int id) {
 	index = abm_encontrarJugadorPorId(lista, tam, id);
 	if (index != -1) {
 		lista[index].isEmpty = BAJA;
-		//printf("\n ---- Usuario: %s %s dado de baja exitosamente ---- \n",
-		//	lista[index].name, lista[index].lastName);
 		rtn = 1;
 	}
 
@@ -204,10 +220,13 @@ eJugador abm_modificacionJugador(eJugador Jugador,
 					MAX_CHARS, auxiliarJugador.nombre);
 			break;
 		case 2:
-			utn_getString("\nIngrese la posicion del jugador: ",
-					"\nError. Posicion invalida. Ingrese el nombre del jugador",
-					9999,
-					MAX_CHARS, auxiliarJugador.posicion);
+			do {
+				utn_getString("\nIngrese la posicion del jugador: ",
+						"\nError. Posicion invalida. Ingrese la posicion del jugador",
+						1,
+						MAX_CHARS, auxiliarJugador.posicion);
+			} while (validarPosicionJugador(auxiliarJugador.posicion) != 1);
+
 			break;
 		case 3:
 			utn_getNumeroShort(&auxiliarJugador.numeroCamiseta,
@@ -280,11 +299,10 @@ int abm_listadoModificacionJugador(eJugador *lista, int tam,
 		abm_mostrarUnJugador(lista[index], confederaciones, tamConfederaciones);
 		auxiliar = abm_modificacionJugador(lista[index], confederaciones,
 				tamConfederaciones);
-		puts("\nUsuario a modificar: ");
 
-		utn_getNumero(&confirmar,
-				"\nEsta seguro que modificar el usuario? (1. SI - 0. NO): ",
-				"\nOpcion incorrecta", 0, 1, 9999);
+		menu_salir(
+				"\nEsta seguro que quiere modificar el usuario? (1. SI - 0. NO): ",
+				"\nOpcion incorrecta", &confirmar);
 		if (confirmar) {
 			lista[index] = auxiliar;
 			rtn = 1;
