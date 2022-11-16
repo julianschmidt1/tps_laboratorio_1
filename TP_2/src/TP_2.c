@@ -18,7 +18,7 @@
 
 int main(void) {
 	setbuf(stdout, NULL);
-//	eJugador jugadores[MAX_JUGADORES];
+	eJugador jugadores[MAX_JUGADORES];
 	eConfederacion confederaciones[MAX_CONFEDERACIONES] = { { 100, "CONMEBOL",
 			"SUDAMERICA", 1916, -1 }, { 101, "UEFA", "EUROPA", 1954, -1 }, {
 			102, "AFC", "ASIA", 1954, -1 }, { 103, "CAF", "AFRICA", 1957, -1 },
@@ -32,28 +32,28 @@ int main(void) {
 	int contadorAltas = 0;
 	int opcionInformes;
 
-//	if (!abm_inicializarJugador(jugadores, MAX_JUGADORES)) {
-//		puts(
-//				" ----------- OCURRIO UN ERROR AL INICIALIZAR JUGADORES ------------");
-//	}
+	if (!abm_inicializarJugador(jugadores, MAX_JUGADORES)) {
+		puts(
+				" ----------- OCURRIO UN ERROR AL INICIALIZAR JUGADORES ------------");
+	}
 
-	int OK = -1;
-	eJugador jugadores[15] = { { 1, "Emiliano Martinez", "ARQUERO", 1, 100,
-			100000, 4, OK },
-			{ 2, "Juan Musso", "ARQUERO", 12, 100, 80000, 2, OK }, { 3,
-					"Leo Messi", "DELANTERO", 10, 100, 80000, 4, OK }, { 4,
-					"Almirez Ali", "DELANTERO", 9, 100, 55000, 1, OK }, { 5,
-					"Harry Maguire", "DEFENSOR", 2, 101, 70000, 4, OK }, { 6,
-					"Eric Dier", "DEFENSOR", 3, 101, 60000, 2, OK }, { 7,
-					"Harry Kane", "DELANTERO", 10, 101, 3000, 2, OK }, { 8,
-					"Alfred Gomis", "ARQUERO", 1, 101, 9000, 1, OK },
-			{ 9, "Abdelkarim Hassan", "MEDIOCAMPISTA", 8, 101, 48000, 1, OK }, {
-					10, "Guillermo Ochoa", "ARQUERO", 1, 104, 90000, 4, OK }, {
-					11, "Tecatito", "DELANTERO", 11, 104, 100000, 3, OK }, { 12,
-					"Luis Romo", "MEDIOCAMPISTA", 7, 104, 100000, 2, OK }, { 13,
-					"Bamba Dieng ", "DELANTERO", 9, 103, 100000, 2, OK }, { 14,
-					"Demba Seck", "DELANTERO", 11, 103, 6000, 2, OK }, { 15,
-					"Tarek Salman", "DEFENSOR", 6, 102, 78000, 5, OK } };
+//	int OK = -1;
+//	eJugador jugadores[15] = { { 1, "Emiliano Martinez", "ARQUERO", 1, 100,
+//			100000, 4, OK },
+//			{ 2, "Juan Musso", "ARQUERO", 12, 100, 80000, 2, OK }, { 3,
+//					"Leo Messi", "DELANTERO", 10, 100, 80000, 4, OK }, { 4,
+//					"Almirez Ali", "DELANTERO", 9, 100, 55000, 1, OK }, { 5,
+//					"Harry Maguire", "DEFENSOR", 2, 101, 70000, 4, OK }, { 6,
+//					"Eric Dier", "DEFENSOR", 3, 101, 60000, 2, OK }, { 7,
+//					"Harry Kane", "DELANTERO", 10, 101, 3000, 2, OK }, { 8,
+//					"Alfred Gomis", "ARQUERO", 1, 101, 9000, 1, OK },
+//			{ 9, "Abdelkarim Hassan", "MEDIOCAMPISTA", 8, 101, 48000, 1, OK }, {
+//					10, "Guillermo Ochoa", "ARQUERO", 1, 104, 90000, 4, OK }, {
+//					11, "Tecatito", "DELANTERO", 11, 104, 100000, 3, OK }, { 12,
+//					"Luis Romo", "MEDIOCAMPISTA", 7, 104, 100000, 2, OK }, { 13,
+//					"Bamba Dieng ", "DELANTERO", 9, 103, 100000, 2, OK }, { 14,
+//					"Demba Seck", "DELANTERO", 11, 103, 6000, 2, OK }, { 15,
+//					"Tarek Salman", "DEFENSOR", 6, 102, 78000, 5, OK } };
 
 	do {
 		opcionSeleccionada = menu_opciones(
@@ -67,6 +67,7 @@ int main(void) {
 		for (int i = 0; i < MAX_JUGADORES; i++) {
 			if (jugadores[i].isEmpty == OCUPADO) {
 				contadorAltas++;
+				break;
 			}
 		}
 
