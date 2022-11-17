@@ -172,7 +172,32 @@ int jug_getSIdSeleccion(Jugador *this, int *idSeleccion) {
 	return rtn;
 }
 
-// ordenamiento
+// funciones auxiliares
+
+int validarPosicionJugador(char *posicion) {
+	int rtn = 0;
+	char auxPosicion[POSICION_CHARS];
+	if (posicion != NULL) {
+		strcpy(auxPosicion, strupr(posicion));
+		if (!strcmp(auxPosicion, "PORTERO")
+				|| !strcmp(auxPosicion, "DEFENSA CENTRAL")
+				|| !strcmp(auxPosicion, "LATERAL IZQUIERDO")
+				|| !strcmp(auxPosicion, "LATERAL DERECHO")
+				|| !strcmp(auxPosicion, "PIVOTE")
+				|| !strcmp(auxPosicion, "MEDIOCENTRO")
+				|| !strcmp(auxPosicion, "EXTREMO IZQUIERDO")
+				|| !strcmp(auxPosicion, "EXTREMO DERECHO")
+				|| !strcmp(auxPosicion, "MEDIAPUNTA")
+				|| !strcmp(auxPosicion, "DELANTERO CENTRO")) {
+			strcpy(posicion, auxPosicion);
+			rtn = 1;
+		} else {
+			rtn = -1;
+		}
+	}
+	return rtn;
+}
+
 int jug_ordenarPorNacionalidad(void *pPrimerJugador, void *pSegundoJugador) {
 	int rtn = 0;
 	Jugador *auxPrimerJugador;

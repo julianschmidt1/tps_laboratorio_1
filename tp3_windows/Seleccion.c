@@ -15,64 +15,21 @@ Seleccion* selec_newParametros(char *idStr, char *paisStr,
 
 	if (pSeleccion != NULL && idStr != NULL && paisStr != NULL
 			&& confederacionStr != NULL && convocadosStr != NULL) {
-		if (!(selec_setId(pSeleccion, atoi(idStr))
-				&& selec_setConfederacion(pSeleccion, confederacionStr)
-				&& selec_setConvocados(pSeleccion, atoi(convocadosStr))
-				&& selec_setPais(pSeleccion, paisStr))) {
-			free(pSeleccion);
-			pSeleccion = NULL;
-		}
+		pSeleccion->id = atoi(idStr);
+		strcpy(pSeleccion->confederacion, confederacionStr);
+		strcpy(pSeleccion->pais, paisStr);
+		selec_setConvocados(pSeleccion, atoi(convocadosStr));
 	} else {
-		puts("\nOcurrio un error.");
+		puts("\nOcurrio un error");
 	}
 	return pSeleccion;
-}
-
-//  --------- SETTERS ---------
-
-int selec_setPais(Seleccion *this, char *pais) {
-	int rtn = 0;
-	if (this != NULL && pais != NULL && strlen(pais) <= MAX_CHARS) {
-		strcpy(this->pais, pais);
-		rtn = 1;
-	} else {
-		puts("\nPAIS INVALIDO.");
-	}
-
-	return rtn;
-}
-
-int selec_setId(Seleccion *this, int id) {
-	int rtn = 0;
-
-	if (this != NULL) {
-		this->id = id;
-		rtn = 1;
-	}
-
-	return rtn;
 }
 
 void selec_delete(Seleccion *this) {
 	free(this);
 }
 
-int selec_setConfederacion(Seleccion *this, char *confederacion) {
-	int rtn = 0;
-
-	char auxCadena[MAX_CHARS];
-	if (this != NULL && confederacion != NULL
-			&& strlen(confederacion) <= MAX_CHARS) {
-		strcpy(auxCadena, confederacion);
-		//strlwr(auxCadena);
-		strcpy(this->confederacion, confederacion);
-		rtn = 1;
-	} else {
-		puts("\nPOSICION INVALIDA");
-	}
-
-	return rtn;
-}
+//  --------- SETTERS ---------
 
 int selec_setConvocados(Seleccion *this, int convocados) {
 	int rtn = 0;

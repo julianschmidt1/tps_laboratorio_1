@@ -17,10 +17,10 @@ int main() {
 	int auxIdJugador;
 	Jugador *pAuxJugador;
 	int auxIdSeleccion;
-	int auxUltimoId;
+	int auxUltimoId = 0;
 	char auxNombreCompleto[NOMBRE_CHARS];
 	int flagCargaArchivos = 0;
-	int flagGuardarArchivos = 0;
+	int flagGuardarArchivos = 1;
 	int confirmarSalida;
 
 	do {
@@ -184,29 +184,35 @@ int main() {
 			}
 			break;
 		case 8:
-			controller_crearListaJugadoresConvocados(listaJugadores,
-					listaSelecciones, listaJugadoresConvocados);
-			if (controller_guardarJugadoresModoBinario("convocados.bin",
-					listaJugadoresConvocados)) {
-				puts("\n Lista guardada OK ");
+			if (controller_crearListaJugadoresConvocados(listaJugadores,
+					listaSelecciones, listaJugadoresConvocados)) {
+				if (controller_guardarJugadoresModoBinario("convocados.bin",
+						listaJugadoresConvocados)) {
+					puts("\n Lista guardada OK ");
+				}
 			}
 			break;
 		case 9:
-			controller_cargarJugadoresDesdeBinario("convocados.bin",
-					listaJugadoresConvocados);
-			controller_listarJugadores(listaJugadoresConvocados);
+			if (controller_cargarJugadoresDesdeBinario("convocados.bin",
+					listaJugadoresConvocados)) {
+				controller_listarJugadores(listaJugadoresConvocados);
+			}
 			break;
 		case 10:
-			controller_guardarJugadoresModoTexto("jugadores.csv",
-					listaJugadores);
-			controller_guardarSeleccionesModoTexto("selecciones.csv",
-					listaSelecciones);
-			if (auxUltimoId != 0) {
-				auxUltimoId++;
-				controller_guardarUltimoId("ultimoId.bin", &auxUltimoId);
+			if (!flagGuardarArchivos) {
+				controller_guardarJugadoresModoTexto("jugadores.csv",
+						listaJugadores);
+				controller_guardarSeleccionesModoTexto("selecciones.csv",
+						listaSelecciones);
+				if (auxUltimoId != 0) {
+					auxUltimoId++;
+					controller_guardarUltimoId("ultimoId.bin", &auxUltimoId);
+				}
+				puts("\nCambios guardados exitosamente!");
+				flagGuardarArchivos = 1;
+			} else {
+				puts("\nNo hay cambios para guardar");
 			}
-			puts("\nCambios guardados exitosamente!");
-			flagGuardarArchivos = 1;
 			break;
 		case 11:
 			if (!flagGuardarArchivos) {
@@ -215,6 +221,9 @@ int main() {
 				utn_getNumero(&confirmarSalida, "\nIngrese la opcion: ",
 						"\nOpcion invalida. Ingrese la opcion: ", 0, 1, 999999);
 			} else {
+				ll_deleteLinkedList(listaJugadores);
+				ll_deleteLinkedList(listaSelecciones);
+				ll_deleteLinkedList(listaJugadoresConvocados);
 				confirmarSalida = 1;
 			}
 			break;

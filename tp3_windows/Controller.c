@@ -32,6 +32,7 @@ int controller_cargarJugadoresDesdeTexto(char *path,
 					puts("\nERROR. Ocurrio un error al cargar el archivo");
 				}
 			} else {
+				rtn = -1;
 				puts("\nLa lista no esta vacia.");
 			}
 		}
@@ -58,6 +59,7 @@ int controller_cargarJugadoresDesdeBinario(char *path,
 		if (ll_isEmpty(pArrayListJugador)) {
 			if (parser_JugadorFromBinary(pFile, pArrayListJugador)) {
 				puts("\n ---- Archivo cargado con exito ---- ");
+				rtn = 1;
 			} else {
 				puts("\nERROR. Ocurrio un error al cargar el archivo");
 			}
@@ -103,13 +105,21 @@ int controller_agregarJugador(LinkedList *pArrayListJugador) {
 					&& utn_getNumero(&auxBufferJugador.edad,
 							"\nIngrese la edad: ",
 							"\nEdad invalida. Ingrese la edad: ", 18, 100, 9999)
-					&& utn_getString("\nIngrese la posicion: ",
-							"\nPosicion invalida. Ingrese la posicion: ", 9999,
-							POSICION_CHARS, auxBufferJugador.posicion) == 0
 					&& utn_getString("\nIngrese la nacionalidad: ",
 							"\nnacionalidad invalida. Ingrese la nacionalidad: ",
 							9999, NACIONALIDAD_CHARS,
 							auxBufferJugador.nacionalidad) == 0) {
+				menu_mostrarPosiciones();
+				while (validarPosicionJugador(auxBufferJugador.posicion) == -1) {
+
+					utn_getString("\nIngrese la posicion: ",
+							"\nPosicion invalida. Ingrese la posicion: ", 9999,
+							POSICION_CHARS, auxBufferJugador.posicion);
+					if (validarPosicionJugador(auxBufferJugador.posicion)
+							== -1) {
+						puts("\nPosicion invalida");
+					}
+				}
 
 				if (!(jug_setNombreCompleto(nuevoJugador,
 						auxBufferJugador.nombreCompleto)
@@ -305,7 +315,7 @@ Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
 				}
 			}
 			if (rtn != pJugador) {
-				printf("\nNo se encontro el id");
+				rtn = NULL;
 			}
 		}
 	}
@@ -367,28 +377,28 @@ int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 int controller_removerJugador(LinkedList *pArrayListJugador,
 		LinkedList *pArrayListSeleccion) {
 	int rtn = 0;
-	int auxIdSeleccionado;
-	Jugador *pAuxJugador;
+	int auxIdSeleccionado = -1;
+	Jugador *pAuxJugador = NULL;
 	int indiceJugador;
 	int auxIdSeleccion;
 
 	if (pArrayListJugador != NULL && pArrayListSeleccion) {
 		controller_listarJugadores(pArrayListJugador);
-		utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
-				"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
-		while (controller_buscarJugadorPorId(pArrayListJugador,
-				auxIdSeleccionado) == NULL) {
+
+		while (pAuxJugador == NULL) {
 			utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
 					"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
+			pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
+					auxIdSeleccionado);
+			if (pAuxJugador == NULL) {
+				puts("\nNo se encontro el id");
+			}
 		}
 
-		pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
-				auxIdSeleccionado);
 		jug_getSIdSeleccion(pAuxJugador, &auxIdSeleccion);
 
 		if (menu_opciones("\n\nEsta seguro de que desea eliminar el jugador? ",
-				"\n(1. SI | 2. NO)", "\nOpcion invalida. Ingrese la opcion: ",
-				1, 2) == 1) {
+				"\n(1. SI | 2. NO)", "\nOpcion invalida.", 1, 2) == 1) {
 			indiceJugador = ll_indexOf(pArrayListJugador, pAuxJugador);
 			if (ll_remove(pArrayListJugador, indiceJugador) == 0) {
 				selec_eliminarUnConvocado(pArrayListSeleccion, auxIdSeleccion);
@@ -420,21 +430,18 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 	if (pArrayListJugador != NULL) {
 		controller_listarJugadores(pArrayListJugador);
 
-		utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
-				"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
-		while (controller_buscarJugadorPorId(pArrayListJugador,
-				auxIdSeleccionado) == NULL) {
+		while (pAuxJugador == NULL) {
 			utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
 					"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
+			pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
+					auxIdSeleccionado);
+			if (pAuxJugador == NULL) {
+				puts("\nNo se encontro el id");
+			}
 		}
 
-		pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
-				auxIdSeleccionado);
-
 		if (pAuxJugador != NULL) {
-
 			do {
-
 				opcion = menu_opciones(
 						"\n ---------- Edicion de usuario ----------",
 						"\n1. Editar nombre"
@@ -478,18 +485,23 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 					}
 					break;
 				case 3:
+					menu_mostrarPosiciones();
 					utn_getString("\nIngrese la posicion: ",
 							"\nError. Nombre invalido. ", 9999, POSICION_CHARS,
 							auxJugador.posicion);
-					if (menu_opciones("\nEsta seguro que desea modificar?",
-							"(1. SI | 2. NO )",
-							"\nOpcion invalida. Ingrese la opcion: ", 1, 2)
-							== 1) {
-						jug_setPosicion(pAuxJugador, auxJugador.posicion);
-						puts("\n ---- Modificacion exitosa ---- \n");
-						rtn = 1;
+					if (validarPosicionJugador(auxJugador.posicion) != -1) {
+						if (menu_opciones("\nEsta seguro que desea modificar?",
+								"(1. SI | 2. NO )",
+								"\nOpcion invalida. Ingrese la opcion: ", 1, 2)
+								== 1) {
+							jug_setPosicion(pAuxJugador, auxJugador.posicion);
+							puts("\n ---- Modificacion exitosa ---- \n");
+							rtn = 1;
+						} else {
+							puts("\n ---- Modificacion cancelada ---- \n");
+						}
 					} else {
-						puts("\n ---- Modificacion cancelada ---- \n");
+						puts("\nPosicion invalida");
 					}
 					break;
 				case 4:
@@ -643,6 +655,7 @@ int controller_cargarSeleccionesDesdeTexto(char *path,
 					puts("\nERROR. Ocurrio un error al cargar el archivo");
 				}
 			} else {
+				rtn = -1;
 				puts("\nLa lista no esta vacia.");
 			}
 		}

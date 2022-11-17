@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "menu.h"
 
 #define NOMBRE_CHARS 100
 #define POSICION_CHARS 30
@@ -48,5 +49,6 @@ int jug_getSIdSeleccion(Jugador *this, int *idSeleccion);
 int jug_ordenarPorNacionalidad(void *pPrimerJugador, void *pSegundoJugador);
 int jug_ordenarPorEdad(void *pPrimerJugador, void *pSegundoJugador);
 int jug_ordenarPorNombreCompleto(void *pPrimerJugador, void *pSegundoJugador);
+int validarPosicionJugador(char *posicion);
 
 #endif // jug_H_INCLUDED
