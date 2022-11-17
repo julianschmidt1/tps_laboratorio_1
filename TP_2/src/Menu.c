@@ -42,3 +42,9 @@ int menu_salir(char *titulo, char *mensajeError, int *valorConfirmacion) {
 
 	return rtn;
 }
+
+void menu_mostrarPosiciones(void) {
+	puts(
+			"\n POSICIONES:\n- ARQUERO\n- DEFENSOR\n- MEDIOCAMPISTA\n- DELANTERO\n\n");
+}
+

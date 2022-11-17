@@ -220,6 +220,7 @@ eJugador abm_modificacionJugador(eJugador Jugador,
 					MAX_CHARS, auxiliarJugador.nombre);
 			break;
 		case 2:
+			menu_mostrarPosiciones();
 			do {
 				utn_getString("\nIngrese la posicion del jugador: ",
 						"\nError. Posicion invalida. Ingrese la posicion del jugador",

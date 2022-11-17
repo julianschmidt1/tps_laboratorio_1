@@ -79,6 +79,7 @@ int main(void) {
 					9999,
 					MAX_CHARS, nuevoJugador.nombre);
 
+			menu_mostrarPosiciones();
 			while (validarPosicionJugador(nuevoJugador.posicion) != 1) {
 				utn_getString("\nIngrese la posicion del jugador: ",
 						"\nError. Posicion invalida. Ingrese el nombre del jugador",
