@@ -212,8 +212,8 @@ int jug_ordenarPorNacionalidad(void *pPrimerJugador, void *pSegundoJugador) {
 		if (jug_getNacionalidad(auxPrimerJugador, nacionalidadPrimerJugador)
 				&& jug_getNacionalidad(auxSegundoJugador,
 						nacionalidadSegundoJugador)) {
-			resultadoOrdenamiento = strncmp(nacionalidadPrimerJugador,
-					nacionalidadSegundoJugador, NACIONALIDAD_CHARS);
+			resultadoOrdenamiento = stricmp(nacionalidadPrimerJugador,
+					nacionalidadSegundoJugador);
 			if (resultadoOrdenamiento > 0) {
 				rtn = 1;
 			} else {
@@ -240,8 +240,8 @@ int jug_ordenarPorNombreCompleto(void *pPrimerJugador, void *pSegundoJugador) {
 		if (jug_getNombreCompleto(auxPrimerJugador, nombrePrimerJugador)
 				&& jug_getNombreCompleto(auxSegundoJugador,
 						nombreSegundoJugador)) {
-			resultadoOrdenamiento = strncmp(nombrePrimerJugador,
-					nombreSegundoJugador, NACIONALIDAD_CHARS);
+			resultadoOrdenamiento = stricmp(nombrePrimerJugador,
+					nombreSegundoJugador);
 			if (resultadoOrdenamiento > 0) {
 				rtn = 1;
 			} else {

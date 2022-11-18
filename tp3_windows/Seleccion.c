@@ -130,3 +130,22 @@ int selec_ordenarPorConfederacion(void *pPrimerSeleccion,
 	return rtn;
 }
 
+// auxiliares
+
+int selec_encontrarPaisDeSeleccion(LinkedList *pArrayListSeleccion,
+		int idBusqueda, char *paisBuscado) {
+	int rtn = 0;
+	Seleccion *pSeleccion;
+
+	if (pArrayListSeleccion != NULL && paisBuscado != NULL) {
+		pSeleccion = controller_buscarSeleccionPorId(pArrayListSeleccion,
+				idBusqueda);
+		if (!selec_getPais(pSeleccion, paisBuscado)) {
+			strcpy(paisBuscado, "No convocado");
+		}
+		rtn = 1;
+	}
+
+	return rtn;
+}
+

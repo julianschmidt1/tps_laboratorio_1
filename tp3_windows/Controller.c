@@ -71,6 +71,34 @@ int controller_cargarJugadoresDesdeBinario(char *path,
 	return rtn;
 }
 
+Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
+		int idBusqueda) {
+	Seleccion *rtn = NULL;
+	int tamArray;
+	int i;
+	int auxIdSeleccion;
+	Seleccion *pSeleccion;
+	if (pArrayListSeleccion != NULL) {
+		if (!ll_isEmpty(pArrayListSeleccion)) {
+			tamArray = ll_len(pArrayListSeleccion);
+			for (i = 0; i < tamArray; i++) {
+				pSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
+				selec_getId(pSeleccion, &auxIdSeleccion);
+				if (auxIdSeleccion == idBusqueda) {
+					rtn = pSeleccion;
+					break;
+				}
+			}
+			if (rtn != pSeleccion) {
+				// REVISAR
+				//printf("\nNo se encontro el id");
+			}
+		}
+	}
+
+	return rtn;
+}
+
 /** \brief Alta de jugadores
  *
  * \param path char*
@@ -161,6 +189,41 @@ int controller_guardarUltimoId(char *path, int *pId) {
 	return rtn;
 }
 
+/** \brief Carga los datos de los selecciones desde el archivo selecciones.csv (modo texto).
+ *
+ * \param path char*
+ * \param pArrayListSeleccion LinkedList*
+ * \return int
+ *
+ */
+int controller_cargarSeleccionesDesdeTexto(char *path,
+		LinkedList *pArrayListSeleccion) {
+	int rtn = 0;
+
+	FILE *pFile = fopen(path, "r");
+
+	if (path != NULL && pArrayListSeleccion != NULL) {
+		if (pFile == NULL) {
+			puts("\nERROR. No es posible abrir el archivo");
+		} else {
+			if (ll_isEmpty(pArrayListSeleccion)) {
+				if (parser_SeleccionFromText(pFile, pArrayListSeleccion)) {
+					printf("\nSelecciones cargadas con exito");
+					rtn = 1;
+				} else {
+					puts("\nERROR. Ocurrio un error al cargar el archivo");
+				}
+			} else {
+				rtn = -1;
+				puts("\nLa lista no esta vacia.");
+			}
+		}
+	}
+
+	fclose(pFile);
+	return rtn;
+}
+
 /** \brief Listar jugadores
  *
  * \param path char*
@@ -173,21 +236,27 @@ int controller_listarJugadores(LinkedList *pArrayListJugador) {
 	int arrayTam;
 	Jugador *pJugador;
 	Jugador auxJugador;
+	LinkedList *pAuxArrayListSelecciones = ll_newLinkedList();
+	char auxPaisDeSeleccion[MAX_CHARS];
 
-	if (pArrayListJugador != NULL) {
+	// Levanto los datos de las selecciones desde el archivo y los almaceno en un auxiliar (Asi puedo hacer la relacion entre idSeleccion y el pais al que pertenece).
+	// Me parece mucho mas barato hacer esto que modificar los prototipos y bajar parametros por todos lados
+	controller_cargarSeleccionesDesdeTexto("selecciones.csv",
+			pAuxArrayListSelecciones);
+
+	if (pArrayListJugador != NULL && pAuxArrayListSelecciones != NULL) {
 		arrayTam = ll_len(pArrayListJugador);
-
 		if (arrayTam != -1) {
-
 			puts(
 					"\n==============================================================================================================");
-			printf("| %-5s  | %-25s | %-15s | %-8s | %-25s | %-8s |\n", "ID",
+			printf("| %-5s  | %-25s | %-15s | %-8s | %-25s | %-14s |\n", "ID",
 					"NOMBRE COMPLETO", "NACIONALIDAD", "EDAD", "POSICION",
 					"SELECCION");
 			puts(
 					"==============================================================================================================");
 			for (int i = 0; i < arrayTam; i++) {
 				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
+
 				if (pJugador != NULL) {
 					jug_getId(pJugador, &auxJugador.id);
 					jug_getNombreCompleto(pJugador, auxJugador.nombreCompleto);
@@ -195,44 +264,21 @@ int controller_listarJugadores(LinkedList *pArrayListJugador) {
 					jug_getEdad(pJugador, &auxJugador.edad);
 					jug_getNacionalidad(pJugador, auxJugador.nacionalidad);
 					jug_getSIdSeleccion(pJugador, &auxJugador.idSeleccion);
-					printf("\n| %-5d  | %-25s | %-15s | %-8d| %-25s | %-8d |",
+					// Busco el idSeleccion vinculado al jugador. En este caso funciona porque solo me interesa guardar el nombre del país de tal seleccion
+					// Si la informacion guardada de las selecciones esta actualizada o no es indiferente, solo necesito el nombre
+					selec_encontrarPaisDeSeleccion(pAuxArrayListSelecciones,
+							auxJugador.idSeleccion, auxPaisDeSeleccion);
+					printf("\n| %-5d  | %-25s | %-15s | %-8d| %-25s | %-14s |",
 							auxJugador.id, auxJugador.nombreCompleto,
 							auxJugador.nacionalidad, auxJugador.edad,
-							auxJugador.posicion, auxJugador.idSeleccion);
-
+							auxJugador.posicion, auxPaisDeSeleccion);
 					rtn = 1;
 				}
 			}
 		}
 	}
 
-	return rtn;
-}
-
-Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
-		int idBusqueda) {
-	Seleccion *rtn = NULL;
-	int tamArray;
-	int i;
-	int auxIdSeleccion;
-	Seleccion *pSeleccion;
-	if (pArrayListSeleccion != NULL) {
-		if (!ll_isEmpty(pArrayListSeleccion)) {
-			tamArray = ll_len(pArrayListSeleccion);
-			for (i = 0; i < tamArray; i++) {
-				pSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
-				selec_getId(pSeleccion, &auxIdSeleccion);
-				if (auxIdSeleccion == idBusqueda) {
-					rtn = pSeleccion;
-					break;
-				}
-			}
-			if (rtn != pSeleccion) {
-				printf("\nNo se encontro el id");
-			}
-		}
-	}
-
+	ll_deleteLinkedList(pAuxArrayListSelecciones);
 	return rtn;
 }
 
@@ -329,6 +375,11 @@ int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 	Jugador *pJugador;
 	Jugador auxJugador;
 	int auxIdSeleccion;
+	LinkedList *pAuxArrayListSelecciones = ll_newLinkedList();
+	char auxPaisDeSeleccion[MAX_CHARS];
+
+	controller_cargarSeleccionesDesdeTexto("selecciones.csv",
+			pAuxArrayListSelecciones);
 
 	if (pArrayListJugador != NULL) {
 		arrayTam = ll_len(pArrayListJugador);
@@ -336,7 +387,7 @@ int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 		if (arrayTam != -1) {
 			puts(
 					"\n==============================================================================================================");
-			printf("| %-5s  | %-25s | %-15s | %-8s | %-25s | %-8s |\n", "ID",
+			printf("| %-5s  | %-25s | %-15s | %-8s | %-25s | %-14s |\n", "ID",
 					"NOMBRE COMPLETO", "NACIONALIDAD", "EDAD", "POSICION",
 					"SELECCION");
 			puts(
@@ -352,10 +403,14 @@ int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 					jug_getNacionalidad(pJugador, auxJugador.nacionalidad);
 					jug_getSIdSeleccion(pJugador, &auxJugador.idSeleccion);
 
-					printf("\n| %-5d  | %-25s | %-15s | %-8d| %-25s | %-8d |",
+					// Busco el idSeleccion vinculado al jugador. En este caso funciona porque solo me interesa guardar el nombre del país de tal seleccion
+					// Si la informacion guardada de las selecciones esta actualizada o no es indiferente, solo necesito el nombre
+					selec_encontrarPaisDeSeleccion(pAuxArrayListSelecciones,
+							auxJugador.idSeleccion, auxPaisDeSeleccion);
+					printf("\n| %-5d  | %-25s | %-15s | %-8d| %-25s | %-14s |",
 							auxJugador.id, auxJugador.nombreCompleto,
 							auxJugador.nacionalidad, auxJugador.edad,
-							auxJugador.posicion, auxJugador.idSeleccion);
+							auxJugador.posicion, auxPaisDeSeleccion);
 					rtn = 1;
 				}
 			}
@@ -626,41 +681,6 @@ int controller_guardarJugadoresModoBinario(char *path,
 			}
 		}
 	}
-	fclose(pFile);
-	return rtn;
-}
-
-/** \brief Carga los datos de los selecciones desde el archivo selecciones.csv (modo texto).
- *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
- *
- */
-int controller_cargarSeleccionesDesdeTexto(char *path,
-		LinkedList *pArrayListSeleccion) {
-	int rtn = 0;
-
-	FILE *pFile = fopen(path, "r");
-
-	if (path != NULL && pArrayListSeleccion != NULL) {
-		if (pFile == NULL) {
-			puts("\nERROR. No es posible abrir el archivo");
-		} else {
-			if (ll_isEmpty(pArrayListSeleccion)) {
-				if (parser_SeleccionFromText(pFile, pArrayListSeleccion)) {
-					printf("\nSelecciones cargadas con exito");
-					rtn = 1;
-				} else {
-					puts("\nERROR. Ocurrio un error al cargar el archivo");
-				}
-			} else {
-				rtn = -1;
-				puts("\nLa lista no esta vacia.");
-			}
-		}
-	}
-
 	fclose(pFile);
 	return rtn;
 }
