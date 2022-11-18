@@ -119,7 +119,7 @@ int main() {
 					utn_getNumero(&auxIdJugador, "\nIngrese el id de jugador: ",
 							"\nId invalido. Ingrese el id de jugador: ", 1,
 							99999, 9999);
-					if (controller_buscarJugadorPorId(listaJugadores,
+					if (jug_buscarJugadorPorId(listaJugadores,
 							auxIdJugador) == NULL) {
 						puts(
 								"\n  -------- ERROR. EL JUGADOR NO EXISTE. ------------ \n");
@@ -127,8 +127,8 @@ int main() {
 					}
 					switch (menuConvocatoria) {
 					case 1:
-						pAuxJugador = controller_buscarJugadorPorId(
-								listaJugadores, auxIdJugador);
+						pAuxJugador = jug_buscarJugadorPorId(listaJugadores,
+								auxIdJugador);
 						jug_getSIdSeleccion(pAuxJugador, &auxIdSeleccion);
 						if (auxIdSeleccion != 0) {
 							puts(
@@ -147,7 +147,7 @@ int main() {
 					case 2:
 						jug_getSIdSeleccion(pAuxJugador, &auxIdSeleccion);
 						jug_getNombreCompleto(pAuxJugador, auxNombreCompleto);
-						if (controller_buscarSeleccionPorId(listaSelecciones,
+						if (selec_buscarSeleccionPorId(listaSelecciones,
 								auxIdSeleccion) == NULL) {
 							puts(
 									"\nEL JUGADOR NO FUE CONVOCADO POR NINGUNA SELECCION.");

@@ -82,13 +82,37 @@ int selec_getConvocados(Seleccion *this, int *convocados) {
 
 // FUNCIONES AUXILIARES
 
+Seleccion* selec_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
+		int idBusqueda) {
+	Seleccion *rtn = NULL;
+	int tamArray;
+	int i;
+	int auxIdSeleccion;
+	Seleccion *pSeleccion;
+	if (pArrayListSeleccion != NULL) {
+		if (!ll_isEmpty(pArrayListSeleccion)) {
+			tamArray = ll_len(pArrayListSeleccion);
+			for (i = 0; i < tamArray; i++) {
+				pSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
+				selec_getId(pSeleccion, &auxIdSeleccion);
+				if (auxIdSeleccion == idBusqueda) {
+					rtn = pSeleccion;
+					break;
+				}
+			}
+		}
+	}
+
+	return rtn;
+}
+
 int selec_eliminarUnConvocado(LinkedList *listaSelecciones, int idSeleccion) {
 	int rtn = 0;
 	int auxConvocados;
 	Seleccion *pAuxSeleccion;
 
 	if (listaSelecciones != NULL) {
-		pAuxSeleccion = controller_buscarSeleccionPorId(listaSelecciones,
+		pAuxSeleccion = selec_buscarSeleccionPorId(listaSelecciones,
 				idSeleccion);
 		selec_getConvocados(pAuxSeleccion, &auxConvocados);
 		auxConvocados--;
@@ -138,7 +162,7 @@ int selec_encontrarPaisDeSeleccion(LinkedList *pArrayListSeleccion,
 	Seleccion *pSeleccion;
 
 	if (pArrayListSeleccion != NULL && paisBuscado != NULL) {
-		pSeleccion = controller_buscarSeleccionPorId(pArrayListSeleccion,
+		pSeleccion = selec_buscarSeleccionPorId(pArrayListSeleccion,
 				idBusqueda);
 		if (!selec_getPais(pSeleccion, paisBuscado)) {
 			strcpy(paisBuscado, "No convocado");

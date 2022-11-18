@@ -278,3 +278,29 @@ int jug_ordenarPorEdad(void *pPrimerJugador, void *pSegundoJugador) {
 	return rtn;
 }
 
+Jugador* jug_buscarJugadorPorId(LinkedList *pArrayListJugador, int idBusqueda) {
+	Jugador *rtn = NULL;
+	int tamArray;
+	int i;
+	int auxIdJugador;
+	Jugador *pJugador;
+	if (pArrayListJugador != NULL) {
+		if (!ll_isEmpty(pArrayListJugador)) {
+			tamArray = ll_len(pArrayListJugador);
+			for (i = 0; i < tamArray; i++) {
+				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
+				jug_getId(pJugador, &auxIdJugador);
+				if (auxIdJugador == idBusqueda) {
+					rtn = pJugador;
+					break;
+				}
+			}
+			if (rtn != pJugador) {
+				rtn = NULL;
+			}
+		}
+	}
+
+	return rtn;
+}
+

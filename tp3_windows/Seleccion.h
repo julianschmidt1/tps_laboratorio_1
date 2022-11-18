@@ -33,5 +33,7 @@ int selec_ordenarPorConfederacion(void *pPrimerSeleccion,
 		void *pSegundaSeleccion);
 int selec_encontrarPaisDeSeleccion(LinkedList *pArrayListSeleccion,
 		int idBusqueda, char *paisBuscado);
+Seleccion* selec_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
+		int idBusqueda);
 
 #endif // selec_H_INCLUDED

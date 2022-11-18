@@ -50,5 +50,6 @@ int jug_ordenarPorNacionalidad(void *pPrimerJugador, void *pSegundoJugador);
 int jug_ordenarPorEdad(void *pPrimerJugador, void *pSegundoJugador);
 int jug_ordenarPorNombreCompleto(void *pPrimerJugador, void *pSegundoJugador);
 int validarPosicionJugador(char *posicion);
+Jugador* jug_buscarJugadorPorId(LinkedList *pArrayListJugador, int idBusqueda);
 
 #endif // jug_H_INCLUDED

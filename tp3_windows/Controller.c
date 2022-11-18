@@ -11,7 +11,7 @@
  *
  * \param path char*
  * \param pArrayListJugador LinkedList*
- * \return int
+ * \return int retorna 1 en caso de exito, 0 en caso de error y -1 en caso de que la lista tenga datos
  *
  */
 int controller_cargarJugadoresDesdeTexto(char *path,
@@ -44,9 +44,9 @@ int controller_cargarJugadoresDesdeTexto(char *path,
 
 /** \brief Carga los datos de los jugadores desde el archivo generado en modo binario.
  *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
+ * \param path char* ruta del archivo
+ * \param pArrayListJugador LinkedList* del array a cargar
+ * \return int retorna 1 en caso de exito, 0 en caso de error
  *
  */
 int controller_cargarJugadoresDesdeBinario(char *path,
@@ -68,34 +68,6 @@ int controller_cargarJugadoresDesdeBinario(char *path,
 	} else {
 		puts("\n --- No es posible cargar jugadores ---- ");
 	}
-	return rtn;
-}
-
-Seleccion* controller_buscarSeleccionPorId(LinkedList *pArrayListSeleccion,
-		int idBusqueda) {
-	Seleccion *rtn = NULL;
-	int tamArray;
-	int i;
-	int auxIdSeleccion;
-	Seleccion *pSeleccion;
-	if (pArrayListSeleccion != NULL) {
-		if (!ll_isEmpty(pArrayListSeleccion)) {
-			tamArray = ll_len(pArrayListSeleccion);
-			for (i = 0; i < tamArray; i++) {
-				pSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
-				selec_getId(pSeleccion, &auxIdSeleccion);
-				if (auxIdSeleccion == idBusqueda) {
-					rtn = pSeleccion;
-					break;
-				}
-			}
-			if (rtn != pSeleccion) {
-				// REVISAR
-				//printf("\nNo se encontro el id");
-			}
-		}
-	}
-
 	return rtn;
 }
 
@@ -282,6 +254,12 @@ int controller_listarJugadores(LinkedList *pArrayListJugador) {
 	return rtn;
 }
 
+/// \brief Funcion que crea una nueva LinkedList en base a el criterio correspondiente para decir que un jugador fue convocado
+///
+/// \param pArrayListJugador Listado de jugadores
+/// \param pArrayListSeleccion Listado de jugadores
+/// \param pArrayListJugadorConvocado Listado a cargar
+/// \return Retorna 1 en caso de exito y 0 en caso de error
 int controller_crearListaJugadoresConvocados(LinkedList *pArrayListJugador,
 		LinkedList *pArrayListSeleccion, LinkedList *pArrayListJugadorConvocado) {
 	int rtn = 0;
@@ -304,30 +282,35 @@ int controller_crearListaJugadoresConvocados(LinkedList *pArrayListJugador,
 			pAuxJugador = ll_get(pArrayListJugador, i);
 			jug_getSIdSeleccion(pAuxJugador, &auxIdSeleccion);
 			if (auxIdSeleccion != 0) {
-				pAuxSeleccion = controller_buscarSeleccionPorId(
-						pArrayListSeleccion, auxIdSeleccion);
-				selec_getConfederacion(pAuxSeleccion, auxConfederacion);
-				if (stricmp(auxConfederacion, bufferConfederacion) == 0) {
+				pAuxSeleccion = selec_buscarSeleccionPorId(pArrayListSeleccion,
+						auxIdSeleccion);
+				if (pAuxSeleccion != NULL) {
+					selec_getConfederacion(pAuxSeleccion, auxConfederacion);
+					if (stricmp(auxConfederacion, bufferConfederacion) == 0) {
+						nuevoJugador = jug_new();
+						jug_getId(pAuxJugador, &auxJugador.id);
+						jug_getEdad(pAuxJugador, &auxJugador.edad);
+						jug_getNacionalidad(pAuxJugador,
+								auxJugador.nacionalidad);
+						jug_getNombreCompleto(pAuxJugador,
+								auxJugador.nombreCompleto);
+						jug_getPosicion(pAuxJugador, auxJugador.posicion);
+						jug_getSIdSeleccion(pAuxJugador,
+								&auxJugador.idSeleccion);
 
-					nuevoJugador = jug_new();
-					jug_getId(pAuxJugador, &auxJugador.id);
-					jug_getEdad(pAuxJugador, &auxJugador.edad);
-					jug_getNacionalidad(pAuxJugador, auxJugador.nacionalidad);
-					jug_getNombreCompleto(pAuxJugador,
-							auxJugador.nombreCompleto);
-					jug_getPosicion(pAuxJugador, auxJugador.posicion);
-					jug_getSIdSeleccion(pAuxJugador, &auxJugador.idSeleccion);
+						jug_setId(nuevoJugador, auxJugador.id);
+						jug_setEdad(nuevoJugador, auxJugador.edad);
+						jug_setNacionalidad(nuevoJugador,
+								auxJugador.nacionalidad);
+						jug_setNombreCompleto(nuevoJugador,
+								auxJugador.nombreCompleto);
+						jug_setPosicion(nuevoJugador, auxJugador.posicion);
+						jug_setIdSeleccion(nuevoJugador,
+								auxJugador.idSeleccion);
 
-					jug_setId(nuevoJugador, auxJugador.id);
-					jug_setEdad(nuevoJugador, auxJugador.edad);
-					jug_setNacionalidad(nuevoJugador, auxJugador.nacionalidad);
-					jug_setNombreCompleto(nuevoJugador,
-							auxJugador.nombreCompleto);
-					jug_setPosicion(nuevoJugador, auxJugador.posicion);
-					jug_setIdSeleccion(nuevoJugador, auxJugador.idSeleccion);
-
-					ll_add(pArrayListJugadorConvocado, nuevoJugador);
-					rtn = 1;
+						ll_add(pArrayListJugadorConvocado, nuevoJugador);
+						rtn = 1;
+					}
 				}
 			}
 
@@ -337,33 +320,6 @@ int controller_crearListaJugadoresConvocados(LinkedList *pArrayListJugador,
 		puts("\n ----- LISTA CREADA EXITOSAMENTE -----");
 	} else {
 		puts("\n ----- NO HAY JUGADORES EN LA CONFEDERACION INGRESADA ---- \n");
-	}
-
-	return rtn;
-}
-
-Jugador* controller_buscarJugadorPorId(LinkedList *pArrayListJugador,
-		int idBusqueda) {
-	Jugador *rtn = NULL;
-	int tamArray;
-	int i;
-	int auxIdJugador;
-	Jugador *pJugador;
-	if (pArrayListJugador != NULL) {
-		if (!ll_isEmpty(pArrayListJugador)) {
-			tamArray = ll_len(pArrayListJugador);
-			for (i = 0; i < tamArray; i++) {
-				pJugador = (Jugador*) ll_get(pArrayListJugador, i);
-				jug_getId(pJugador, &auxIdJugador);
-				if (auxIdJugador == idBusqueda) {
-					rtn = pJugador;
-					break;
-				}
-			}
-			if (rtn != pJugador) {
-				rtn = NULL;
-			}
-		}
 	}
 
 	return rtn;
@@ -443,7 +399,7 @@ int controller_removerJugador(LinkedList *pArrayListJugador,
 		while (pAuxJugador == NULL) {
 			utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
 					"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
-			pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
+			pAuxJugador = jug_buscarJugadorPorId(pArrayListJugador,
 					auxIdSeleccionado);
 			if (pAuxJugador == NULL) {
 				puts("\nNo se encontro el id");
@@ -472,7 +428,7 @@ int controller_removerJugador(LinkedList *pArrayListJugador,
  *
  * \param path char*
  * \param pArrayListJugador LinkedList*
- * \return int
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  *
  */
 int controller_editarJugador(LinkedList *pArrayListJugador) {
@@ -488,7 +444,7 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 		while (pAuxJugador == NULL) {
 			utn_getNumero(&auxIdSeleccionado, "\nIngrese el id de jugador: ",
 					"\nError. Ingrese el id de jugador: ", 1, 999, 9999);
-			pAuxJugador = controller_buscarJugadorPorId(pArrayListJugador,
+			pAuxJugador = jug_buscarJugadorPorId(pArrayListJugador,
 					auxIdSeleccionado);
 			if (pAuxJugador == NULL) {
 				puts("\nNo se encontro el id");
@@ -751,11 +707,11 @@ int controller_editarSeleccion(LinkedList *pArrayListSeleccion) {
 		controller_listarSelecciones(pArrayListSeleccion);
 		utn_getNumero(&auxIdSeleccion, "\nIngrese el id de seleccion: ",
 				"\nId invalido. Ingrese el id de seleccion: ", 1, 50, 9999);
-		if (controller_buscarSeleccionPorId(pArrayListSeleccion,
+		if (selec_buscarSeleccionPorId(pArrayListSeleccion,
 				auxIdSeleccion) == NULL) {
 			puts("\n  -------- ERROR. LA SELECCION NO EXISTE. ------------ \n");
 		} else {
-			pAuxSeleccion = controller_buscarSeleccionPorId(pArrayListSeleccion,
+			pAuxSeleccion = selec_buscarSeleccionPorId(pArrayListSeleccion,
 					auxIdSeleccion);
 
 			selec_getConvocados(pAuxSeleccion, &auxCantidadConvocados);
