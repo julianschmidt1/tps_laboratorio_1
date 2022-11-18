@@ -31,6 +31,8 @@ int menu_opciones(char *titulo, char *opciones, char *mensajeError, int min,
 /// \return Retorna 1 en caso de exito, 0 en caso de que algun puntero sea invalido, y -1 si la opcion es incorrecta
 int menu_confirmar(char *titulo, char *mensajeError, int *valorConfirmacion);
 
+/// \brief Muestra posiciones disponibles validadas
+///
 void menu_mostrarPosiciones(void);
 
 #endif /* MENU_H_ */

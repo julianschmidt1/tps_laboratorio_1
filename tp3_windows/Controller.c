@@ -72,11 +72,8 @@ int controller_cargarJugadoresDesdeBinario(char *path,
 }
 
 /** \brief Alta de jugadores
- *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
- *
+ * \param pArrayListJugador LinkedList* array sobre el cual cargar
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  */
 int controller_agregarJugador(LinkedList *pArrayListJugador) {
 	int rtn = 0;
@@ -144,6 +141,11 @@ int controller_agregarJugador(LinkedList *pArrayListJugador) {
 	return rtn;
 }
 
+/// \brief Funcion que guarda en un archivo binario el ultimo id dado de alta
+///
+/// \param path ruta del archivo
+/// \param pId puntero a la variable que almacena el id a guardar
+/// \return retorna 1 en caso de exito y 0 en caso de error
 int controller_guardarUltimoId(char *path, int *pId) {
 	int rtn = 0;
 	FILE *pFile;
@@ -152,6 +154,7 @@ int controller_guardarUltimoId(char *path, int *pId) {
 
 	if (pFile != NULL) {
 		if (fwrite(pId, sizeof(int), 1, pFile)) {
+			rtn = 1;
 			puts("\nId actualizado correctamente.");
 		} else {
 			puts("\nOcurrio un error al actualizar el id");
@@ -163,10 +166,9 @@ int controller_guardarUltimoId(char *path, int *pId) {
 
 /** \brief Carga los datos de los selecciones desde el archivo selecciones.csv (modo texto).
  *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
- *
+ * \param path char* Ruta del archivo
+ * \param pArrayListSeleccion LinkedList* array de selecciones
+ * \return int retorna 1 en caso de exitoy 0 en caso de error
  */
 int controller_cargarSeleccionesDesdeTexto(char *path,
 		LinkedList *pArrayListSeleccion) {
@@ -197,11 +199,8 @@ int controller_cargarSeleccionesDesdeTexto(char *path,
 }
 
 /** \brief Listar jugadores
- *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
- *
+ * \param pArrayListJugador LinkedList* array de jugadores
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  */
 int controller_listarJugadores(LinkedList *pArrayListJugador) {
 	int rtn = 0;
@@ -325,6 +324,10 @@ int controller_crearListaJugadoresConvocados(LinkedList *pArrayListJugador,
 	return rtn;
 }
 
+/// \brief Listar jugadores convocados
+///
+/// \param pArrayListJugador array de jugadores convocados
+/// \return retorna 1 en caso de exito y 0 en caso de error
 int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 	int rtn = 0;
 	int arrayTam;
@@ -379,11 +382,9 @@ int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 }
 
 /** \brief Baja del jugador
- *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
- *
+ * \param pArrayListJugador LinkedList* array de jugadores
+ * \param pArrayListSeleccion LinkedList* array de selecciones
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  */
 int controller_removerJugador(LinkedList *pArrayListJugador,
 		LinkedList *pArrayListSeleccion) {
@@ -542,11 +543,8 @@ int controller_editarJugador(LinkedList *pArrayListJugador) {
 }
 
 /** \brief Ordenar jugadores
- *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
- *
+ * \param pArrayListJugador LinkedList* array de jugadores
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  */
 int controller_ordenarJugadores(LinkedList *pArrayListJugador) {
 	int rtn = 0;
@@ -586,6 +584,7 @@ int controller_ordenarJugadores(LinkedList *pArrayListJugador) {
 					if (!ll_sort(pArrayListJugador, pOrdenamiento,
 							criterioOrdenamiento)) {
 						puts("\nJugadores ordenados exitosamente");
+						rtn = 1;
 						controller_listarJugadores(pArrayListJugador);
 					} else {
 						puts("\nNo se pudieron ordenar los jugadores");
@@ -603,9 +602,9 @@ int controller_ordenarJugadores(LinkedList *pArrayListJugador) {
 
 /** \brief Guarda los datos de los jugadores en el archivo binario.
  *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
+ * \param path char* ruta del archivo
+ * \param pArrayListJugador LinkedList* array de jugadores
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  *
  */
 int controller_guardarJugadoresModoBinario(char *path,
@@ -642,11 +641,8 @@ int controller_guardarJugadoresModoBinario(char *path,
 }
 
 /** \brief Listar selecciones
- *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
- *
+ * \param pArrayListSeleccion LinkedList* listado de selecciones
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  */
 int controller_listarSelecciones(LinkedList *pArrayListSeleccion) {
 	int rtn = 0;
@@ -689,11 +685,9 @@ int controller_listarSelecciones(LinkedList *pArrayListSeleccion) {
 	return rtn;
 }
 
-/** \brief Modificar datos de empleado
- *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
+/** \brief Modificar datos de jugador
+ * \param pArrayListSeleccion LinkedList* array de selecciones
+ * \return int retorna el id modificado en caso de exito y 0 en caso de error
  *
  */
 int controller_editarSeleccion(LinkedList *pArrayListSeleccion) {
@@ -732,10 +726,8 @@ int controller_editarSeleccion(LinkedList *pArrayListSeleccion) {
 }
 
 /** \brief Ordenar selecciones
- *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
+ * \param pArrayListSeleccion LinkedList* array de selecciones
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  *
  */
 int controller_ordenarSelecciones(LinkedList *pArrayListSeleccion) {
@@ -752,6 +744,7 @@ int controller_ordenarSelecciones(LinkedList *pArrayListSeleccion) {
 			if (!ll_sort(pArrayListSeleccion, pOrdenamiento,
 					criterioOrdenamiento)) {
 				puts("\nJugadores ordenados exitosamente");
+				rtn = 1;
 				controller_listarSelecciones(pArrayListSeleccion);
 			} else {
 				puts("\nNo se pudieron ordenar los jugadores");
@@ -766,9 +759,9 @@ int controller_ordenarSelecciones(LinkedList *pArrayListSeleccion) {
 
 /** \brief Guarda los datos de los jugadores en el archivo jugadores.csv (modo texto).
  *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
+ * \param path char* ruta del archivo
+ * \param pArrayListSeleccion LinkedList* array de selecciones
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  *
  */
 int controller_guardarJugadoresModoTexto(char *path,
@@ -819,9 +812,9 @@ int controller_guardarJugadoresModoTexto(char *path,
 
 /** \brief Guarda los datos de los selecciones en el archivo selecciones.csv (modo texto).
  *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
+ * \param path char* ruta del archivo
+ * \param pArrayListSeleccion LinkedList* array de selecciones
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  *
  */
 int controller_guardarSeleccionesModoTexto(char *path,

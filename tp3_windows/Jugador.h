@@ -46,10 +46,38 @@ int jug_getEdad(Jugador *this, int *edad);
 int jug_setIdSeleccion(Jugador *this, int idSeleccion);
 int jug_getSIdSeleccion(Jugador *this, int *idSeleccion);
 
+/// \brief Ordena jugadores por nacionalidad
+///
+/// \param pPrimerJugador puntero a jugador
+/// \param pSegundoJugador puntero a jugador
+/// \return retorna 1 si esta ordenado, -1 si no lo esta, y 0 si son iguales
 int jug_ordenarPorNacionalidad(void *pPrimerJugador, void *pSegundoJugador);
+
+/// \brief Ordena jugadores por edad
+///
+/// \param pPrimerJugador puntero a jugador
+/// \param pSegundoJugador puntero a jugador
+/// \return retorna 1 si esta ordenado, -1 si no lo esta, y 0 si son iguales
 int jug_ordenarPorEdad(void *pPrimerJugador, void *pSegundoJugador);
+
+/// \brief Ordena jugadores por nombre completo
+///
+/// \param pPrimerJugador puntero a jugador
+/// \param pSegundoJugador puntero a jugador
+/// \return retorna 1 si esta ordenado, -1 si no lo esta, y 0 si son iguales
 int jug_ordenarPorNombreCompleto(void *pPrimerJugador, void *pSegundoJugador);
+
+/// \brief Valida la posicion ingresada por el usuario
+///
+/// \param posicion cadena de caracteres de la posicion
+/// \return Retorna 1 en caso de validacion exitosa, -1 en caso de validacion erronea, 0 en caso de puntero invalido (ERROR)
 int validarPosicionJugador(char *posicion);
+
+/// \brief Funcion que busca un jugador por id
+///
+/// \param pArrayListJugador array sobre el cual buscar
+/// \param idBusqueda id a encontrar
+/// \return retorna el puntero al jugador, si es que se encuentra, o NULL en caso de error o jugador no encontrado
 Jugador* jug_buscarJugadorPorId(LinkedList *pArrayListJugador, int idBusqueda);
 
 #endif // jug_H_INCLUDED

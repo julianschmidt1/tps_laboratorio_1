@@ -6,9 +6,9 @@
 
 /** \brief Parsea los datos de los jugadores desde el archivo jugadores.csv (modo texto).
  *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
+ * \param pFile FILE* puntero al archivo abierto
+ * \param pArrayListJugador LinkedList* array de jugadores a cargar
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  */
 int parser_JugadorFromText(FILE *pFile, LinkedList *pArrayListJugador) {
 	int rtn = 0;
@@ -43,6 +43,11 @@ int parser_JugadorFromText(FILE *pFile, LinkedList *pArrayListJugador) {
 	return rtn;
 }
 
+/// \brief Carga el ultimo id guardado
+///
+/// \param pFile puntero a archivo abierto
+/// \param pId puntero a id a obtener
+/// \return retorna 1 en caso de exito y 0 en caso de error
 int parser_ObtenerUltimoId(FILE *pFile, int *pId) {
 	int rtn = 0;
 
@@ -62,10 +67,9 @@ int parser_ObtenerUltimoId(FILE *pFile, int *pId) {
 
 /** \brief Parsea los datos de los jugadores desde el archivo binario.
  *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
- *
+ * \param pFile puntero a archivo
+ * \param pArrayListJugador array de jugadores
+ * \return retorna 1 en caso de exito y 0 en caso de error
  */
 int parser_JugadorFromBinary(FILE *pFile, LinkedList *pArrayListJugador) {
 	int rtn = 0;
@@ -92,9 +96,9 @@ int parser_JugadorFromBinary(FILE *pFile, LinkedList *pArrayListJugador) {
 
 /** \brief Parsea los datos de los selecciones desde el archivo selecciones.csv (modo texto).
  *
- * \param path char*
- * \param pArrayListSeleccion LinkedList*
- * \return int
+ * \param pFile FILE* puntero al archivo
+ * \param pArrayListSeleccion LinkedList* array de selecciones
+ * \return int retorna 1 en caso de exito y 0 en caso de error
  *
  */
 int parser_SeleccionFromText(FILE *pFile, LinkedList *pArrayListSeleccion) {
