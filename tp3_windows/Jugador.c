@@ -188,7 +188,10 @@ int validarPosicionJugador(char *posicion) {
 				|| !strcmp(auxPosicion, "EXTREMO IZQUIERDO")
 				|| !strcmp(auxPosicion, "EXTREMO DERECHO")
 				|| !strcmp(auxPosicion, "MEDIAPUNTA")
-				|| !strcmp(auxPosicion, "DELANTERO CENTRO")) {
+				|| !strcmp(auxPosicion, "DELANTERO CENTRO")
+				|| !strcmp(auxPosicion, "MEDIOCENTRO OFENSIVO")
+				|| !strcmp(auxPosicion, "INTERIOR DERECHO")
+				|| !strcmp(auxPosicion, "INTERIOR IZQUIERDO")) {
 			strcpy(posicion, auxPosicion);
 			rtn = 1;
 		} else {
