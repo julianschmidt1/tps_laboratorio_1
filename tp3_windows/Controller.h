@@ -7,8 +7,7 @@ int controller_cargarJugadoresDesdeBinario(char *path,
 		LinkedList *pArrayListJugador);
 int controller_agregarJugador(LinkedList *pArrayListJugador);
 int controller_editarJugador(LinkedList *pArrayListJugador);
-int controller_removerJugador(LinkedList *pArrayListJugador,
-		LinkedList *pArrayListSeleccion);
+int controller_removerJugador(LinkedList *pArrayListJugador);
 int controller_listarJugadores(LinkedList *pArrayListJugador);
 int controller_ordenarJugadores(LinkedList *pArrayListJugador);
 

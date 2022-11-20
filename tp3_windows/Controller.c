@@ -384,17 +384,16 @@ int controller_listarJugadoresConvocados(LinkedList *pArrayListJugador) {
 /** \brief Baja del jugador
  * \param pArrayListJugador LinkedList* array de jugadores
  * \param pArrayListSeleccion LinkedList* array de selecciones
- * \return int retorna 1 en caso de exito y 0 en caso de error
+ * \return int retorna el id se la seleccion del cual se elimino el jugador en caso de exito y 0 en caso de error
  */
-int controller_removerJugador(LinkedList *pArrayListJugador,
-		LinkedList *pArrayListSeleccion) {
+int controller_removerJugador(LinkedList *pArrayListJugador) {
 	int rtn = 0;
 	int auxIdSeleccionado = -1;
 	Jugador *pAuxJugador = NULL;
 	int indiceJugador;
 	int auxIdSeleccion;
 
-	if (pArrayListJugador != NULL && pArrayListSeleccion) {
+	if (pArrayListJugador != NULL) {
 		controller_listarJugadores(pArrayListJugador);
 
 		while (pAuxJugador == NULL) {
@@ -413,9 +412,8 @@ int controller_removerJugador(LinkedList *pArrayListJugador,
 				"\n(1. SI | 2. NO)", "\nOpcion invalida.", 1, 2) == 1) {
 			indiceJugador = ll_indexOf(pArrayListJugador, pAuxJugador);
 			if (ll_remove(pArrayListJugador, indiceJugador) == 0) {
-				selec_eliminarUnConvocado(pArrayListSeleccion, auxIdSeleccion);
 				jug_delete(pAuxJugador);
-				rtn = 1;
+				rtn = auxIdSeleccion;
 				puts("\nJugador dado de baja exitosamente");
 			}
 		}

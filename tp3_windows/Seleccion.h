@@ -16,16 +16,58 @@ typedef struct {
 	int convocados;
 } Seleccion;
 
+/// \brief Funcion que pide memoria suficiente para almacenar un tipo de dato Seleccion
+///
+/// \return retorna puntero a Seleccion
 Seleccion* selec_new();
+
+/// \brief Funcion que pide memoria suficiente para almacenar un tipo de dato Seleccion y carga el puntero de informacion
+///
+/// \param idStr id de seleccion en forma de string
+/// \param paisStr pais de seleccion en forma de string
+/// \param confederacionStr confederacion de seleccion en forma de string
+/// \param convocadosStr convocados de seleccion en forma de string
+/// \return Retorna puntero a Seleccion den caso de exito y null en caso de error
 Seleccion* selec_newParametros(char *idStr, char *paisStr,
 		char *confederacionStr, char *convocadosStr);
-void selec_delete();
 
+/// \brief Libera el puntero en memoria consumido por un Seleccion
+///
+void selec_delete(Seleccion *this);
+
+/// \brief funcion que obtiene el id de seleccion y lo almacena en un puntero
+///
+/// \param this Puntero a seleccion
+/// \param id puntero a variable id
+/// \return retorna 1 en caso de exito y 0 en caso de error
 int selec_getId(Seleccion *this, int *id);
+
+/// \brief funcion que obtiene el pais de seleccion y lo almacena en un puntero
+///
+/// \param this Puntero a seleccion
+/// \param id puntero a variable pais
+/// \return retorna 1 en caso de exito y 0 en caso de error
 int selec_getPais(Seleccion *this, char *pais);
+
+/// \brief funcion que obtiene la confederacion de seleccion y la almacena en un puntero
+///
+/// \param this Puntero a seleccion
+/// \param id puntero a variable confederacion
+/// \return retorna 1 en caso de exito y 0 en caso de error
 int selec_getConfederacion(Seleccion *this, char *confederacion);
 
+/// \brief Funcion que asigna el campo convocados de una Seleccion
+///
+/// \param this Puntero a seleccion
+/// \param convocados contador enteros
+/// \return retorna 1 en caso de exito y 0 en caso de error
 int selec_setConvocados(Seleccion *this, int convocados);
+
+/// \brief funcion que obtiene la catidad de convocados de seleccion y lo almacena en un puntero
+///
+/// \param this Puntero a seleccion
+/// \param id puntero a variable convocados
+/// \return retorna 1 en caso de exito y 0 en caso de error
 int selec_getConvocados(Seleccion *this, int *convocados);
 
 /// \brief Funcion que reduce el contador de convocados en selecciones

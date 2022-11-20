@@ -67,9 +67,10 @@ int main() {
 			if (!flagCargaArchivos) {
 				puts("\nEs necesario cargar la opc 1 antes");
 			} else {
-				if (controller_removerJugador(listaJugadores,
-						listaSelecciones)) {
+				auxIdSeleccion = controller_removerJugador(listaJugadores);
+				if (auxIdSeleccion != 0) {
 					flagGuardarArchivos = 0;
+					selec_eliminarUnConvocado(listaSelecciones, auxIdSeleccion);
 				}
 			}
 			break;
