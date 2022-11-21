@@ -22,6 +22,7 @@ int main() {
 	int flagCargaArchivos = 0;
 	int flagGuardarArchivos = 1;
 	int confirmarSalida;
+	int confirmarSobreescritura = 0;
 
 	do {
 		menuPrincipal = menu_opciones(
@@ -40,10 +41,20 @@ int main() {
 				1, 11);
 		switch (menuPrincipal) {
 		case 1:
-			controller_cargarJugadoresDesdeTexto("jugadores.csv",
-					listaJugadores);
-			controller_cargarSeleccionesDesdeTexto("selecciones.csv",
-					listaSelecciones);
+			if (flagCargaArchivos) {
+				utn_getNumero(&confirmarSobreescritura,
+						"\nYa existen datos cargados en las listas. Desea sobreescribirlos? (1. SI | 0. NO): ",
+						"\nOpcion invalida. ", 0, 1, 1);
+			}
+			if (!flagCargaArchivos || confirmarSobreescritura) {
+				ll_clear(listaJugadores);
+				ll_clear(listaSelecciones);
+				ll_clear(listaJugadoresConvocados);
+				controller_cargarJugadoresDesdeTexto("jugadores.csv",
+						listaJugadores);
+				controller_cargarSeleccionesDesdeTexto("selecciones.csv",
+						listaSelecciones);
+			}
 			flagCargaArchivos = 1;
 			break;
 		case 2:
@@ -69,9 +80,9 @@ int main() {
 			} else {
 				auxIdSeleccion = controller_removerJugador(listaJugadores);
 				if (auxIdSeleccion != 0) {
-					flagGuardarArchivos = 0;
 					selec_eliminarUnConvocado(listaSelecciones, auxIdSeleccion);
 				}
+				flagGuardarArchivos = 0;
 			}
 			break;
 		case 5:
